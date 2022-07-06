@@ -1,5 +1,8 @@
-# repo-template
-A template for creating new repositories in the OxygenXML Incubator
+# WebHelp Search Service Publishing Template
+
+We'll create a publishing template to demonstrates how to integrate a search service with WebHelp transformation. 
+
+The project documentation is available here.
 
 Copyright and License
 ---------------------
