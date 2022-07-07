@@ -1,0 +1,21 @@
+------START-LICENSE-KEY------
+
+Registration_Name=Syncro Soft
+
+Company=Syncro Soft
+
+Category=Enterprise
+
+Component=Publishing-Engine, 8-Core
+
+Version=24
+
+Number_of_Licenses=1
+
+Date=07-07-2022
+
+Maintenance=0
+
+SGN=MC4CFQCPqQBFowUf2yzwiE5jpKZERzEpswIVAJFqSQeIMy431xFV/WijAd1fS4Eg
+
+-------END-LICENSE-KEY-------
