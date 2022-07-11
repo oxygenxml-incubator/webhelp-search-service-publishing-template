@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<publishing-template>
+    <name>Webhelp Documentation Template</name>
+    <description>Webhelp Documentation Template for the search service project</description>
+    <webhelp>
+        <preview-image file="img/template-preview.png"/>
+        <parameters>
+            <parameter name="webhelp.show.main.page.tiles" value="no"/>
+            <parameter name="webhelp.show.main.page.toc" value="yes"/>
+            <parameter name="webhelp.top.menu.depth" value="3"/>
+            <parameter name="args.figurelink.style" value="TITLE"/>
+            <parameter name="args.tablelink.style" value="TITLE"/>
+            <parameter name="force-unique" value="true"/>
+        </parameters>
+        <resources>
+            <css file="style.css"/>
+            <logo file="img/logo.png"></logo>
+        </resources>
+        <tags>
+            <tag type="layout">tree</tag>
+            <tag type="color">blue</tag>
+        </tags>
+    </webhelp>
+</publishing-template>
