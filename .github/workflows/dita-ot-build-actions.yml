@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Build WebHelp Responsive
-        run:
+        run: |
             wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
             apt-get install unzip
             unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
