@@ -1,5 +1,5 @@
 name: CI
-'on':
+on:
   push:
     branches:
       - master
@@ -18,4 +18,4 @@ jobs:
             sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
             sudo cp resources/licensekey.txt /home/runner/work/webhelp-search-service-publishing-template/webhelp-search-service-publishing-template/oxygen-publishing-engine-3.x
             cd oxygen-publishing-engine-3.x/bin
-            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../out
+            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
