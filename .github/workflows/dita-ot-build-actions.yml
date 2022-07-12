@@ -1,0 +1,20 @@
+name: CI
+'on':
+  push:
+    branches:
+      - master
+jobs:
+  build-dita:
+    name: Build DITA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+        
+      - name: Build WebHelp Responsive
+        uses: dita-ot/dita-ot-action@master
+        with:
+          install: dita install https://www.oxygenxml.com/InstData/WebHelp/oxygen-webhelp-dot-3.x.zip
+          input: doc/flowers/flowers.ditamap
+          transtype: html
+          output-path: out
