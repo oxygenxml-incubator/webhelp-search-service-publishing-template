@@ -18,7 +18,7 @@ jobs:
             sudo apt-get install unzip
             sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
             ls
-            cp resources/licensekey.txt /oxygen-publishing-engine-3.x
+            sudo cp resources/licensekey.txt /oxygen-publishing-engine-3.x
             cd /oxygen-publishing-engine-3.x
             open startcmd.bat
             dita --input=doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=templates/webhelp-documentation-template
