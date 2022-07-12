@@ -12,14 +12,12 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
         
-      - name: Copy licensekey.txt
-        run:
-          cp resources/licensekey.txt .
-        
       - name: Build WebHelp Responsive
-        uses: dita-ot/dita-ot-action@master
-        with:
-          install: |
-            dita install https://www.oxygenxml.com/InstData/WebHelp/oxygen-webhelp-dot-3.x.zip
-          build: |
+        run:
+            wget ./dita-ot-engine.zip "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            apt-get install unzip
+            unzip dita-ot-engine.zip
+            cp resources/licensekey.txt dita-ot-engine/oxygen-publishing-engine-3.x
+            cd dita-ot-engine/oxygen-publishing-engine-3.x
+            open startcmd.bat
             dita --input=doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=templates/webhelp-documentation-template
