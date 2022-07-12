@@ -14,7 +14,7 @@ jobs:
       - name: Build WebHelp Responsive
         uses: dita-ot/dita-ot-action@master
         with:
-          install: dita install https://www.oxygenxml.com/InstData/WebHelp/oxygen-webhelp-dot-3.x.zip
-          input: doc/flowers/flowers.ditamap
-          transtype: html
-          output-path: out
+          install: |
+            dita install https://www.oxygenxml.com/InstData/WebHelp/oxygen-webhelp-dot-3.x.zip
+          build: |
+            dita --input=doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=templates/webhelp-documentation-template
