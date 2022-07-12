@@ -20,5 +20,4 @@ jobs:
             ls
             sudo cp resources/licensekey.txt /oxygen-publishing-engine-3.x
             cd oxygen-publishing-engine-3.x/bin
-            sudo ./dita
-            dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../out
+            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../out
