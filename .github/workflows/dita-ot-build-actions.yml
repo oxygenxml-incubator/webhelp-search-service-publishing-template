@@ -14,9 +14,9 @@ jobs:
         
       - name: Build WebHelp Responsive
         run: |
-            wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
-            apt-get install unzip
-            unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
             ls
             cp resources/licensekey.txt oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full/oxygen-publishing-engine-3.x
             cd oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip/oxygen-publishing-engine-3.x
