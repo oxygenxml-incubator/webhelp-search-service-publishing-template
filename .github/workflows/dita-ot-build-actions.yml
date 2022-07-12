@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - automate-publishing-github-actions
 jobs:
   build-dita:
     name: Build DITA
@@ -16,6 +17,6 @@ jobs:
             sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
             sudo apt-get install unzip
             sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
-            sudo cp resources/licensekey.txt /home/runner/work/webhelp-search-service-publishing-template/webhelp-search-service-publishing-template/oxygen-publishing-engine-3.x
+            sudo cp resources/licensekey.txt ~/oxygen-publishing-engine-3.x
             cd oxygen-publishing-engine-3.x/bin
             sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
