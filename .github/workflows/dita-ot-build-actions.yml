@@ -11,6 +11,10 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
         
+      - name: Copy licensekey.txt
+        run:
+          cp resources/licensekey.txt .
+        
       - name: Build WebHelp Responsive
         uses: dita-ot/dita-ot-action@master
         with:
