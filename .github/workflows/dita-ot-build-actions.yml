@@ -10,6 +10,12 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          vim licensekey.txt
+          ${{ secrets.OPE_LICENSE }}
+          :wq
         
       - name: Download the engine
         run: |
