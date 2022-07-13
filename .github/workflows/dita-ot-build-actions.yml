@@ -25,7 +25,7 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-            publish-dir: '../../doc/flowers/out'
+            publish-dir: 'doc/flowers/out'
             deploy-message: "Deploy from GitHub Actions to Netlify"
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
