@@ -4,8 +4,8 @@ on:
     branches:
       - master
 jobs:
-  build-dita:
-    name: Build DITA
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
