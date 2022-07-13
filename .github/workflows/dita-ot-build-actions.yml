@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - publish-documentation-netlify
 jobs:
   build-dita:
     name: Build DITA
