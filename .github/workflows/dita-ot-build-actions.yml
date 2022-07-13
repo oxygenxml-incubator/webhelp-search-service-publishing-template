@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - add-documentation
 jobs:
   build-dita-and-deploy-netlify:
     name: Build DITA WebHelp Responsive and deploy to Netlify
@@ -27,12 +28,12 @@ jobs:
       - name: Build WebHelp Responsive
         run: |
             cd oxygen-publishing-engine-3.x/bin
-            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
+            sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
             
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-            publish-dir: 'doc/flowers/out'
+            publish-dir: 'doc/project-documentation/out'
             deploy-message: "Deploy from GitHub Actions to Netlify"
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
