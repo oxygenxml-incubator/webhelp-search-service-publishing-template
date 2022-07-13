@@ -14,7 +14,8 @@ jobs:
       
       - name: Extract license from secrets
         run: |
-          echo '$OPE_LICENSE' >licensekey.txt
+          echo "$OPE_LICENSE" > licensekey.txt
+          ls
         env:
           OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
         
