@@ -5,12 +5,13 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master", "setup-java-project" ]
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-with-maven:
+    name: Build project with Maven
 
     runs-on: ubuntu-latest
 
