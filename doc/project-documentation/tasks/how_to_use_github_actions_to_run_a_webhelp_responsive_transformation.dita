@@ -36,7 +36,7 @@ on:
                 </info>
             </step>
             <step>
-                <cmd>Let's write our job, we have to specify the name and the version of OS</cmd>
+                <cmd>Let's write our job, we have to specify the name and the version of the OS</cmd>
                 <info>
                     <codeblock>name: CI
 on:
