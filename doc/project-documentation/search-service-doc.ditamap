@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+    <title>Search service's documenation</title>
+    <topicref chunk="to-content" href="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.dita">
+        <topicref href="tasks/how_to_use_github_actions_to_run_a_webhelp_responsive_transformation.dita"></topicref>
+        <topicref href="tasks/publishing_documentation_on_netlify.dita"></topicref>
+    </topicref>
+</map>

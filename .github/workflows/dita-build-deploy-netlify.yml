@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   build-dita-and-deploy-netlify:
-    name: Build DITA WebHelp Responsive and deploy to Netlify
+    name: Build DITA WebHelp Responsive
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
@@ -27,14 +27,13 @@ jobs:
       - name: Build WebHelp Responsive
         run: |
             cd oxygen-publishing-engine-3.x/bin
-            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
+            sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
             
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-            publish-dir: 'doc/flowers/out'
-            deploy-message: "Deploy from GitHub Actions to Netlify"
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
         env:
-            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 4b2030cd-fa5f-4888-8341-e5077e96ea5b
+        with:
+          args: deploy --dir=doc/project-documentation/out --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
