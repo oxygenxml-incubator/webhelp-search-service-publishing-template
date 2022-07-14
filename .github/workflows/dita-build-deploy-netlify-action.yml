@@ -5,7 +5,7 @@ on:
       - add-documentation
 jobs:
   build-dita-and-deploy-netlify:
-    name: Build DITA WebHelp Responsive and deploy to Netlify
+    name: Build DITA WebHelp Responsive
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
