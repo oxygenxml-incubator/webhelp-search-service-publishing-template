@@ -29,13 +29,8 @@ jobs:
             cd oxygen-publishing-engine-3.x/bin
             sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
             
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-            publish-dir: 'doc/project-documentation/out'
-            deploy-message: "Deploy from GitHub Actions to Netlify"
-        env:
-            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-            NETLIFY_DEPLOY_TO_PROD: true
-        timeout-minutes: 1
+      - name: Push build to branch
+        run: |
+          git add ../../doc/project-documentation/out
+          git commit -m "GitHub Actions pushed DITA build to repository"
+          git push
