@@ -1,0 +1,407 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-whc_version="25.0">
+    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="description" content="How to use GitHub actions in order to build documentation and deploy it to Netlify How to use GitHub Actions workflows in order to build documentation in WebHelp Responsive format Access &#34;Actions&#34; tab ..."/><meta name="DC.rights.owner" content="(C) Copyright 2022"/><meta name="copyright" content="(C) Copyright 2022"/><meta name="generator" content="DITA-OT"/><meta name="DC.type" content="dita"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="publishing_your_documentation_with_webhelp_responsive_using_github_actions"/><title>Publishing your documentation with WebHelp Responsive using GitHub Actions</title><!--  Generated with Oxygen version 25.0, build number 2022071323.  --><meta name="wh-path2root" content="../"/><meta name="wh-toc-id" content="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d150e11"/><meta name="wh-source-relpath" content="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.dita"/><meta name="wh-out-relpath" content="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html"/>
+
+    <link rel="stylesheet" type="text/css" href="../oxygen-webhelp/app/commons.css?buildId=2022071323"/>
+    <link rel="stylesheet" type="text/css" href="../oxygen-webhelp/app/topic.css?buildId=2022071323"/>
+
+    <script>
+        let oxy_webhelp_navlinks = {};
+    </script>
+    <script src="../oxygen-webhelp/app/options/properties.js?buildId=20220714073433"></script>
+    <script src="../oxygen-webhelp/app/localization/strings.js?buildId=2022071323"></script>
+    <script src="../oxygen-webhelp/app/search/index/keywords.js?buildId=20220714073433"></script>
+    <script src="../oxygen-webhelp/app/commons.js?buildId=2022071323"></script>
+    <script src="../oxygen-webhelp/app/topic.js?buildId=2022071323"></script>
+<link rel="stylesheet" type="text/css" href="../oxygen-webhelp/template/style.css?buildId=2022071323"/></head>
+
+    <body class="wh_topic_page frmBody">
+        <a href="#wh_topic_body" class="sr-only sr-only-focusable">
+            Jump to main content
+        </a>
+        
+        
+        
+        
+        <header class="navbar navbar-default wh_header">
+    <div class="container-fluid">
+        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-dark">
+            <div class="wh_logo_and_publication_title_container">
+                <div class="wh_logo_and_publication_title">
+                    
+                    <a href="../index.html" class=" wh_logo d-none d-sm-block "><img src="../oxygen-webhelp/template/img/logo.png" alt="Search service's documenation"/></a>
+                    <div class=" wh_publication_title "><a href="../index.html"><span class="title">Search service's documenation</span></a></div>
+                    
+                </div>
+                
+                <button type="button" data-target="#wh_top_menu_and_indexterms_link" id="wh_menu_mobile_button" data-toggle="collapse" class="navbar-toggler collapsed wh_toggle_button" aria-expanded="false" aria-label="Toggle menu" aria-controls="wh_top_menu_and_indexterms_link">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
+                
+                <nav class=" wh_top_menu " aria-label="Menu Container"><ul role="menubar" aria-label="Menu"><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d150e11-mi" data-tocid="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d150e11" data-state="not-ready" class=" topicref " data-id="publishing_your_documentation_with_webhelp_responsive_using_github_actions"><span class="title"><a href="../topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html">Publishing your documentation with WebHelp Responsive using GitHub Actions</a></span></span></li></ul></nav>
+                
+                
+            </div>
+        </div>
+    </div>
+</header>
+        
+        
+         
+        
+        <div class=" wh_search_input navbar-form wh_topic_page_search search " role="form">
+            
+            
+            
+            <form id="searchForm" method="get" role="search" action="../search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form>
+            
+            
+            
+        </div>
+        
+        <div class="container-fluid" id="wh_topic_container">
+            <div class="row">
+
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "><ol class="d-print-none"><li><span class="home"><a href="../index.html"><span>Home</span></a></span></li><li class="active"><div class="topicref" data-id="publishing_your_documentation_with_webhelp_responsive_using_github_actions"><div class="title"><a href="../topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html">Publishing your documentation with WebHelp Responsive using GitHub Actions</a></div></div></li></ol></div>
+                    
+                    
+                    
+                    <div class="wh_right_tools">
+                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
+                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
+                        
+                        
+                        
+                        
+                        <div class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page"></button></div>
+                        
+                        
+                    </div>
+                    
+                </nav>
+            </div>
+            
+            
+            
+            
+            <div class="wh_content_area">
+                <div class="row">
+                    
+                    
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12" id="wh_topic_body">
+                        
+                        <button id="wh_close_topic_toc_button" class="close-toc-button d-none" aria-label="Toggle topic table of content" aria-controls="wh_topic_toc" aria-expanded="true">
+                            <span class="close-toc-icon-container">
+                                <span class="close-toc-icon"></span>     
+                            </span>
+                        </button>
+                        
+                        <div class=" wh_topic_content body "><main role="main"><article class="" role="article" aria-labelledby="ariaid-title1"><article class="nested0" aria-labelledby="ariaid-title1" id="publishing_your_documentation_with_webhelp_responsive_using_github_actions">
+    <h1 class="- topic/title title topictitle1" id="ariaid-title1">Publishing your documentation with WebHelp Responsive using GitHub Actions</h1>
+    <div class="- topic/body body">
+        <p class="- topic/p p">How to use GitHub actions in order to build documentation and deploy it to Netlify</p>
+    </div>
+<article class="- topic/topic task/task topic task nested1" aria-labelledby="ariaid-title2" id="how_to_use_github_actions_to_run_a_webhelp_responsive_transformation">
+    <h2 class="- topic/title title topictitle2" id="ariaid-title2">How to use GitHub Actions to run a WebHelp Responsive transformation</h2>
+    
+    <div class="- topic/body task/taskbody body taskbody"><p class="- topic/shortdesc shortdesc">How to use GitHub Actions workflows in order to build documentation in WebHelp Responsive format</p>
+        <section class="- topic/section task/context section context">
+        </section>
+        <section class="- topic/ol task/steps ol steps"><ol class="- topic/ol task/steps ol steps"><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Access "Actions" tab in your repository on GitHub</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Press "New workflow" button in the left side of the page</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Choose "Simple workflow" template and press "Configure" button</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Delete the whole content of the file and let's begin writing our workflow</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Firstly, we'll give a name for our workflow</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Then we have to add some triggers when workflow will be executed</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI
+on:
+  push:
+    branches:
+      - master</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Let's write our job, we have to specify the name and the version of OS</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">The first step of the job will be to checkout the current branch of repository so it can access repository files</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Create a file containing licensekey.txt so we can use WebHelp Responsive plugin for DITA-OT, we'll take it from repository secrets</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" &gt; licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Then we have to download the engine</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" &gt; licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Download the engine
+        run: |
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Upon downloading unzip it by adding these commands(newline)</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>sudo apt-get install unzip
+sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Finally, copy the licensekey.txt file we created into root folder of engine by
+                    adding this line</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">The last step will be to build the documentation by using dita.bat. Go to oxygen-publishing-engine-3.x/bin</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>- name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Add this line in order to get documentation built</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>sudo ./dita --input=inputPath --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=outputPath</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Our final workflow should look like this</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" &gt; licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Download the engine
+        run: |
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
+            
+      - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin
+            sudo ./dita --input=inputPath --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=outputPath</code></pre>
+                </div>
+            </li></ol></section>
+    </div>
+</article><article class="- topic/topic task/task topic task nested1" aria-labelledby="ariaid-title3" id="publishing_documentation_on_netlify">
+    <h2 class="- topic/title title topictitle2" id="ariaid-title3">Publishing documentation on Netlify</h2>
+    
+    <div class="- topic/body task/taskbody body taskbody"><p class="- topic/shortdesc shortdesc">How to publish documentation build on Netlify using GitHub Actions</p>
+        <section class="- topic/section task/context section context">
+        </section>
+        <section class="- topic/ol task/steps ol steps"><ol class="- topic/ol task/steps ol steps"><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">We have to create a Netlify account, visit <a class="- topic/xref xref" href="https://www.netlify.com" target="_blank" rel="external noopener">https://www.netlify.com</a></span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">In the "overview" tab after creating your account, press "Add new site" button and select "Deploy manually"</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Add any files you want because eventually they will be changed by GitHub Actions workflow</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">After that go back to "overview" tab and press on your site</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Click "site settings"</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Copy the "Site ID" and add it to secrets in your GitHub repository</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Press on your profile picture and select "User settings"</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Select "Applications" tab in the left side of the page</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Create a new access token</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Give it a name and add its value to the secrets in your Github repository</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">We're done with Netlify, now go to "Actions" tab in your GitHub repository and edit the workflow you've created in the previous task</span>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Add these lines at the end of the file and type in your secrets and publish-dir(publish-dir is the website's folder, in your case "outputPath" from the previous task")</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock" id="publishing_documentation_on_netlify__codeblock_v3n_tlk_25b" data-ofbid="publishing_documentation_on_netlify__codeblock_v3n_tlk_25b"><code>- name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+            publish-dir: 'outputPath'
+            deploy-message: "Deploy from GitHub Actions to Netlify"
+        env:
+            NETLIFY_AUTH_TOKEN: ${{ secrets.YOUR_AUTH_TOKEN }}
+            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1</code></pre>
+                </div>
+            </li><li class="- topic/li task/step li step">
+                <span class="- topic/ph task/cmd ph cmd">Save the workflow file and we're done, your workflow should look now like this</span>
+                <div class="- topic/itemgroup task/info itemgroup info">
+                    <pre class="+ topic/pre pr-d/codeblock pre codeblock" id="publishing_documentation_on_netlify__codeblock_cxy_dmk_25b" data-ofbid="publishing_documentation_on_netlify__codeblock_cxy_dmk_25b"><code>name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" &gt; licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Download the engine
+        run: |
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
+            
+      - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin
+            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
+            
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+            publish-dir: 'doc/flowers/out'
+            deploy-message: "Deploy from GitHub Actions to Netlify"
+        env:
+            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1</code></pre>
+                </div>
+            </li></ol></section>
+    </div>
+</article></article></article></main></div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    
+                        <nav role="navigation" id="wh_topic_toc" aria-label="On this page" class="col-lg-2 d-none d-lg-block navbar d-print-none"> 
+                            <div id="wh_topic_toc_content">
+		                        
+	                            <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#how_to_use_github_actions_to_run_a_webhelp_responsive_transformation" data-tocid="how_to_use_github_actions_to_run_a_webhelp_responsive_transformation">How to use GitHub Actions to run a WebHelp Responsive transformation</a></li><li class="topic-item"><a href="#publishing_documentation_on_netlify" data-tocid="publishing_documentation_on_netlify">Publishing documentation on Netlify</a></li></ul></div>
+	                        	
+                        	</div>
+                        </nav>
+                    
+                </div>
+            </div>
+            
+            
+            
+        </div> 
+        <footer class="navbar navbar-default wh_footer">
+  <div class=" footer-container mx-auto ">
+    <div>Generated by <a class="oxyFooter" href="http://www.oxygenxml.com/xml_webhelp.html" target="_blank">
+ &lt;oXygen/&gt; XML WebHelp
+ </a></div>
+  </div>
+</footer>
+        
+        <div id="go2top" class="d-print-none">
+            <span class="oxy-icon oxy-icon-up"></span>
+        </div>
+        
+        <div id="modal_img_large" class="modal">
+            <span class="close oxy-icon oxy-icon-remove"></span>
+            <div id="modal_img_container"></div>
+            <div id="caption"></div>
+        </div>
+        
+        
+        
+    </body>
+</html>
