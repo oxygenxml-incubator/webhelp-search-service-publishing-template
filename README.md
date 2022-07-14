@@ -2,7 +2,7 @@
 
 We'll create a publishing template to demonstrates how to integrate a search service with WebHelp transformation. 
 
-The project documentation is available *[here.](https://lambent-madeleine-b00b01.netlify.app)*
+The project documentation is available *[here.](https://snazzy-dusk-c2b3e5.netlify.app)*
 
 Copyright and License
 ---------------------
