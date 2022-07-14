@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - add-documentation
+      - master
 jobs:
   build-dita-and-deploy-netlify:
     name: Build DITA WebHelp Responsive
