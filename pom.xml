@@ -7,6 +7,7 @@
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
+   		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
