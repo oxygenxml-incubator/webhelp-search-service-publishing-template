@@ -31,6 +31,8 @@ jobs:
             
       - name: Push build to branch
         run: |
+          git config --global user.email "artiomytprofile@gmail.com"
+          git config --global user.name "GitHub Actions"
           git add doc/project-documentation/out
           git commit -m "GitHub Actions pushed DITA build to repository"
           git push
