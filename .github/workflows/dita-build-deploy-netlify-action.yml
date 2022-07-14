@@ -2,7 +2,6 @@ name: CI
 on:
   push:
     branches:
-      - master
       - add-documentation
 jobs:
   build-dita-and-deploy-netlify:
