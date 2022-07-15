@@ -18,11 +18,17 @@
 	</build>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.junit/junit5-engine -->
 		<dependency>
-			<groupId>org.junit</groupId>
-			<artifactId>junit5-engine</artifactId>
-			<version>5.0.0-ALPHA</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.5.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 	</dependencies>
