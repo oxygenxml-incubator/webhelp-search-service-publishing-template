@@ -9,7 +9,7 @@ package ro.sync.search;
  */
 public class Main {
 	public static void main(String[] args) {
-		Crawler crawler = new Crawler("https://snazzy-dusk-c2b3e5.netlify.app");
+		Crawler crawler = new Crawler("https://sync.ro");
 		crawler.crawl();
 	}
 }
