@@ -8,7 +8,7 @@ import org.javatuples.Pair;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class CrawlerBaseUrlTest {
+public class CrawlerTest {
 	private static Crawler crawler;
 
 	private static Stream<Pair<String, String>> provideParameters() {
@@ -26,4 +26,5 @@ public class CrawlerBaseUrlTest {
 		crawler = new Crawler(urls.getValue0());
 		assertEquals(crawler.getBaseUrl().toString(), urls.getValue1());
 	}
+	
 }
