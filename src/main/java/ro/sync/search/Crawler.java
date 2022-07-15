@@ -89,6 +89,8 @@ public class Crawler {
 	 * the same host and crawls its data
 	 */
 	public void crawl() {
+		visitedUrls.clear();
+		
 		// Add to the queue the starting url so it starts with it
 		queue.add(url);
 		// Add to the visited url the starting url so it won't be visited twice and more
