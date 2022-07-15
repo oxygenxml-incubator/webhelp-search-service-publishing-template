@@ -46,6 +46,7 @@ public class CrawlerTest {
 				add(new URL("https://sync.ro/impact.html"));
 				add(new URL("https://sync.ro/contact.html"));
 				add(new URL("https://sync.ro/internship.html"));
+				add(new URL("https://sync.ro/terms_of_use.html"));
 				add(new URL("https://sync.ro/privacy_policy.html"));
 			}
 		};
