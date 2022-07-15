@@ -42,17 +42,18 @@
                 <cmd>We're done with Netlify, now go to "Actions" tab in your GitHub repository and edit the workflow you've created in the previous task</cmd>
             </step>
             <step>
-                <cmd>Add these lines at the end of the file and type in your secrets and publish-dir(publish-dir is the website's folder, in your case "outputPath" from the previous task")</cmd>
+                <cmd>Add these lines at the end of the file and type in your secrets and --dir(--dir
+                    is the website's folder, in your case "outputPath" from the previous
+                    task")</cmd>
                 <info>
-                    <codeblock id="codeblock_v3n_tlk_25b">- name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-            publish-dir: 'outputPath'
-            deploy-message: "Deploy from GitHub Actions to Netlify"
+                    <codeblock id="codeblock_v3n_tlk_25b">- name: Deploy to netlify
+        uses: netlify/actions/cli@master
         env:
-            NETLIFY_AUTH_TOKEN: ${{ secrets.YOUR_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1</codeblock>
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=outputPath --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'</codeblock>
                 </info>
             </step>
             <step>
@@ -89,15 +90,14 @@ jobs:
             cd oxygen-publishing-engine-3.x/bin
             sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
             
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-            publish-dir: 'doc/flowers/out'
-            deploy-message: "Deploy from GitHub Actions to Netlify"
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
         env:
-            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1</codeblock>
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=outputPath --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'</codeblock>
                 </info>
             </step>
         </steps>
