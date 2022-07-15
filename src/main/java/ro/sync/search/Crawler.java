@@ -115,7 +115,7 @@ public class Crawler {
 				input.close();
 
 				// Pattern that uses regex in order to find urls in a text
-				Pattern pattern = Pattern.compile("<a.href=([\"'])(.*?.html)\\1");
+				Pattern pattern = Pattern.compile("<a.href=([\"'])([^#]*?.html)");
 				// Matcher that finds all the matches in a text using the pattern
 				Matcher matcher = pattern.matcher(htmlCode);
 
