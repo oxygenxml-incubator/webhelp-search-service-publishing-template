@@ -84,6 +84,10 @@ public class Crawler {
 		return this.baseUrl;
 	}
 
+	public List<URL> getVisitedUrls(){
+		return this.visitedUrls;
+	}
+	
 	/**
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data
