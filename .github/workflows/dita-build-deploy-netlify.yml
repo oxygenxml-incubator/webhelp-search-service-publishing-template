@@ -1,11 +1,11 @@
-name: CI
+name: DITA Build and Netlify Deployment
 on:
   push:
     branches:
       - master
 jobs:
   build-dita-and-deploy-netlify:
-    name: Build DITA WebHelp Responsive
+    name: Build DITA WebHelp Responsive and deploy to Netlify
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
