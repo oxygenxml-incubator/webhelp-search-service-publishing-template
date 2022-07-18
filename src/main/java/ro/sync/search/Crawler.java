@@ -1,6 +1,7 @@
 package ro.sync.search;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,24 +33,17 @@ public class Crawler {
 	 * List that stores all the visited urls in order to not crawl them more than
 	 * one time
 	 */
-	private List<URL> visitedUrls;
+	private List<URL> visitedUrls = new ArrayList<URL>();
 
 	/**
 	 * List that serves as a queue that is used to perform BFS algorithm
 	 */
-	private List<URL> queue;
+	private List<URL> queue = new ArrayList<URL>();
 
 	/**
-	 * Constructor with no arguments. If no arguments are passed then "url" and
-	 * "baseUrl" are set to null.
+	 * Regex pattern that finds html references
 	 */
-	public Crawler() {
-		url = null;
-		baseUrl = null;
-
-		visitedUrls = new ArrayList<URL>();
-		queue = new ArrayList<URL>();
-	}
+	Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
 
 	/**
 	 * Constructor with url argument. If url is "https://google.com/search" then
@@ -72,10 +66,6 @@ public class Crawler {
 		}
 	}
 
-	public void setUrl(final URL url) {
-		this.url = url;
-	}
-
 	public URL getUrl() {
 		return this.url;
 	}
@@ -84,17 +74,17 @@ public class Crawler {
 		return this.baseUrl;
 	}
 
-	public List<URL> getVisitedUrls(){
+	public List<URL> getVisitedUrls() {
 		return this.visitedUrls;
 	}
-	
+
 	/**
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data
 	 */
 	public void crawl() {
 		visitedUrls.clear();
-		
+
 		// Add to the queue the starting url so it starts with it
 		queue.add(url);
 		// Add to the visited url the starting url so it won't be visited twice and more
@@ -102,26 +92,8 @@ public class Crawler {
 
 		try {
 			while (!queue.isEmpty()) {
-				// Get the front url
-				URL currentUrl = queue.remove(0);
+				String htmlCode = extractHtmlCode(queue.remove(0));
 
-				// A string that will store raw HTML code from the input stream
-				String htmlCode = "";
-
-				// Use a BufferedReader and get the stream from url to crawl the data
-				BufferedReader input = new BufferedReader(new InputStreamReader(currentUrl.openStream()));
-				String inputLine = input.readLine();
-
-				while (inputLine != null) {
-					htmlCode += inputLine;
-
-					inputLine = input.readLine();
-				}
-
-				input.close();
-
-				// Pattern that uses regex in order to find urls in a text
-				Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
 				// Matcher that finds all the matches in a text using the pattern
 				Matcher matcher = pattern.matcher(htmlCode);
 
@@ -130,6 +102,26 @@ public class Crawler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String extractHtmlCode(final URL currentUrl) {
+		// A string that will store raw HTML code from the input stream
+		String htmlCode = "";
+
+		// Use a BufferedReader and get the stream from url to crawl the data
+		try (BufferedReader input = new BufferedReader(new InputStreamReader(currentUrl.openStream()));) {
+			String inputLine = input.readLine();
+
+			while (inputLine != null) {
+				htmlCode += inputLine;
+
+				inputLine = input.readLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return htmlCode;
 	}
 
 	/**
