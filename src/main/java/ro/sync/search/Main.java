@@ -9,7 +9,7 @@ package ro.sync.search;
  */
 public class Main {
 	public static void main(String[] args) {
-		Crawler crawler = new Crawler("https://sync.ro");
+		Crawler crawler = new Crawler("https://www.oxygenxml.com/doc/versions/24.1/ug-ope/topics/ope-getting_started.html", "https://www.oxygenxml.com/doc/versions/24.1/ug-ope/topics/");
 		crawler.crawl();
 	}
 }
