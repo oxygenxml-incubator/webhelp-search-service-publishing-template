@@ -46,10 +46,17 @@ public class Crawler {
 	private Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
 
 	/**
+	 * Private constructor to not create an object without url and baseurl
+	 */
+	private Crawler() {
+
+	}
+
+	/**
 	 * Constructor with url and baseUrl argument"
 	 * 
-	 * @param url - URL to be crawled
-	 * @param baseUrl = base url to stay in bounds
+	 * @param url     - URL to be crawled
+	 * @param baseUrl - base url to stay in bounds
 	 */
 	public Crawler(final String url, final String baseUrl) {
 		try {
