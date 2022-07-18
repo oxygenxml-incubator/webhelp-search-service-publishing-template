@@ -24,8 +24,8 @@ public class Crawler {
 	/**
 	 * The base url of url to be crawled. It is used in order to not leave the
 	 * website and crawl data to infinite. For example if the base url is
-	 * "https://google.com" then it won't go to any other sites that don't start
-	 * with "https://google.com".
+	 * "https://google.com/search/index.html" then it won't go to any other sites
+	 * that don't start with "https://google.com/search".
 	 */
 	private URL baseUrl;
 
@@ -43,26 +43,20 @@ public class Crawler {
 	/**
 	 * Regex pattern that finds html references
 	 */
-	Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
+	private Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
 
 	/**
-	 * Constructor with url argument. If url is "https://google.com/search" then
-	 * baseUrl will be set to "https://google.com"
+	 * Constructor with url and baseUrl argument"
 	 * 
 	 * @param url - URL to be crawled
+	 * @param baseUrl = base url to stay in bounds
 	 */
-	public Crawler(final String url) {
-		visitedUrls = new ArrayList<URL>();
-		queue = new ArrayList<URL>();
-
+	public Crawler(final String url, final String baseUrl) {
 		try {
 			this.url = new URL(url);
-
-			// Extract the protocol from URL and add the host
-			this.baseUrl = new URL(this.url.getProtocol() + "://" + this.url.getHost());
+			this.baseUrl = new URL(baseUrl);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			System.out.println("The baseUrl could not be extracted");
 		}
 	}
 
@@ -87,8 +81,6 @@ public class Crawler {
 
 		// Add to the queue the starting url so it starts with it
 		queue.add(url);
-		// Add to the visited url the starting url so it won't be visited twice and more
-		visitedUrls.add(url);
 
 		try {
 			while (!queue.isEmpty()) {
@@ -133,17 +125,7 @@ public class Crawler {
 		while (matcher.find()) {
 			URL currentUrl;
 			try {
-				// If url starts with "http" then don't add the baseUrl to it
-				if (matcher.group(2).toString().startsWith("http")) {
-					currentUrl = new URL(matcher.group(2));
-				} else {
-					// If url starts doesn't start with "/" then add one to access it
-					if (!matcher.group(2).toString().startsWith("/")) {
-						currentUrl = new URL(baseUrl + "/" + matcher.group(2));
-					} else {
-						currentUrl = new URL(baseUrl + matcher.group(2));
-					}
-				}
+				currentUrl = new URL(baseUrl, matcher.group(2));
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				currentUrl = null;
