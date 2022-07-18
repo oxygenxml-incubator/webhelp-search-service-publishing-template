@@ -16,29 +16,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class CrawlerTest {
 	private static Crawler crawler;
 
-	private static Stream<Pair<String, String>> provideParameters() {
-		return Stream.of(
-				new Pair<String, String>("https://www.google.com/search?q=something", "https://www.google.com"),
-				new Pair<String, String>("https://translate.google.com/?sl=en&tl=ru&text=something&op=translate",
-						"https://translate.google.com"),
-				new Pair<String, String>("https://www.news.com.au/lifestyle/real-life/news-life",
-						"https://www.news.com.au"));
-	}
-
-	@ParameterizedTest
-	@MethodSource("provideParameters")
-	void testBaseUrls(final Pair<String, String> urls) {
-		crawler = new Crawler(urls.getValue0());
-		assertEquals(crawler.getBaseUrl().toString(), urls.getValue1());
-	}
-
 	@Test
 	void crawlSyncro() throws MalformedURLException {
-		crawler = new Crawler("https://sync.ro");
+		crawler = new Crawler("https://sync.ro", "https://sync.ro");
 		crawler.crawl();
 		List<URL> expected = new ArrayList<URL>() {
 			{
-				add(new URL("https://sync.ro"));
 				add(new URL("https://sync.ro/index.html"));
 				add(new URL("https://sync.ro/company.html"));
 				add(new URL("https://sync.ro/products.html"));
@@ -54,4 +37,29 @@ public class CrawlerTest {
 		assertEquals(crawler.getVisitedUrls(), expected);
 	}
 
+	@Test
+	void recursionTest() throws MalformedURLException {
+		crawler = new Crawler("https://snazzy-dusk-c2b3e5.netlify.app", "https://snazzy-dusk-c2b3e5.netlify.app");
+		crawler.crawl();
+		List<URL> expected = new ArrayList<URL>() {
+			{
+				add(new URL("https://snazzy-dusk-c2b3e5.netlify.app/index.html"));
+				add(new URL(
+						"https://snazzy-dusk-c2b3e5.netlify.app/topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html"));
+				add(new URL("https://snazzy-dusk-c2b3e5.netlify.app/../index.html"));
+				add(new URL(
+						"https://snazzy-dusk-c2b3e5.netlify.app/../topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html"));
+			}
+		};
+
+		assertEquals(crawler.getVisitedUrls(), expected);
+	}
+
+	@Test
+	void crawlWebsiteWithoutHtmlReferences() {
+		crawler = new Crawler("https://www.w3schools.com/html/html_styles.asp", "https://www.w3schools.com/html/");
+		crawler.crawl();
+		List<URL> expected = new ArrayList<URL>();
+		assertEquals(crawler.getVisitedUrls(), expected);
+	}
 }
