@@ -43,7 +43,7 @@ public class Crawler {
 	/**
 	 * Regex pattern that finds html references
 	 */
-	private Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
+	private Pattern pattern = Pattern.compile("<a.*href=([\"'])([^#\"]*?\\.html)");
 
 	/**
 	 * Constructor with url and baseUrl argument"
