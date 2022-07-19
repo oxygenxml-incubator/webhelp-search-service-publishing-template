@@ -33,12 +33,12 @@ public class Crawler {
 	 * List that stores all the visited urls in order to not crawl them more than
 	 * one time
 	 */
-	private List<URL> visitedUrls = new ArrayList<URL>();
+	private List<URL> visitedUrls = new ArrayList<>();
 
 	/**
 	 * List that serves as a queue that is used to perform BFS algorithm
 	 */
-	private List<URL> queue = new ArrayList<URL>();
+	private List<URL> queue = new ArrayList<>();
 
 	/**
 	 * Regex pattern that finds html references
@@ -105,14 +105,14 @@ public class Crawler {
 
 	private String extractHtmlCode(final URL currentUrl) {
 		// A string that will store raw HTML code from the input stream
-		String htmlCode = "";
+		StringBuilder htmlCode = new StringBuilder();
 
 		// Use a BufferedReader and get the stream from url to crawl the data
 		try (BufferedReader input = new BufferedReader(new InputStreamReader(currentUrl.openStream()));) {
 			String inputLine = input.readLine();
 
 			while (inputLine != null) {
-				htmlCode += inputLine;
+				htmlCode.append(inputLine);
 
 				inputLine = input.readLine();
 			}
@@ -120,7 +120,7 @@ public class Crawler {
 			e.printStackTrace();
 		}
 
-		return htmlCode;
+		return htmlCode.toString();
 	}
 
 	/**

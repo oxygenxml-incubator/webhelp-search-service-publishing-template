@@ -9,14 +9,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class CrawlerTest {
+class CrawlerTest {
 	private static Crawler crawler;
 
 	@Test
 	void crawlSyncro() throws MalformedURLException {
 		crawler = new Crawler("https://sync.ro", "https://sync.ro");
 		crawler.crawl();
-		List<URL> expected = new ArrayList<URL>() {
+		List<URL> expected = new ArrayList<>() {
 			{
 				add(new URL("https://sync.ro/index.html"));
 				add(new URL("https://sync.ro/company.html"));
@@ -37,7 +37,7 @@ public class CrawlerTest {
 	void recursionTest() throws MalformedURLException {
 		crawler = new Crawler("https://snazzy-dusk-c2b3e5.netlify.app", "https://snazzy-dusk-c2b3e5.netlify.app");
 		crawler.crawl();
-		List<URL> expected = new ArrayList<URL>() {
+		List<URL> expected = new ArrayList<>() {
 			{
 				add(new URL("https://snazzy-dusk-c2b3e5.netlify.app/index.html"));
 				add(new URL(
@@ -55,7 +55,7 @@ public class CrawlerTest {
 	void crawlWebsiteWithoutHtmlReferences() {
 		crawler = new Crawler("https://www.w3schools.com/html/html_styles.asp", "https://www.w3schools.com/html/");
 		crawler.crawl();
-		List<URL> expected = new ArrayList<URL>();
+		List<URL> expected = new ArrayList<>();
 		assertEquals(crawler.getVisitedUrls(), expected);
 	}
 }
