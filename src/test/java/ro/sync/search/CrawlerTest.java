@@ -47,8 +47,7 @@ class CrawlerTest {
 		crawler = new Crawler(Path.of("target/test-classes/relativeHref/index/index.html").toUri().toURL().toString(),
 				Path.of("target/test-classes/relativeHref/index/").toUri().toURL().toString());
 		crawler.crawl();
-		List<URL> expected = new ArrayList<>();
 
-		assertEquals(crawler.getVisitedUrls(), expected);
+		assertEquals(crawler.getVisitedUrls(), new ArrayList<>());
 	}
 }
