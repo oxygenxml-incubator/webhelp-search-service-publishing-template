@@ -11,14 +11,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The class that crawls an HTML website and looks for data
+ * The class that crawls an HTML website and looks for data.
  * 
  * @author Artiom Bozieac
  *
  */
 public class Crawler {
 	/**
-	 * The url to be crawled
+	 * The url to be crawled.
 	 */
 	private URL url;
 	/**
@@ -31,54 +31,51 @@ public class Crawler {
 
 	/**
 	 * List that stores all the visited urls in order to not crawl them more than
-	 * one time
+	 * one time.
 	 */
 	private List<URL> visitedUrls = new ArrayList<>();
 
 	/**
-	 * List that serves as a queue that is used to perform BFS algorithm
+	 * List that serves as a queue that is used to perform BFS algorithm.
 	 */
 	private List<URL> queue = new ArrayList<>();
 
 	/**
-	 * Regex pattern that finds html references
+	 * The Regex pattern that finds html references in text.
 	 */
-	private Pattern pattern = Pattern.compile("<a.*href=([\"'])([^#\"]*?\\.html)");
+	Pattern pattern = Pattern.compile("<a.*href=([\"'])([^#\"]*?\\.html)");
 
 	/**
-	 * Constructor with url and baseUrl argument"
+	 * Constructor with url and baseUrl parameters
 	 * 
-	 * @param url     - URL to be crawled
-	 * @param baseUrl - base url to stay in bounds
+	 * @param url     is the page that should be crawled for data.
+	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * 
+	 * @throws MalformedURLException if problems with initialization of URL
+	 *                               occurred.
 	 */
-	public Crawler(final String url, final String baseUrl) {
-		try {
-			this.url = new URL(url);
-			this.baseUrl = new URL(baseUrl);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+	public Crawler(final String url, final String baseUrl) throws MalformedURLException {
+		this.url = new URL(url);
+		this.baseUrl = new URL(baseUrl);
 	}
 
 	/**
-	 * Returns URL
-	 * @return url's value
+	 * 
+	 * @return start url that should be crawled for data.
 	 */
 	public URL getUrl() {
 		return this.url;
 	}
 
 	/**
-	 * Returns base URL
-	 * @return baseUrl's value
+	 * @return base url that is used to not go out of parent's bounds
 	 */
 	public URL getBaseUrl() {
 		return this.baseUrl;
 	}
 
 	/**
-	 * Returns visited urls
-	 * @return list of urls
+	 * @return list of visited urls after the crawl
 	 */
 	public List<URL> getVisitedUrls() {
 		return this.visitedUrls;
@@ -86,7 +83,7 @@ public class Crawler {
 
 	/**
 	 * Using the given url in the constructor it visits every resource that haves
-	 * the same host and crawls its data
+	 * the same host and crawls its data.
 	 */
 	public void crawl() {
 		visitedUrls.clear();
@@ -95,22 +92,34 @@ public class Crawler {
 		queue.add(url);
 
 		while (!queue.isEmpty()) {
-			String htmlCode = extractHtmlCode(queue.remove(0));
+			String htmlCode;
+			try {
+				htmlCode = readHtml(queue.remove(0));
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+				htmlCode = "";
+			}
 
 			// Matcher that finds all the matches in a text using the pattern
 			Matcher matcher = pattern.matcher(htmlCode);
 
-			findUrls(matcher);
+			try {
+				findUrls(matcher);
+			} catch (MalformedURLException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 
 	}
 
 	/**
-	 * Extracts HTML code from an URL
-	 * @param url - Page's url whose HTML code should be extracted
-	 * @return extracted HTML code
+	 * Reads HTML code from an URL.
+	 * 
+	 * @param url is page's url whose HTML code should be extracted.
+	 * @return extracted HTML code.
+	 * @throws IOException when a problem with reading the HTML code occurred.
 	 */
-	private String extractHtmlCode(final URL url) {
+	String readHtml(final URL url) throws IOException {
 		// A string that will store raw HTML code from the input stream
 		StringBuilder htmlCode = new StringBuilder();
 
@@ -124,32 +133,32 @@ public class Crawler {
 				inputLine = input.readLine();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IOException("A problem with reading your HTML page occured! " + e);
 		}
 
 		return htmlCode.toString();
 	}
 
 	/**
-	 * Finds appropriate urls among all the matches and adds them to queue
+	 * Finds appropriate urls among all the matches and adds them to queue.
 	 * 
-	 * @param matcher - Matcher that stores all the matches
+	 * @param matcher that stores all the found matches.
+	 * @throws MalformedURLException when a problem with initialization of URL
+	 *                               occurred.
 	 */
-	private void findUrls(final Matcher matcher) {
+	void findUrls(final Matcher matcher) throws MalformedURLException {
 		while (matcher.find()) {
 			URL currentUrl;
 			try {
 				currentUrl = new URL(baseUrl, matcher.group(2));
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				currentUrl = null;
-			}
 
-			if (currentUrl != null && !visitedUrls.contains(currentUrl)
-					&& currentUrl.toString().startsWith(baseUrl.toString())) {
-				System.out.println("Website with URL: " + currentUrl.toString());
-				visitedUrls.add(currentUrl);
-				queue.add(currentUrl);
+				if (!visitedUrls.contains(currentUrl) && currentUrl.toString().startsWith(baseUrl.toString())) {
+					System.out.println("Website with URL: " + currentUrl.toString());
+					visitedUrls.add(currentUrl);
+					queue.add(currentUrl);
+				}
+			} catch (MalformedURLException e) {
+				throw new MalformedURLException("A problem with creating the URL occured! " + e);
 			}
 		}
 	}
