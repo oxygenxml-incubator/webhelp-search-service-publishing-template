@@ -46,13 +46,6 @@ public class Crawler {
 	private Pattern pattern = Pattern.compile("<a.href=([\\\"'])([^#\"]*?\\.html)");
 
 	/**
-	 * Private constructor to not create an object without url and baseurl
-	 */
-	private Crawler() {
-
-	}
-
-	/**
 	 * Constructor with url and baseUrl argument"
 	 * 
 	 * @param url     - URL to be crawled
@@ -67,14 +60,26 @@ public class Crawler {
 		}
 	}
 
+	/**
+	 * Returns URL
+	 * @return url's value
+	 */
 	public URL getUrl() {
 		return this.url;
 	}
 
+	/**
+	 * Returns base URL
+	 * @return baseUrl's value
+	 */
 	public URL getBaseUrl() {
 		return this.baseUrl;
 	}
 
+	/**
+	 * Returns visited urls
+	 * @return list of urls
+	 */
 	public List<URL> getVisitedUrls() {
 		return this.visitedUrls;
 	}
@@ -89,26 +94,28 @@ public class Crawler {
 		// Add to the queue the starting url so it starts with it
 		queue.add(url);
 
-		try {
-			while (!queue.isEmpty()) {
-				String htmlCode = extractHtmlCode(queue.remove(0));
+		while (!queue.isEmpty()) {
+			String htmlCode = extractHtmlCode(queue.remove(0));
 
-				// Matcher that finds all the matches in a text using the pattern
-				Matcher matcher = pattern.matcher(htmlCode);
+			// Matcher that finds all the matches in a text using the pattern
+			Matcher matcher = pattern.matcher(htmlCode);
 
-				findUrls(matcher);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			findUrls(matcher);
 		}
+
 	}
 
-	private String extractHtmlCode(final URL currentUrl) {
+	/**
+	 * Extracts HTML code from an URL
+	 * @param url - Page's url whose HTML code should be extracted
+	 * @return extracted HTML code
+	 */
+	private String extractHtmlCode(final URL url) {
 		// A string that will store raw HTML code from the input stream
 		StringBuilder htmlCode = new StringBuilder();
 
 		// Use a BufferedReader and get the stream from url to crawl the data
-		try (BufferedReader input = new BufferedReader(new InputStreamReader(currentUrl.openStream()));) {
+		try (BufferedReader input = new BufferedReader(new InputStreamReader(url.openStream()));) {
 			String inputLine = input.readLine();
 
 			while (inputLine != null) {
