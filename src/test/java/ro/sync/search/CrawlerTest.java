@@ -2,14 +2,13 @@ package ro.sync.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 
+import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -28,13 +27,13 @@ class CrawlerTest {
 	 */
 	@Test
 	void recursionTest() throws MalformedURLException {
-		Crawler crawler = new Crawler(Path.of("target/test-classes/recursion/index.html").toUri().toURL().toString(),
-				Path.of("target/test-classes/recursion/").toUri().toURL().toString());
+		Crawler crawler = new Crawler("file://src/test/resources/recursion/index.html",
+				"file://src/test/resources/recursion/", true);
 		crawler.crawl();
 
-		List<URL> expected = new ArrayList<>();
-		expected.add(new URL(crawler.getBaseUrl() + "recursion.html"));
-		expected.add(new URL(crawler.getBaseUrl() + "index.html"));
+		List<String> expected = new ArrayList<>();
+		expected.add(crawler.getBaseUrl() + "recursion.html");
+		expected.add(crawler.getBaseUrl() + "index.html");
 
 		assertEquals(expected, crawler.getVisitedUrls());
 	}
@@ -47,13 +46,12 @@ class CrawlerTest {
 	 */
 	@Test
 	void multipleLinesTest() throws MalformedURLException {
-		Crawler crawler = new Crawler(
-				Path.of("target/test-classes/multipleLines/index.html").toUri().toURL().toString(),
-				Path.of("target/test-classes/multipleLines/").toUri().toURL().toString());
+		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
+				"file://src/test/resources/multipleLines/", true);
 		crawler.crawl();
 
-		List<URL> expected = new ArrayList<>();
-		expected.add(new URL(crawler.getBaseUrl() + "other.html"));
+		List<String> expected = new ArrayList<>();
+		expected.add(crawler.getBaseUrl() + "other.html");
 
 		assertEquals(expected, crawler.getVisitedUrls());
 	}
@@ -68,9 +66,8 @@ class CrawlerTest {
 	 */
 	@Test
 	void relativeHrefTest() throws MalformedURLException {
-		Crawler crawler = new Crawler(
-				Path.of("target/test-classes/relativeHref/index/index.html").toUri().toURL().toString(),
-				Path.of("target/test-classes/relativeHref/index/").toUri().toURL().toString());
+		Crawler crawler = new Crawler("file://src/test/resources/relativeHref/index.html",
+				"file://src/test/resources/relativeHref/", true);
 		crawler.crawl();
 
 		assertEquals(new ArrayList<>(), crawler.getVisitedUrls());
@@ -83,13 +80,13 @@ class CrawlerTest {
 	 */
 	@Test
 	void readHtmlTest() throws IOException {
-		Crawler crawler = new Crawler(
-				Path.of("target/test-classes/relativeHref/index/index.html").toUri().toURL().toString(),
-				Path.of("target/test-classes/relativeHref/index/").toUri().toURL().toString());
+		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
+				"file://src/test/resources/multipleLines/", true);
 
-		assertEquals(
-				"<!DOCTYPE html><html lang=\"en\">    <head>        <title>Index</title>    </head>    <body>        <h1><a href=\"../relative.html\">Relative href</a></h1>    </body></html>",
-				crawler.readHtml(crawler.getUrl()));
+		System.out.println(crawler.readHtml(crawler.getUrl()).toString());
+
+		assertEquals(Jsoup.parse(new File("src/test/resources/multipleLines/index.html"), "UTF-8").toString(),
+				crawler.readHtml(crawler.getUrl()).toString());
 	}
 
 	/**
@@ -100,14 +97,13 @@ class CrawlerTest {
 	 */
 	@Test
 	void findUrlsTest() throws IOException {
-		Crawler crawler = new Crawler(
-				Path.of("target/test-classes/multipleLines/index.html").toUri().toURL().toString(),
-				Path.of("target/test-classes/multipleLines/").toUri().toURL().toString());
+		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
+				"file://src/test/resources/multipleLines/", true);
 
-		crawler.findUrls(crawler.pattern.matcher(crawler.readHtml(crawler.getUrl())));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
 
-		List<URL> expected = new ArrayList<>();
-		expected.add(new URL(crawler.getBaseUrl() + "other.html"));
+		List<String> expected = new ArrayList<>();
+		expected.add(crawler.getBaseUrl() + "other.html");
 
 		assertEquals(expected, crawler.getVisitedUrls());
 	}
