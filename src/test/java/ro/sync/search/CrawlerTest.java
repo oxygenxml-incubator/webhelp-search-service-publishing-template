@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,8 @@ class CrawlerTest {
 	 */
 	@Test
 	void recursionTest() throws MalformedURLException {
-		Crawler crawler = new Crawler("file://src/test/resources/recursion/index.html",
-				"file://src/test/resources/recursion/", true);
+		Crawler crawler = new Crawler(Path.of("src/test/resources/recursion/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/recursion/").toUri().toURL().toString(), true);
 		crawler.crawl();
 
 		List<String> expected = new ArrayList<>();
@@ -46,8 +47,8 @@ class CrawlerTest {
 	 */
 	@Test
 	void multipleLinesTest() throws MalformedURLException {
-		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
-				"file://src/test/resources/multipleLines/", true);
+		Crawler crawler = new Crawler(Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 		crawler.crawl();
 
 		List<String> expected = new ArrayList<>();
@@ -66,8 +67,9 @@ class CrawlerTest {
 	 */
 	@Test
 	void relativeHrefTest() throws MalformedURLException {
-		Crawler crawler = new Crawler("file://src/test/resources/relativeHref/index/index.html",
-				"file://src/test/resources/relativeHref/", true);
+		Crawler crawler = new Crawler(
+				Path.of("src/test/resources/relativeHref/index/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/relativeHref/index/").toUri().toURL().toString(), true);
 		crawler.crawl();
 
 		assertEquals(new ArrayList<>(), crawler.getVisitedUrls());
@@ -80,8 +82,8 @@ class CrawlerTest {
 	 */
 	@Test
 	void readHtmlTest() throws IOException {
-		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
-				"file://src/test/resources/multipleLines/", true);
+		Crawler crawler = new Crawler(Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 
 		crawler.readHtml(crawler.getUrl()).toString();
 
@@ -97,8 +99,44 @@ class CrawlerTest {
 	 */
 	@Test
 	void findUrlsTest() throws IOException {
-		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
-				"file://src/test/resources/multipleLines/", true);
+		Crawler crawler = new Crawler(Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
+
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+
+		List<String> expected = new ArrayList<>();
+		expected.add(crawler.getBaseUrl() + "other.html");
+
+		assertEquals(expected, crawler.getVisitedUrls());
+	}
+
+	/**
+	 * Tests what happens if an "a" tag doesn't have "href" attribute.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occurred.
+	 */
+	@Test
+	void noHrefTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/noHref/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/noHref/").toUri().toURL().toString(), true);
+
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+
+		List<String> expected = new ArrayList<>();
+		expected.add(crawler.getBaseUrl() + "other.html");
+
+		assertEquals(expected, crawler.getVisitedUrls());
+	}
+
+	/**
+	 * Tests if relative paths works correctly with base url.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occurred.
+	 */
+	@Test
+	void baseUrlTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/baseUrl/t1/t2/other.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/baseUrl/").toUri().toURL().toString(), true);
 
 		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
 
