@@ -11,6 +11,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The class that crawls an HTML website and looks for data.
@@ -19,6 +21,11 @@ import org.jsoup.select.Elements;
  *
  */
 public class Crawler {
+	/**
+	 * Logger to inform user about certain actions like errors and others.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
+
 	/**
 	 * The url to be crawled.
 	 */
@@ -164,7 +171,7 @@ public class Crawler {
 				findUrls(readHtml(queue.remove(0)));
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("An error with reading HTML data occurred!");
+				logger.error("An error with reading HTML file occured!");
 			}
 		}
 	}
