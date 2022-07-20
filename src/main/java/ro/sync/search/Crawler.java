@@ -141,7 +141,7 @@ public class Crawler {
 	 * @throws IOException when a problem with reading the HTML code occurred.
 	 */
 	Document readHtml(final String url) throws IOException {
-		return this.isFile ? Jsoup.parse(new File(url.substring(7)), "UTF-8") : Jsoup.connect(url).get();
+		return this.isFile ? Jsoup.parse(new File(url.substring(6)), "UTF-8") : Jsoup.connect(url).get();
 	}
 
 	/**
@@ -159,7 +159,11 @@ public class Crawler {
 			if (!link.attr("href").endsWith(".html"))
 				continue;
 
-			String currentUrl = new URL(new URL(baseUrl), link.attr("href")).toString();
+			String currentUrl;
+			if (isFile)
+				currentUrl = new URL(new URL("file:/" + link.baseUri()), link.attr("href")).toString();
+			else
+				currentUrl = new URL(new URL(link.baseUri()), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(baseUrl)) {
 				System.out.println("Website with URL: " + currentUrl);
