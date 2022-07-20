@@ -8,6 +8,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<version>3.10.1</version>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>11</source>
@@ -18,11 +19,25 @@
 	</build>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.junit/junit5-engine -->
 		<dependency>
-			<groupId>org.junit</groupId>
-			<artifactId>junit5-engine</artifactId>
-			<version>5.0.0-ALPHA</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.10.2</version>
 		</dependency>
 
 	</dependencies>

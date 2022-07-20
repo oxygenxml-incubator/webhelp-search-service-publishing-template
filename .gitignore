@@ -2,4 +2,4 @@
 .factorypath
 .classpath
 .settings/
-target/
+/target/
