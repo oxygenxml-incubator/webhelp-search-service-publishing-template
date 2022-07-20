@@ -49,6 +49,21 @@ public class Crawler {
 	private List<String> queue = new ArrayList<>();
 
 	/**
+	 * List that stores all the visited urls' titles
+	 */
+	private List<String> titles = new ArrayList<>();
+
+	/**
+	 * List that stores all the visited urls' keywords
+	 */
+	private List<String> keywords = new ArrayList<>();
+
+	/**
+	 * List that stores all the visited urls' contents
+	 */
+	private List<String> contents = new ArrayList<>();
+
+	/**
 	 * Constructor with url and baseUrl parameters.
 	 * 
 	 * @param url     is the page that should be crawled for data.
@@ -113,6 +128,27 @@ public class Crawler {
 	}
 
 	/**
+	 * @return list of collected titles after the crawl
+	 */
+	public List<String> getTitles() {
+		return this.titles;
+	}
+
+	/**
+	 * @return list of collected keywords after the crawl
+	 */
+	public List<String> getKeywords() {
+		return this.keywords;
+	}
+
+	/**
+	 * @return list of collected contents after the crawl
+	 */
+	public List<String> getContents() {
+		return this.contents;
+	}
+
+	/**
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data.
 	 * 
@@ -165,11 +201,45 @@ public class Crawler {
 			else
 				currentUrl = new URL(new URL(link.baseUri()), link.attr("href")).toString();
 
-			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(baseUrl)) {
-				System.out.println("Website with URL: " + currentUrl);
+			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
+				collectData(page);
 				visitedUrls.add(currentUrl);
 				queue.add(currentUrl);
 			}
 		}
+	}
+
+	/**
+	 * Collects all the data(titles, keywords and contents) from visited urls.
+	 */
+	private void collectData(final Document page) {
+		collectTitle(page);
+		collectKeywords(page);
+		collectContents(page);
+	}
+
+	/**
+	 * Collect url's title
+	 */
+	private void collectTitle(final Document page) {
+		this.titles.add(page.title());
+	}
+
+	/**
+	 * Collect url's keywords
+	 */
+	private void collectKeywords(final Document page) {
+		Element element = page.select("meta[name=keywords]").first();
+
+		if (page.select("meta[name=keywords]").first() != null)
+			this.keywords.add(element.attr("content"));
+	}
+
+	/**
+	 * Collect url's contents
+	 */
+	private void collectContents(final Document page) {
+		for (Element element : page.getAllElements())
+			this.contents.add(element.text());
 	}
 }
