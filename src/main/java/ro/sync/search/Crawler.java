@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -56,19 +58,19 @@ public class Crawler {
 	private List<String> queue = new ArrayList<>();
 
 	/**
-	 * List that stores all the visited urls' titles
+	 * Set that stores all the visited urls' titles
 	 */
-	private List<String> titles = new ArrayList<>();
+	private Set<String> titles = new LinkedHashSet<>();
 
 	/**
-	 * List that stores all the visited urls' keywords
+	 * Set that stores all the visited urls' keywords
 	 */
-	private List<String> keywords = new ArrayList<>();
+	private Set<String> keywords = new LinkedHashSet<>();
 
 	/**
-	 * List that stores all the visited urls' contents
+	 * Set that stores all the visited urls' contents
 	 */
-	private List<String> contents = new ArrayList<>();
+	private Set<String> contents = new LinkedHashSet<>();
 
 	/**
 	 * Constructor with url and baseUrl parameters.
@@ -137,21 +139,21 @@ public class Crawler {
 	/**
 	 * @return list of collected titles after the crawl
 	 */
-	public List<String> getTitles() {
+	public Set<String> getTitles() {
 		return this.titles;
 	}
 
 	/**
 	 * @return list of collected keywords after the crawl
 	 */
-	public List<String> getKeywords() {
+	public Set<String> getKeywords() {
 		return this.keywords;
 	}
 
 	/**
 	 * @return list of collected contents after the crawl
 	 */
-	public List<String> getContents() {
+	public Set<String> getContents() {
 		return this.contents;
 	}
 
@@ -168,7 +170,9 @@ public class Crawler {
 
 		while (!queue.isEmpty()) {
 			try {
-				findUrls(readHtml(queue.remove(0)));
+				String currentPage = queue.remove(0);
+				findUrls(readHtml(currentPage));
+				collectData(readHtml(currentPage));
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.error("An error with reading HTML file occured!");
@@ -209,7 +213,6 @@ public class Crawler {
 				currentUrl = new URL(new URL(link.baseUri()), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
-				collectData(page);
 				visitedUrls.add(currentUrl);
 				queue.add(currentUrl);
 			}
@@ -246,7 +249,6 @@ public class Crawler {
 	 * Collect url's contents
 	 */
 	private void collectContents(final Document page) {
-		for (Element element : page.getAllElements())
-			this.contents.add(element.text());
+		this.contents.add(page.body().text());
 	}
 }
