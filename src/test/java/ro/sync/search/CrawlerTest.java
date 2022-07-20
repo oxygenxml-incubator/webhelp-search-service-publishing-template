@@ -66,7 +66,7 @@ class CrawlerTest {
 	 */
 	@Test
 	void relativeHrefTest() throws MalformedURLException {
-		Crawler crawler = new Crawler("file://src/test/resources/relativeHref/index.html",
+		Crawler crawler = new Crawler("file://src/test/resources/relativeHref/index/index.html",
 				"file://src/test/resources/relativeHref/", true);
 		crawler.crawl();
 
@@ -83,7 +83,7 @@ class CrawlerTest {
 		Crawler crawler = new Crawler("file://src/test/resources/multipleLines/index.html",
 				"file://src/test/resources/multipleLines/", true);
 
-		System.out.println(crawler.readHtml(crawler.getUrl()).toString());
+		crawler.readHtml(crawler.getUrl()).toString();
 
 		assertEquals(Jsoup.parse(new File("src/test/resources/multipleLines/index.html"), "UTF-8").toString(),
 				crawler.readHtml(crawler.getUrl()).toString());
