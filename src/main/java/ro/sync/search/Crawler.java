@@ -58,8 +58,7 @@ public class Crawler {
 	 *                               occurred.
 	 */
 	public Crawler(final String url, final String baseUrl) throws MalformedURLException {
-		this.url = url;
-		this.baseUrl = baseUrl;
+		this(url, baseUrl, false);
 	}
 
 	/**
@@ -73,12 +72,12 @@ public class Crawler {
 	 *                               occurred.
 	 */
 	public Crawler(final String url, final String baseUrl, final boolean isFile) throws MalformedURLException {
-		this(url, baseUrl);
+		this.url = url;
+		this.baseUrl = baseUrl;
 		this.isFile = isFile;
 	}
 
 	/**
-	 * 
 	 * @return start url that should be crawled for data.
 	 */
 	public String getUrl() {
@@ -155,17 +154,12 @@ public class Crawler {
 	void findUrls(final Document page) throws MalformedURLException {
 		// Select all "a" tags
 		Elements links = page.select("a");
-		// Add all href attributes to a list
-		List<String> hrefs = new ArrayList<>();
+		// Search for ".html" hrefs
 		for (Element link : links) {
-			hrefs.add(link.attr("href"));
-		}
-
-		for (String href : hrefs) {
-			if (!href.endsWith(".html"))
+			if (!link.attr("href").endsWith(".html"))
 				continue;
 
-			String currentUrl = new URL(new URL(baseUrl), href).toString();
+			String currentUrl = new URL(new URL(baseUrl), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(baseUrl)) {
 				System.out.println("Website with URL: " + currentUrl);
