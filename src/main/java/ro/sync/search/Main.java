@@ -13,8 +13,11 @@ public class Main {
 	public static void main(String[] args) {
 		Crawler crawler;
 		try {
-			crawler = new Crawler("https://w3schools.com", "https://w3schools.com", false);
+			crawler = new Crawler("https://www.sync.ro", "https://www.sync.ro", false);
 			crawler.crawl();
+			System.out.println(crawler.getTitles());
+			System.out.println(crawler.getKeywords());
+			System.out.println(crawler.getContents());
 		} catch (MalformedURLException e) {
 			System.out.println("An error occured when initializing URLs!");
 		}
