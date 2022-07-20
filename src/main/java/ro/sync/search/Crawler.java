@@ -53,14 +53,27 @@ public class Crawler {
 	 * 
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * 
+	 * @throws MalformedURLException if problems with initialization of URL
+	 *                               occurred.
+	 */
+	public Crawler(final String url, final String baseUrl) throws MalformedURLException {
+		this.url = url;
+		this.baseUrl = baseUrl;
+	}
+
+	/**
+	 * Constructor with url, baseUrl and isFile parameters.
+	 * 
+	 * @param url     is the page that should be crawled for data.
+	 * @param baseUrl is the parent that is used to not go out of bounds.
 	 * @param isFile  is the state of URL
 	 * 
 	 * @throws MalformedURLException if problems with initialization of URL
 	 *                               occurred.
 	 */
 	public Crawler(final String url, final String baseUrl, final boolean isFile) throws MalformedURLException {
-		this.url = url;
-		this.baseUrl = baseUrl;
+		this(url, baseUrl);
 		this.isFile = isFile;
 	}
 
@@ -89,7 +102,7 @@ public class Crawler {
 	/**
 	 * @param the value to set to "isFile" flag.
 	 */
-	public void setFile(boolean isFile) {
+	public void setIsFile(final boolean isFile) {
 		this.isFile = isFile;
 	}
 
