@@ -32,7 +32,7 @@ public class Page {
 	 * Constructor with no parameters.
 	 */
 	public Page() {
-		this("", new ArrayList<>(), "");
+		this("", new ArrayList<>());
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class Page {
 	 * @param title is the page's title from metadata.
 	 */
 	public Page(final String title) {
-		this(title, new ArrayList<>(), "");
+		this(title, new ArrayList<>());
 	}
 
 	/**
@@ -62,9 +62,22 @@ public class Page {
 	 * @param contents is the page's contents from body section.
 	 */
 	public Page(final String title, final List<String> keywords, final String contents) {
+		this(title, keywords, contents, "");
+	}
+
+	/**
+	 * Constructor with title, keywords, contents and url parameters.
+	 * 
+	 * @param title    is the page's title from metadata.
+	 * @param keywords is the page's keywords from metadata.
+	 * @param contents is the page's contents from body section.
+	 * @param url      is the HTML document's url
+	 */
+	public Page(final String title, final List<String> keywords, final String contents, final String url) {
 		this.title = title;
 		this.keywords = keywords;
 		this.contents = contents;
+		this.url = url;
 	}
 
 	/**
