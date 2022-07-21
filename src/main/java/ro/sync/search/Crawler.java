@@ -25,7 +25,10 @@ public class Crawler {
 	 * Logger to inform user about certain actions like errors and others.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
-
+	/**
+	 * String with JSON format used in order to send data to Algolia.
+	 */
+	private StringBuilder json;
 	/**
 	 * The url to be crawled.
 	 */
@@ -87,6 +90,16 @@ public class Crawler {
 		this.url = url;
 		this.baseUrl = baseUrl;
 		this.isFile = isFile;
+	}
+
+	/**
+	 * Creates JSON record of the page with given index.
+	 * 
+	 * @return The json model with data prepared for Algolia.
+	 */
+	public String getJsonRecord(final int index) {
+		createJsonRecord(index);
+		return this.json.toString();
 	}
 
 	/**
@@ -225,5 +238,41 @@ public class Crawler {
 	 */
 	private String collectContents(final Document page) {
 		return page.body().text();
+	}
+
+	/**
+	 * Creates a JSON record of the page with index "index".
+	 * 
+	 * @param index is the index of the page whose data should be serialized.
+	 */
+	private void createJsonRecord(final int index) {
+		this.json = new StringBuilder();
+
+		// Start JSON record.
+		this.json.append("{\n");
+
+		// Add title key with page's title as the value.
+		this.json.append("\t\"title\": \"" + pages.get(index).getTitle() + "\",\n");
+
+		// Add keywords as a JSON array.
+		this.json.append("\t\"keywords\": [");
+		if (!pages.get(index).getKeywords().isEmpty()) {
+			for (String keyword : pages.get(index).getKeywords()) {
+				// If this is the last keyword to add, then don't add the whitespace and comma.
+				if (keyword.equals(pages.get(index).getKeywords().get(pages.get(index).getKeywords().size() - 1)))
+					this.json.append("\"" + keyword + "\"],\n");
+				else
+					this.json.append("\"" + keyword + "\", ");
+			}
+		} else {
+			// Else close the aray add comma and newline.
+			this.json.append("],\n");
+		}
+
+		// Add contents
+		this.json.append("\t\"contents\": \"" + pages.get(index).getContents() + "\"\n");
+
+		// Close the record
+		this.json.append("}\n");
 	}
 }
