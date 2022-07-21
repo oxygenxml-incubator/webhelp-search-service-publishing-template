@@ -104,7 +104,7 @@ class CrawlerTest {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 
-		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "other.html");
@@ -122,7 +122,7 @@ class CrawlerTest {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/noHref/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/noHref/").toUri().toURL().toString(), true);
 
-		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "other.html");
@@ -140,7 +140,7 @@ class CrawlerTest {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/baseUrl/t1/t2/other.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/baseUrl/").toUri().toURL().toString(), true);
 
-		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "other.html");
