@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
@@ -154,17 +152,14 @@ class CrawlerTest {
 	 * @throws IOException when a problem with reading HTML code occurred.
 	 */
 	@Test
-	void getTitlesTest() throws IOException {
+	void getTitleTest() throws IOException {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
 		crawler.crawl();
 
-		Set<String> expected = new LinkedHashSet<>();
-		expected.add("Index");
-		expected.add("Page Two");
-
-		assertEquals(expected, crawler.getTitles());
+		assertEquals("Index", crawler.getCrawledPages().get(0).getTitle());
+		assertEquals("Page Two", crawler.getCrawledPages().get(1).getTitle());
 	}
 
 	/**
@@ -179,12 +174,12 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		Set<String> expected = new LinkedHashSet<>();
+		List<String> expected = new ArrayList<>();
 		expected.add("Test");
 		expected.add("Search");
 		expected.add("Service");
 
-		assertEquals(expected.toString(), crawler.getKeywords().toString());
+		assertEquals(expected.toString(), crawler.getCrawledPages().get(0).getKeywords().toString());
 	}
 
 	/**
@@ -199,9 +194,7 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		Set<String> expected = new LinkedHashSet<>();
-		expected.add("Page2 Href, Lorem Ipsum");
-
-		assertEquals(expected.toString(), crawler.getContents().toString());
+		assertEquals("Page2 Href", crawler.getCrawledPages().get(0).getContents().toString());
+		assertEquals("Lorem Ipsum", crawler.getCrawledPages().get(1).getContents().toString());
 	}
 }
