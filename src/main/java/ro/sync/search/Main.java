@@ -1,6 +1,7 @@
 package ro.sync.search;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,13 @@ public class Main {
 		try {
 			crawler = new Crawler("https://www.sync.ro", "https://www.sync.ro", false);
 			crawler.crawl();
-			logger.info(crawler.getTitles().toString());
-			logger.info(crawler.getKeywords().toString());
-			logger.info(crawler.getContents().toString());
+			List<Page> pages = crawler.getCrawledPages();
+
+			for (Page page : pages) {
+				logger.info(page.getTitle());
+				logger.info(page.getKeywords().toString());
+				logger.info(page.getContents());
+			}
 		} catch (MalformedURLException e) {
 			logger.error("An error occured when initializing URLs!");
 		}
