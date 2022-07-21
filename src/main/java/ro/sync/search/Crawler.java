@@ -209,8 +209,9 @@ public class Crawler {
 		final String title = collectTitle(page);
 		final List<String> keywords = collectKeywords(page);
 		final String contents = collectContents(page);
+		final String pageUrl = page.baseUri();
 
-		pages.add(new Page(title, keywords, contents));
+		pages.add(new Page(title, keywords, contents, pageUrl));
 	}
 
 	/**
@@ -270,7 +271,10 @@ public class Crawler {
 		}
 
 		// Add contents
-		this.json.append("\t\"contents\": \"" + pages.get(index).getContents() + "\"\n");
+		this.json.append("\t\"contents\": \"" + pages.get(index).getContents() + "\",\n");
+
+		// Add URL of the HTML document.
+		this.json.append("\t\"url\": \"" + pages.get(index).getUrl() + "\"\n");
 
 		// Close the record
 		this.json.append("}\n");
