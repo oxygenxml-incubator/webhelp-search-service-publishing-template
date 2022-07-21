@@ -170,9 +170,9 @@ public class Crawler {
 
 		while (!queue.isEmpty()) {
 			try {
-				String currentPage = queue.remove(0);
-				findUrls(readHtml(currentPage));
-				collectData(readHtml(currentPage));
+				String currentUrl = queue.remove(0);
+				findUrls(readHtml(currentUrl), currentUrl);
+				collectData(readHtml(currentUrl));
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.error("An error with reading HTML file occured!");
@@ -198,7 +198,7 @@ public class Crawler {
 	 * @throws MalformedURLException when a problem with initialization of URL
 	 *                               occurred.
 	 */
-	void findUrls(final Document page) throws MalformedURLException {
+	void findUrls(final Document page, final String pageUrl) throws MalformedURLException {
 		// Select all "a" tags
 		Elements links = page.select("a");
 		// Search for ".html" hrefs
@@ -206,11 +206,7 @@ public class Crawler {
 			if (!link.attr("href").endsWith(".html"))
 				continue;
 
-			String currentUrl;
-			if (isFile)
-				currentUrl = new URL(new URL("file:/" + link.baseUri()), link.attr("href")).toString();
-			else
-				currentUrl = new URL(new URL(link.baseUri()), link.attr("href")).toString();
+			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
 				visitedUrls.add(currentUrl);
