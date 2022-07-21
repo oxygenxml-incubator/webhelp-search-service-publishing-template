@@ -127,10 +127,10 @@ public class Crawler {
 	/**
 	 * @return list of crawled pages
 	 */
-	public List<Page> getCrawledPages(){
+	public List<Page> getCrawledPages() {
 		return this.pages;
 	}
-	
+
 	/**
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data.
