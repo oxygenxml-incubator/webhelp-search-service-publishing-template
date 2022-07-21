@@ -1,5 +1,6 @@
 package ro.sync.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,45 @@ public class Page {
 	private String contents;
 
 	/**
+	 * Constructor with no parameters.
+	 */
+	public Page() {
+		this("", new ArrayList<>(), "");
+	}
+
+	/**
+	 * Constructor with title parameter.
+	 * 
+	 * @param title is the page's title from metadata.
+	 */
+	public Page(final String title) {
+		this(title, new ArrayList<>(), "");
+	}
+
+	/**
+	 * Constructor with title and keywords parameters.
+	 * 
+	 * @param title    is the page's title from metadata.
+	 * @param keywords is the page's keywords from metadata.
+	 */
+	public Page(final String title, final List<String> keywords) {
+		this(title, keywords, "");
+	}
+
+	/**
+	 * Constructor with title, keywords and contents parameters.
+	 * 
+	 * @param title    is the page's title from metadata.
+	 * @param keywords is the page's keywords from metadata.
+	 * @param contents is the page's contents from body section.
+	 */
+	public Page(final String title, final List<String> keywords, final String contents) {
+		this.title = title;
+		this.keywords = keywords;
+		this.contents = contents;
+	}
+
+	/**
 	 * @return URL from whom the data was collected.
 	 */
 	public String getUrl() {
@@ -35,14 +75,14 @@ public class Page {
 	}
 
 	/**
-	 * @return Page's collected title
+	 * @return Page's collected title.
 	 */
 	public String getTitle() {
 		return this.title;
 	}
 
 	/**
-	 * @return Page's collected keywords
+	 * @return Page's collected keywords.
 	 */
 	public List<String> getKeywords() {
 		return this.keywords;
