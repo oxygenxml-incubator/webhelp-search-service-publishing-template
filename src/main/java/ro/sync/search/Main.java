@@ -23,14 +23,11 @@ public class Main {
 
 		Crawler crawler;
 		try {
-			crawler = new Crawler("https://www.sync.ro", "https://www.sync.ro", false);
+			crawler = new Crawler("https://www.w3schools.com", "https://www.w3schools.com", false);
 			crawler.crawl();
-			List<Page> pages = crawler.getCrawledPages();
 
-			for (Page page : pages) {
-				logger.info(page.getTitle());
-				logger.info(page.getKeywords().toString());
-				logger.info(page.getContents());
+			for (int i = 0; i < crawler.getCrawledPages().size(); i++) {
+				logger.info(crawler.getJsonRecord(i));
 			}
 		} catch (MalformedURLException e) {
 			logger.error("An error occured when initializing URLs!");
