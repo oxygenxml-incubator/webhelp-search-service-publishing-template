@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,19 +56,9 @@ public class Crawler {
 	private List<String> queue = new ArrayList<>();
 
 	/**
-	 * Set that stores all the visited urls' titles
+	 * List that stores all crawled pages
 	 */
-	private Set<String> titles = new LinkedHashSet<>();
-
-	/**
-	 * Set that stores all the visited urls' keywords
-	 */
-	private Set<String> keywords = new LinkedHashSet<>();
-
-	/**
-	 * Set that stores all the visited urls' contents
-	 */
-	private Set<String> contents = new LinkedHashSet<>();
+	private List<Page> pages = new ArrayList<>();
 
 	/**
 	 * Constructor with url and baseUrl parameters.
@@ -137,26 +125,12 @@ public class Crawler {
 	}
 
 	/**
-	 * @return list of collected titles after the crawl
+	 * @return list of crawled pages
 	 */
-	public Set<String> getTitles() {
-		return this.titles;
+	public List<Page> getCrawledPages(){
+		return this.pages;
 	}
-
-	/**
-	 * @return list of collected keywords after the crawl
-	 */
-	public Set<String> getKeywords() {
-		return this.keywords;
-	}
-
-	/**
-	 * @return list of collected contents after the crawl
-	 */
-	public Set<String> getContents() {
-		return this.contents;
-	}
-
+	
 	/**
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data.
@@ -219,32 +193,37 @@ public class Crawler {
 	 * Collects all the data(titles, keywords and contents) from visited urls.
 	 */
 	private void collectData(final Document page) {
-		collectTitle(page);
-		collectKeywords(page);
-		collectContents(page);
+		final String title = collectTitle(page);
+		final List<String> keywords = collectKeywords(page);
+		final String contents = collectContents(page);
+
+		pages.add(new Page(title, keywords, contents));
 	}
 
 	/**
-	 * Collect url's title
+	 * Page's collected title from metadata.
 	 */
-	private void collectTitle(final Document page) {
-		this.titles.add(page.title());
+	private String collectTitle(final Document page) {
+		return page.title();
 	}
 
 	/**
-	 * Collect url's keywords
+	 * @return Page's collected keywords from metadata.
 	 */
-	private void collectKeywords(final Document page) {
+	private List<String> collectKeywords(final Document page) {
 		Element element = page.select("meta[name=keywords]").first();
+		List<String> keywords = new ArrayList<>();
 
 		if (page.select("meta[name=keywords]").first() != null)
-			this.keywords.add(element.attr("content"));
+			keywords.add(element.attr("content"));
+
+		return keywords;
 	}
 
 	/**
-	 * Collect url's contents
+	 * @return Page's collected contents from body section.
 	 */
-	private void collectContents(final Document page) {
-		this.contents.add(page.body().text());
+	private String collectContents(final Document page) {
+		return page.body().text();
 	}
 }
