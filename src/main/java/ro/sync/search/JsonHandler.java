@@ -1,5 +1,7 @@
 package ro.sync.search;
 
+import java.util.List;
+
 /**
  * Class that handles all the actions related to JSON files.
  * 
@@ -8,9 +10,9 @@ package ro.sync.search;
  */
 public class JsonHandler {
 	/**
-	 * Crawler that holds all the crawled data from URLs.
+	 * Pages that holds all the crawled pages by the crawler.
 	 */
-	private Crawler crawler;
+	private List<Page> pages;
 
 	/**
 	 * String with JSON format used in order to send data to Algolia.
@@ -18,12 +20,12 @@ public class JsonHandler {
 	private StringBuilder json;
 
 	/**
-	 * Constructor with crawler parameter.
+	 * Constructor with pages parameter.
 	 * 
-	 * @param crawler is the crawler that stores all the crawled data.
+	 * @param pages is the list that stores all the crawled pages.
 	 */
-	public JsonHandler(final Crawler crawler) {
-		this.crawler = crawler;
+	public JsonHandler(final List<Page> pages) {
+		this.pages = pages;
 	}
 
 	/*
@@ -58,15 +60,14 @@ public class JsonHandler {
 		this.json.append("{\n");
 
 		// Add title key with page's title as the value.
-		this.json.append("\t\"title\": \"" + crawler.getCrawledPages().get(index).getTitle() + "\",\n");
+		this.json.append("\t\"title\": \"" + pages.get(index).getTitle() + "\",\n");
 
 		// Add keywords as a JSON array.
 		this.json.append("\t\"keywords\": [");
-		if (!crawler.getCrawledPages().get(index).getKeywords().isEmpty()) {
-			for (String keyword : crawler.getCrawledPages().get(index).getKeywords()) {
+		if (!pages.get(index).getKeywords().isEmpty()) {
+			for (String keyword : pages.get(index).getKeywords()) {
 				// If this is the last keyword to add, then don't add the whitespace and comma.
-				if (keyword.equals(crawler.getCrawledPages().get(index).getKeywords()
-						.get(crawler.getCrawledPages().get(index).getKeywords().size() - 1)))
+				if (keyword.equals(pages.get(index).getKeywords().get(pages.get(index).getKeywords().size() - 1)))
 					this.json.append("\"" + keyword + "\"],\n");
 				else
 					this.json.append("\"" + keyword + "\", ");
@@ -77,10 +78,10 @@ public class JsonHandler {
 		}
 
 		// Add contents
-		this.json.append("\t\"contents\": \"" + crawler.getCrawledPages().get(index).getContents() + "\",\n");
+		this.json.append("\t\"contents\": \"" + pages.get(index).getContents() + "\",\n");
 
 		// Add URL of the HTML document.
-		this.json.append("\t\"url\": \"" + crawler.getCrawledPages().get(index).getUrl() + "\"\n");
+		this.json.append("\t\"url\": \"" + pages.get(index).getUrl() + "\"\n");
 
 		// Close the record
 		this.json.append("}\n");
@@ -92,20 +93,19 @@ public class JsonHandler {
 		// Start JSON file.
 		this.json.append("{\n");
 
-		for (int i = 0; i < crawler.getCrawledPages().size(); i++) {
+		for (int i = 0; i < pages.size(); i++) {
 			// Start JSON record.
 			this.json.append("\t{\n");
 
 			// Add title key with page's title as the value.
-			this.json.append("\t\t\"title\": \"" + crawler.getCrawledPages().get(i).getTitle() + "\",\n");
+			this.json.append("\t\t\"title\": \"" + pages.get(i).getTitle() + "\",\n");
 
 			// Add keywords as a JSON array.
 			this.json.append("\t\t\"keywords\": [");
-			if (!crawler.getCrawledPages().get(i).getKeywords().isEmpty()) {
-				for (String keyword : crawler.getCrawledPages().get(i).getKeywords()) {
+			if (!pages.get(i).getKeywords().isEmpty()) {
+				for (String keyword : pages.get(i).getKeywords()) {
 					// If this is the last keyword to add, then don't add the whitespace and comma.
-					if (keyword.equals(crawler.getCrawledPages().get(i).getKeywords()
-							.get(crawler.getCrawledPages().get(i).getKeywords().size() - 1)))
+					if (keyword.equals(pages.get(i).getKeywords().get(pages.get(i).getKeywords().size() - 1)))
 						this.json.append("\"" + keyword + "\"],\n");
 					else
 						this.json.append("\"" + keyword + "\", ");
@@ -116,13 +116,13 @@ public class JsonHandler {
 			}
 
 			// Add contents
-			this.json.append("\t\t\"contents\": \"" + crawler.getCrawledPages().get(i).getContents() + "\",\n");
+			this.json.append("\t\t\"contents\": \"" + pages.get(i).getContents() + "\",\n");
 
 			// Add URL of the HTML document.
-			this.json.append("\t\t\"url\": \"" + crawler.getCrawledPages().get(i).getUrl() + "\"\n");
+			this.json.append("\t\t\"url\": \"" + pages.get(i).getUrl() + "\"\n");
 
 			// Close the record
-			if (i == crawler.getCrawledPages().size() - 1)
+			if (i == pages.size() - 1)
 				this.json.append("\t}\n");
 			else
 				this.json.append("\t},\n");

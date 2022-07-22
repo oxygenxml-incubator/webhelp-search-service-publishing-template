@@ -24,8 +24,8 @@ public class Main {
 		try {
 			crawler = new Crawler("https://www.w3schools.com", "https://www.w3schools.com", false);
 			crawler.crawl();
-			JsonHandler jsonHandler = new JsonHandler(crawler);
-			logger.info(jsonHandler.getJson());
+			JsonHandler jsonHandler = new JsonHandler(crawler.getCrawledPages());
+			logger.info(jsonHandler.getJsonRecord(0));
 		} catch (MalformedURLException e) {
 			logger.error("An error occured when initializing URLs!");
 		}
