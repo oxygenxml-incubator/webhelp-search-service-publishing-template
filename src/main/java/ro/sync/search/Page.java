@@ -3,6 +3,8 @@ package ro.sync.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The class that represents a page model. It contains all the data crawled from
  * a certain URL.
@@ -14,6 +16,7 @@ public class Page {
 	/**
 	 * URL from whom the data was collected.
 	 */
+	@JsonProperty("objectID")
 	private String url;
 	/**
 	 * Page's title collected from metadata.
