@@ -11,6 +11,7 @@
             <parameter name="args.figurelink.style" value="TITLE"/>
             <parameter name="args.tablelink.style" value="TITLE"/>
             <parameter name="force-unique" value="true"/>
+            <parameter name="webhelp.fragment.footer" value="This site is powered by Netlify"/>
         </parameters>
         <resources>
             <css file="style.css"/>

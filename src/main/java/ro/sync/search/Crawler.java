@@ -11,6 +11,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The class that crawls an HTML website and looks for data.
@@ -19,6 +21,10 @@ import org.jsoup.select.Elements;
  *
  */
 public class Crawler {
+	/**
+	 * Logger to inform user about certain actions like errors and others.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
 	/**
 	 * The url to be crawled.
 	 */
@@ -47,6 +53,11 @@ public class Crawler {
 	 * List that serves as a queue that is used to perform BFS algorithm.
 	 */
 	private List<String> queue = new ArrayList<>();
+
+	/**
+	 * List that stores all crawled pages
+	 */
+	private List<Page> pages = new ArrayList<>();
 
 	/**
 	 * Constructor with url and baseUrl parameters.
@@ -113,6 +124,13 @@ public class Crawler {
 	}
 
 	/**
+	 * @return list of crawled pages
+	 */
+	public List<Page> getCrawledPages() {
+		return this.pages;
+	}
+
+	/**
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data.
 	 * 
@@ -125,12 +143,16 @@ public class Crawler {
 
 		while (!queue.isEmpty()) {
 			try {
-				findUrls(readHtml(queue.remove(0)));
+				String currentUrl = queue.remove(0);
+				findUrls(readHtml(currentUrl), currentUrl);
+				collectData(readHtml(currentUrl));
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("An error with reading HTML data occurred!");
+				logger.error("An error with reading HTML file occured!");
 			}
 		}
+
+		logger.info("The crawling went successfully! {} pages has been crawled!", getCrawledPages().size());
 	}
 
 	/**
@@ -151,7 +173,7 @@ public class Crawler {
 	 * @throws MalformedURLException when a problem with initialization of URL
 	 *                               occurred.
 	 */
-	void findUrls(final Document page) throws MalformedURLException {
+	void findUrls(final Document page, final String pageUrl) throws MalformedURLException {
 		// Select all "a" tags
 		Elements links = page.select("a");
 		// Search for ".html" hrefs
@@ -159,17 +181,51 @@ public class Crawler {
 			if (!link.attr("href").endsWith(".html"))
 				continue;
 
-			String currentUrl;
-			if (isFile)
-				currentUrl = new URL(new URL("file:/" + link.baseUri()), link.attr("href")).toString();
-			else
-				currentUrl = new URL(new URL(link.baseUri()), link.attr("href")).toString();
+			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
-			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(baseUrl)) {
-				System.out.println("Website with URL: " + currentUrl);
+			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
 				visitedUrls.add(currentUrl);
 				queue.add(currentUrl);
 			}
 		}
+	}
+
+	/**
+	 * Collects all the data(titles, keywords and contents) from visited urls.
+	 */
+	private void collectData(final Document page) {
+		final String title = collectTitle(page);
+		final List<String> keywords = collectKeywords(page);
+		final String contents = collectContents(page);
+		final String pageUrl = page.baseUri();
+
+		pages.add(new Page(title, keywords, contents, pageUrl));
+	}
+
+	/**
+	 * Page's collected title from metadata.
+	 */
+	private String collectTitle(final Document page) {
+		return page.title();
+	}
+
+	/**
+	 * @return Page's collected keywords from metadata.
+	 */
+	private List<String> collectKeywords(final Document page) {
+		Element element = page.select("meta[name=keywords]").first();
+		List<String> keywords = new ArrayList<>();
+
+		if (page.select("meta[name=keywords]").first() != null)
+			keywords.add(element.attr("content"));
+
+		return keywords;
+	}
+
+	/**
+	 * @return Page's collected contents from body section.
+	 */
+	private String collectContents(final Document page) {
+		return page.body().text();
 	}
 }

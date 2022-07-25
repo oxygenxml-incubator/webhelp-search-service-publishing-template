@@ -102,7 +102,7 @@ class CrawlerTest {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 
-		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "other.html");
@@ -120,7 +120,7 @@ class CrawlerTest {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/noHref/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/noHref/").toUri().toURL().toString(), true);
 
-		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "other.html");
@@ -138,11 +138,63 @@ class CrawlerTest {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/baseUrl/t1/t2/other.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/baseUrl/").toUri().toURL().toString(), true);
 
-		crawler.findUrls(crawler.readHtml(crawler.getUrl()));
+		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "other.html");
 
 		assertEquals(expected, crawler.getVisitedUrls());
+	}
+
+	/**
+	 * Tests if titles are extracted correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occurred.
+	 */
+	@Test
+	void getTitleTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
+
+		crawler.crawl();
+
+		assertEquals("Index", crawler.getCrawledPages().get(0).getTitle());
+		assertEquals("Page Two", crawler.getCrawledPages().get(1).getTitle());
+	}
+
+	/**
+	 * Tests if keywords are extracted correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occurred.
+	 */
+	@Test
+	void getKeywordsTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
+
+		crawler.crawl();
+
+		List<String> expected = new ArrayList<>();
+		expected.add("Test");
+		expected.add("Search");
+		expected.add("Service");
+
+		assertEquals(expected.toString(), crawler.getCrawledPages().get(0).getKeywords().toString());
+	}
+
+	/**
+	 * Tests if contents are extracted correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occurred.
+	 */
+	@Test
+	void getContentsTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
+
+		crawler.crawl();
+
+		assertEquals("Page2 Href Information Something more", crawler.getCrawledPages().get(0).getContents().toString());
+		assertEquals("Lorem Ipsum", crawler.getCrawledPages().get(1).getContents().toString());
 	}
 }
