@@ -18,9 +18,11 @@
 
 	<script type="text/html" id="hit-template">
     <div class="hit">
+    <a href='#' onclick='changeHref(); return false;'>
       <p class="hit-name">
         {{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}
       </p>
+     </a>
     </div>
   </script>
 

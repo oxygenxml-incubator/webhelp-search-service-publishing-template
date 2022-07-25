@@ -19,7 +19,7 @@ search.addWidgets([
 search.addWidgets([
 	instantsearch.widgets.searchBox({
 		container: '#search-box',
-		placeholder: 'Search for contacts',
+		placeholder: 'Search for documents',
 	}),
 ])
 
