@@ -13,12 +13,10 @@ public class JsonHandler {
 	 * Pages that holds all the crawled pages by the crawler.
 	 */
 	private List<Page> pages;
-
 	/**
 	 * String with JSON format used in order to send data to Algolia.
 	 */
 	private StringBuilder json;
-
 	/**
 	 * Constructor with pages parameter.
 	 * 

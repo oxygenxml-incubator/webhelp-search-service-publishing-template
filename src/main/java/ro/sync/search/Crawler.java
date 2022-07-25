@@ -151,6 +151,8 @@ public class Crawler {
 				logger.error("An error with reading HTML file occured!");
 			}
 		}
+
+		logger.info("The crawling went successfully! {} pages has been crawled!", getCrawledPages().size());
 	}
 
 	/**
