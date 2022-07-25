@@ -194,7 +194,7 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		assertEquals("Page2 Href", crawler.getCrawledPages().get(0).getContents().toString());
+		assertEquals("Page2 Href Information Something more", crawler.getCrawledPages().get(0).getContents().toString());
 		assertEquals("Lorem Ipsum", crawler.getCrawledPages().get(1).getContents().toString());
 	}
 }
