@@ -73,7 +73,7 @@ public class AlgoliaClient {
 	 */
 	public void addObjectToIndex() {
 		index.saveObjects(crawler.getCrawledPages());
-		logger.info("{} Page objects successfully added to {} index!", crawler.getCrawledPages().size(),
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 				index.getUrlEncodedIndexName());
 	}
 }

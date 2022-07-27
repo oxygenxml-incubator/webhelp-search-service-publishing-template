@@ -152,7 +152,7 @@ public class Crawler {
 			}
 		}
 
-		logger.info("The crawling went successfully! {} pages has been crawled!", getCrawledPages().size());
+		logger.info("The crawling went successfully! {} page(s) has/have been crawled!", getCrawledPages().size());
 	}
 
 	/**
@@ -184,6 +184,9 @@ public class Crawler {
 			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
+				if(currentUrl.equals(this.url + "/index.html"))
+					continue;
+				
 				visitedUrls.add(currentUrl);
 				queue.add(currentUrl);
 			}
