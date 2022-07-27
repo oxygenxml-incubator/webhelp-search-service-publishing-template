@@ -17,9 +17,9 @@ public class Main {
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
-		AlgoliaClient client = new AlgoliaClient("https://sweet-beignet-8a9e20.netlify.app",
-				"https://sweet-beignet-8a9e20.netlify.app");
+		AlgoliaClient client = new AlgoliaClient();
 		client.initIndex("webhelp-search-service-publishing-template");
-		client.addObjectToIndex();
+		client.addObjectToIndex("https://sweet-beignet-8a9e20.netlify.app",
+				"https://sweet-beignet-8a9e20.netlify.app");
 	}
 }
