@@ -16,7 +16,11 @@
         <resources>
             <css file="style.css"/>
             <logo file="img/logo.png"></logo>
+            <fileset><include name="js/**"/></fileset>
         </resources>
+        <html-fragments>
+            <fragment file="html/search.html" placeholder="webhelp.fragment.head"/>
+        </html-fragments>
         <tags>
             <tag type="layout">tree</tag>
             <tag type="color">blue</tag>
