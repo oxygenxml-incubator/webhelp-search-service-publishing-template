@@ -6,4 +6,8 @@
         <topicref href="tasks/how_to_use_github_actions_to_run_a_webhelp_responsive_transformation.dita"></topicref>
         <topicref href="tasks/publishing_documentation_on_netlify.dita"></topicref>
     </topicref>
+    <topicref chunk="to-content" href="topics/crawling_data_and_use_it_with_algolia.dita">
+        <topicref href="tasks/html_crawler.dita"></topicref>
+        <topicref href="tasks/algolia_search.dita"></topicref>
+    </topicref>
 </map>
