@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="crawling_data_and_use_it_with_algolia">
+    <title>Crawling data and use it with Algolia</title>
+    <body>
+        <p>How to use HTML crawler and why do we need it for Algolia?</p>
+    </body>
+</topic>
