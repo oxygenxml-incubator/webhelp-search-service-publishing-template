@@ -4,6 +4,9 @@
 name: Java CI with Maven
 
 on:
+  workflow_run:
+    workflows: ["DITA Build and Netlify Deployment"]
+    types: [completed]
   push:
     branches: [ "master" ]
   pull_request:
