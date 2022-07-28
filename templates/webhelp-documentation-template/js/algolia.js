@@ -1,4 +1,4 @@
-const searchClient = algoliasearch('KLFWXPOEHY', '8e4e1e3ae2fc1931b0a5f5d3c8f7544d');
+const searchClient = algoliasearch('40V95VH5YU', '8e4e1e3ae2fc1931b0a5f5d3c8f7544d');
 const searchInstance = instantsearch({
 	indexName: 'webhelp-search-service-publishing-template',
 	searchClient,
