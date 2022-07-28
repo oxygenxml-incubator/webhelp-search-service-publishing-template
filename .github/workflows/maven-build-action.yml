@@ -8,7 +8,7 @@ on:
     workflows: ["DITA Build and Netlify Deployment"]
     types: [completed]
   push:
-    branches: [ "master" ]
+    branches: [ "master", "development" ]
   pull_request:
     branches: [ "master" ]
 
@@ -20,11 +20,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 11
+    - name: Set up JDK 11 and Algolia
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: |
+        mvn -B package --file pom.xml
+        mvn test
+    - name: Setup Algolia
+      run: |
+        echo "algolia.appId=$ALGOLIA_APP_ID algolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
+        mvn compile exec:java -Dexec.mainClass="ro.sync.search.AlgoliaClient" \ -Dexec.args="https://sweet-beignet-8a9e20.netlify.app https://sweet-beignet-8a9e20.netlify.app"
+      env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_ADMIN_API: ${{ secrets.ALGOLIA_ADMIN_API }}
+  
