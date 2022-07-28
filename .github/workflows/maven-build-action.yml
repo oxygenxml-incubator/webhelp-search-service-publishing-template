@@ -29,7 +29,6 @@ jobs:
     - name: Build with Maven
       run: |
         mvn -B package --file pom.xml
-        mvn test
     - name: Setup Algolia
       run: |
         echo "algolia.appId=$ALGOLIA_APP_ID algolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
