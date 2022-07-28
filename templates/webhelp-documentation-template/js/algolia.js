@@ -1,5 +1,5 @@
 // Connect and authenticate with your Algolia app
-const searchClient = algoliasearch('KLFWXPOEHY', 'ff20cb14577be8b5eab7ead0857dd573');
+const searchClient = algoliasearch('KLFWXPOEHY', '8e4e1e3ae2fc1931b0a5f5d3c8f7544d');
 const searchInstance = instantsearch({
 	indexName: 'webhelp-search-service-publishing-template',
 	searchClient,
