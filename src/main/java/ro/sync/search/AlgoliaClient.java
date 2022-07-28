@@ -97,4 +97,14 @@ public class AlgoliaClient {
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 				index.getUrlEncodedIndexName());
 	}
+	
+	/**
+	 * Main method that crawls data and stores it into Algolia Index.
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		AlgoliaClient client = new AlgoliaClient();
+		client.initIndex("webhelp-search-service-publishing-template");
+		client.addObjectToIndex(args[0], args[1]);
+	}
 }
