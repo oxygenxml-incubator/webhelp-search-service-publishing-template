@@ -46,6 +46,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Setup Algolia
+        run: |
           echo -e "algolia.appId=$ALGOLIA_APP_ID\nalgolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
           mvn compile exec:java
         env:
