@@ -30,10 +30,6 @@ public class AlgoliaClient {
 	 */
 	private Crawler crawler;
 	/**
-	 * Properties file used to get values for API keys and others.
-	 */
-	private Properties properties;
-	/**
 	 * Algolia application's id.
 	 */
 	private String appId;
@@ -56,7 +52,7 @@ public class AlgoliaClient {
 	 */
 	public AlgoliaClient() {
 		try (InputStream input = new FileInputStream("config.properties")) {
-			properties = new Properties();
+			Properties properties = new Properties();
 
 			// load a properties file
 			properties.load(input);
