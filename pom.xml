@@ -15,6 +15,19 @@
 					<target>11</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<mainClass>ro.sync.search.AlgoliaClient</mainClass>
+					<arguments>
+						<argument>https://sweet-beignet-8a9e20.netlify.app</argument>
+						<argument>https://sweet-beignet-8a9e20.netlify.app</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
