@@ -96,7 +96,7 @@ public class AlgoliaClient {
 	
 	/**
 	 * Main method that crawls data and stores it into Algolia Index.
-	 * @param args
+	 * @param args - URL and Base URl to be crawled.
 	 */
 	public static void main(String[] args) {
 		AlgoliaClient client = new AlgoliaClient();
