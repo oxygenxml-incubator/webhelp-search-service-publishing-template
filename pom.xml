@@ -4,6 +4,11 @@
 	<artifactId>search-service</artifactId>
 	<version>1.0</version>
 
+	<properties>
+		<exec.mainClass>ro.sync.search.AlgoliaClient</exec.mainClass>
+		<exec.args>https://sweet-beignet-8a9e20.netlify.app https://sweet-beignet-8a9e20.netlify.app</exec.args>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -57,6 +62,18 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.algolia</groupId>
+			<artifactId>algoliasearch-core</artifactId>
+			<version>3.16.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.algolia</groupId>
+			<artifactId>algoliasearch-java-net</artifactId>
+			<version>3.16.5</version>
 		</dependency>
 
 	</dependencies>

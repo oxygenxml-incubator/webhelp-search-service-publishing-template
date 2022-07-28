@@ -152,7 +152,7 @@ public class Crawler {
 			}
 		}
 
-		logger.info("The crawling went successfully! {} pages has been crawled!", getCrawledPages().size());
+		logger.info("The crawling went successfully! {} page(s) has/have been crawled!", getCrawledPages().size());
 	}
 
 	/**
@@ -184,6 +184,9 @@ public class Crawler {
 			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
+				if (currentUrl.equals(this.url + "/index.html"))
+					continue;
+
 				visitedUrls.add(currentUrl);
 				queue.add(currentUrl);
 			}
@@ -195,11 +198,12 @@ public class Crawler {
 	 */
 	private void collectData(final Document page) {
 		final String title = collectTitle(page);
+		final String shortDescription = collectShortDescription(page);
 		final List<String> keywords = collectKeywords(page);
 		final String contents = collectContents(page);
 		final String pageUrl = page.baseUri();
 
-		pages.add(new Page(title, keywords, contents, pageUrl));
+		pages.add(new Page(title, shortDescription, keywords, contents, pageUrl));
 	}
 
 	/**
@@ -207,6 +211,13 @@ public class Crawler {
 	 */
 	private String collectTitle(final Document page) {
 		return page.title();
+	}
+
+	/**
+	 * @return Short description of the page
+	 */
+	private String collectShortDescription(final Document page) {
+		return page.select("p[class=\"- topic/shortdesc shortdesc\"]").text();
 	}
 
 	/**

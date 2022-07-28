@@ -1,7 +1,5 @@
 package ro.sync.search;
 
-import java.net.MalformedURLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +17,9 @@ public class Main {
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
-
-		Crawler crawler;
-		try {
-			crawler = new Crawler("https://www.w3schools.com", "https://www.w3schools.com", false);
-			crawler.crawl();
-			JsonHandler jsonHandler = new JsonHandler(crawler.getCrawledPages());
-			logger.info(jsonHandler.getJson());
-		} catch (MalformedURLException e) {
-			logger.error("An error occured when initializing URLs!");
-		}
+		AlgoliaClient client = new AlgoliaClient();
+		client.initIndex("webhelp-search-service-publishing-template");
+		client.addObjectToIndex("https://sweet-beignet-8a9e20.netlify.app",
+				"https://sweet-beignet-8a9e20.netlify.app");
 	}
 }
