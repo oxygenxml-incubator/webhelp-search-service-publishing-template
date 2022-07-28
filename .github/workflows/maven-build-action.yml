@@ -5,7 +5,7 @@ name: Java CI with Maven
 
 on:
   workflow_run:
-    workflows: ["DITA Build and Netlify Deployment"]
+    workflows: ["Build DITA WebHelp Responsive and deploy to Netlify"]
     types: [completed]
   push:
     branches: [ "master", "development" ]
@@ -33,7 +33,7 @@ jobs:
     - name: Setup Algolia
       run: |
         echo "algolia.appId=$ALGOLIA_APP_ID algolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
-        mvn compile exec:java -Dexec.mainClass="ro.sync.search.AlgoliaClient" \ -Dexec.args="https://sweet-beignet-8a9e20.netlify.app https://sweet-beignet-8a9e20.netlify.app"
+        mvn compile exec:java
       env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_ADMIN_API: ${{ secrets.ALGOLIA_ADMIN_API }}
