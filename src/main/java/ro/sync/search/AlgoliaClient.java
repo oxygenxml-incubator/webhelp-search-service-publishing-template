@@ -76,7 +76,9 @@ public class AlgoliaClient {
 	public void initIndex(final String indexName) {
 		index = client.initIndex(indexName, Page.class);
 		index.setSettings(new IndexSettings()
-				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents")));
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
+				.setCustomRanking(
+						Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)")));
 		logger.info("Index {} succesfully created/selected!", indexName);
 	}
 
