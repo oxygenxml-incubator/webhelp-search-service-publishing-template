@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.algolia.search.DefaultSearchClient;
 import com.algolia.search.SearchClient;
 import com.algolia.search.SearchIndex;
+import com.algolia.search.models.settings.IndexSettings;
 
 /**
  * Class that handles Algolia API calls.
@@ -74,6 +75,8 @@ public class AlgoliaClient {
 	 */
 	public void initIndex(final String indexName) {
 		index = client.initIndex(indexName, Page.class);
+		index.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents")));
 		logger.info("Index {} succesfully created/selected!", indexName);
 	}
 
@@ -93,9 +96,10 @@ public class AlgoliaClient {
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 				index.getUrlEncodedIndexName());
 	}
-	
+
 	/**
 	 * Main method that crawls data and stores it into Algolia Index.
+	 * 
 	 * @param args - URL and Base URl to be crawled.
 	 */
 	public static void main(String[] args) {
