@@ -78,7 +78,8 @@ public class AlgoliaClient {
 		index.setSettings(new IndexSettings()
 				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
 				.setCustomRanking(
-						Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)")));
+						Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
+				.setAttributesToHighlight(Arrays.asList("title", "shortDescription")));
 		logger.info("Index {} succesfully created/selected!", indexName);
 	}
 
