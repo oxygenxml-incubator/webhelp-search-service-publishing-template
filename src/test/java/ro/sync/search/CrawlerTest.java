@@ -34,7 +34,6 @@ class CrawlerTest {
 
 		List<String> expected = new ArrayList<>();
 		expected.add(crawler.getBaseUrl() + "recursion.html");
-		expected.add(crawler.getBaseUrl() + "index.html");
 
 		assertEquals(expected, crawler.getVisitedUrls());
 	}
@@ -158,8 +157,7 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		assertEquals("Index", crawler.getCrawledPages().get(0).getTitle());
-		assertEquals("Page Two", crawler.getCrawledPages().get(1).getTitle());
+		assertEquals("Page Two", crawler.getCrawledPages().get(0).getTitle());
 	}
 
 	/**
@@ -194,7 +192,6 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		assertEquals("Page2 Href Information Something more", crawler.getCrawledPages().get(0).getContents().toString());
-		assertEquals("Lorem Ipsum", crawler.getCrawledPages().get(1).getContents().toString());
+		assertEquals("Lorem Ipsum", crawler.getCrawledPages().get(0).getContents().toString());
 	}
 }

@@ -145,7 +145,10 @@ public class Crawler {
 			try {
 				String currentUrl = queue.remove(0);
 				findUrls(readHtml(currentUrl), currentUrl);
-				collectData(readHtml(currentUrl));
+				
+				if(!((currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))))
+					collectData(readHtml(currentUrl));
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.error("An error with reading HTML file occured!");
@@ -184,7 +187,7 @@ public class Crawler {
 			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
-				if (currentUrl.equals(this.url + "/index.html"))
+				if (currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))
 					continue;
 
 				visitedUrls.add(currentUrl);
