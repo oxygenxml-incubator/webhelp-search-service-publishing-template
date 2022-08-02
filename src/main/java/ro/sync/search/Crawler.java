@@ -145,10 +145,10 @@ public class Crawler {
 			try {
 				String currentUrl = queue.remove(0);
 				findUrls(readHtml(currentUrl), currentUrl);
-				
-				if(!((currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))))
+
+				if (!((currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))))
 					collectData(readHtml(currentUrl));
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.error("An error with reading HTML file occured!");
@@ -240,6 +240,6 @@ public class Crawler {
 	 * @return Page's collected contents from body section.
 	 */
 	private String collectContents(final Document page) {
-		return page.select("p, span, h1, h2, h3, h4, h5, h6").text();
+		return page.select("h1,h2,h3,h4,h5,h6,p,span:not(span.title):not(span.search_input_text):not(span.home),code").text();
 	}
 }
