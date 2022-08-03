@@ -36,52 +36,13 @@ public class Page {
 	private String contents;
 
 	/**
-	 * Constructor with no parameters.
-	 */
-	public Page() {
-		this("", new ArrayList<>());
-	}
-
-	/**
-	 * Constructor with title parameter.
-	 * 
-	 * @param title is the page's title from metadata.
-	 */
-	public Page(final String title) {
-		this(title, new ArrayList<>());
-	}
-
-	/**
 	 * Constructor with title and keywords parameters.
 	 * 
-	 * @param title    is the page's title from metadata.
-	 * @param keywords is the page's keywords from metadata.
+	 * @param title is the page's title from metadata.
+	 * @param url   is the page's url
 	 */
-	public Page(final String title, final List<String> keywords) {
-		this(title, "", keywords, "", "");
-	}
-
-	/**
-	 * Constructor with title, keywords and contents parameters.
-	 * 
-	 * @param title    is the page's title from metadata.
-	 * @param keywords is the page's keywords from metadata.
-	 * @param contents is the page's contents from body section.
-	 */
-	public Page(final String title, final List<String> keywords, final String contents) {
-		this(title, "", keywords, contents, "");
-	}
-
-	/**
-	 * Constructor with title, keywords, contents and url parameters.
-	 * 
-	 * @param title    is the page's title from metadata.
-	 * @param keywords is the page's keywords from metadata.
-	 * @param contents is the page's contents from body section.
-	 * @param url      is the HTML document's url
-	 */
-	public Page(final String title, final List<String> keywords, final String contents, final String url) {
-		this(title, "", keywords, contents, url);
+	public Page(final String title, final String url) {
+		this(title, "", new ArrayList<>(), "", url);
 	}
 
 	/**
