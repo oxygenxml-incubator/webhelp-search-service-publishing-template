@@ -64,6 +64,7 @@ public class AlgoliaClient {
 
 			client = DefaultSearchClient.create(appId, adminApiKey);
 		} catch (IOException e) {
+			// TODO This exception should be thrown. AlgoliaClient object is invalid without properties
 			logger.error("An error occured when trying to load properties");
 			logger.error(Arrays.toString(e.getStackTrace()));
 			throw e;
@@ -102,6 +103,7 @@ public class AlgoliaClient {
 			throw e;
 		}
 
+		// TODO: Can be crawler object null here?
 		index.saveObjects(crawler.getCrawledPages());
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 				index.getUrlEncodedIndexName());
@@ -118,6 +120,7 @@ public class AlgoliaClient {
 			client = new AlgoliaClient();
 			client.initIndex("webhelp-search-service-publishing-template");
 
+			// TODO What if args[0], args[1] are not suplied?!??!
 			if (args.length == 0)
 				logger.error("There are no arguments passed to main function!");
 			else
