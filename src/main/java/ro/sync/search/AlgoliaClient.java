@@ -50,8 +50,10 @@ public class AlgoliaClient {
 	/**
 	 * Constructor with URL to get data from.
 	 * 
+	 * @throws IOException if a problem with loading config properties occured.
+	 * 
 	 */
-	public AlgoliaClient() {
+	public AlgoliaClient() throws IOException {
 		try (InputStream input = new FileInputStream("config.properties")) {
 			Properties properties = new Properties();
 
@@ -64,6 +66,7 @@ public class AlgoliaClient {
 		} catch (IOException e) {
 			logger.error("An error occured when trying to load properties");
 			logger.error(Arrays.toString(e.getStackTrace()));
+			throw e;
 		}
 	}
 
@@ -86,15 +89,18 @@ public class AlgoliaClient {
 
 	/**
 	 * Adds crawled pages from Crawler object to index.
+	 * 
+	 * @throws MalformedURLException if crawler was failed to initiate.
 	 */
-	public void addObjectToIndex(final String url, final String baseUrl) {
+	public void addObjectToIndex(final String url, final String baseUrl) throws MalformedURLException {
 		try {
 			crawler = new Crawler(url, baseUrl);
+			crawler.crawl();
 		} catch (MalformedURLException e) {
 			logger.error("An error occured when crawling URL: {}", url);
 			logger.error(Arrays.toString(e.getStackTrace()));
+			throw e;
 		}
-		crawler.crawl();
 
 		index.saveObjects(crawler.getCrawledPages());
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
@@ -107,8 +113,19 @@ public class AlgoliaClient {
 	 * @param args - URL and Base URl to be crawled.
 	 */
 	public static void main(String[] args) {
-		AlgoliaClient client = new AlgoliaClient();
-		client.initIndex("webhelp-search-service-publishing-template");
-		client.addObjectToIndex(args[0], args[1]);
+		AlgoliaClient client;
+		try {
+			client = new AlgoliaClient();
+			client.initIndex("webhelp-search-service-publishing-template");
+
+			if (args.length == 0)
+				logger.error("There are no arguments passed to main function!");
+			else
+				client.addObjectToIndex(args[0], args[1]);
+
+		} catch (IOException e) {
+			logger.error("An error occurred when initializing AlgoliaClient, check your properties file! {}",
+					Arrays.asList(e.getStackTrace()));
+		}
 	}
 }
