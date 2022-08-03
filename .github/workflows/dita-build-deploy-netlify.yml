@@ -1,4 +1,4 @@
-name: DITA Build and Netlify Deployment
+name: Build project documentation and publish to Netlify
 on:
   push:
     branches:
