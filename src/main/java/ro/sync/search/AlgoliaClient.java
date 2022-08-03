@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.algolia.search.DefaultSearchClient;
 import com.algolia.search.SearchClient;
 import com.algolia.search.SearchIndex;
+import com.algolia.search.models.settings.IndexSettings;
 
 /**
  * Class that handles Algolia API calls.
@@ -49,8 +50,10 @@ public class AlgoliaClient {
 	/**
 	 * Constructor with URL to get data from.
 	 * 
+	 * @throws IOException if a problem with loading config properties occured.
+	 * 
 	 */
-	public AlgoliaClient() {
+	public AlgoliaClient() throws IOException {
 		try (InputStream input = new FileInputStream("config.properties")) {
 			Properties properties = new Properties();
 
@@ -64,6 +67,7 @@ public class AlgoliaClient {
 			// TODO This exception should be thrown. AlgoliaClient object is invalid without properties
 			logger.error("An error occured when trying to load properties");
 			logger.error(Arrays.toString(e.getStackTrace()));
+			throw e;
 		}
 	}
 
@@ -75,37 +79,56 @@ public class AlgoliaClient {
 	 */
 	public void initIndex(final String indexName) {
 		index = client.initIndex(indexName, Page.class);
+		index.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
+				.setCustomRanking(
+						Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
+				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
+				.setAttributesToSnippet(Arrays.asList("contents:30")).setAttributesForFaceting(Arrays.asList("title")));
 		logger.info("Index {} succesfully created/selected!", indexName);
 	}
 
 	/**
 	 * Adds crawled pages from Crawler object to index.
+	 * 
+	 * @throws MalformedURLException if crawler was failed to initiate.
 	 */
-	public void addObjectToIndex(final String url, final String baseUrl) {
+	public void addObjectToIndex(final String url, final String baseUrl) throws MalformedURLException {
 		try {
 			crawler = new Crawler(url, baseUrl);
+			crawler.crawl();
 		} catch (MalformedURLException e) {
 			logger.error("An error occured when crawling URL: {}", url);
 			logger.error(Arrays.toString(e.getStackTrace()));
+			throw e;
 		}
-		
-		// TODO: Can be crawler object null here?
-		crawler.crawl();
 
+		// TODO: Can be crawler object null here?
 		index.saveObjects(crawler.getCrawledPages());
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 				index.getUrlEncodedIndexName());
 	}
-	
+
 	/**
 	 * Main method that crawls data and stores it into Algolia Index.
+	 * 
 	 * @param args - URL and Base URl to be crawled.
 	 */
 	public static void main(String[] args) {
-		AlgoliaClient client = new AlgoliaClient();
-		// TODO index name is not from args?
-		client.initIndex("webhelp-search-service-publishing-template");
-		// TODO What if args[0], args[1] are not suplied?!??!
-		client.addObjectToIndex(args[0], args[1]);
+		AlgoliaClient client;
+		try {
+			client = new AlgoliaClient();
+			client.initIndex("webhelp-search-service-publishing-template");
+
+			// TODO What if args[0], args[1] are not suplied?!??!
+			if (args.length == 0)
+				logger.error("There are no arguments passed to main function!");
+			else
+				client.addObjectToIndex(args[0], args[1]);
+
+		} catch (IOException e) {
+			logger.error("An error occurred when initializing AlgoliaClient, check your properties file! {}",
+					Arrays.asList(e.getStackTrace()));
+		}
 	}
 }

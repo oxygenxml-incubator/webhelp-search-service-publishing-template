@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -145,7 +147,10 @@ public class Crawler {
 			try {
 				String currentUrl = queue.remove(0);
 				findUrls(readHtml(currentUrl), currentUrl);
-				collectData(readHtml(currentUrl));
+
+				if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
+					collectData(readHtml(currentUrl));
+
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.error("An error with reading HTML file occured!");
@@ -184,7 +189,7 @@ public class Crawler {
 			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
 			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
-				if (currentUrl.equals(this.url + "/index.html"))
+				if (currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))
 					continue;
 
 				visitedUrls.add(currentUrl);
@@ -237,6 +242,25 @@ public class Crawler {
 	 * @return Page's collected contents from body section.
 	 */
 	private String collectContents(final Document page) {
-		return page.body().text();
+		StringBuilder contents = new StringBuilder();
+
+		try (Scanner sc = new Scanner(new File("nodesToIgnore.csv"));) {
+			sc.useDelimiter(",");
+
+			// Clear the DOM of tags to ignore.
+			while (sc.hasNext()) {
+				page.select(sc.next()).remove();
+			}
+		} catch (IOException e) {
+			logger.error("An error ocurred when reading .csv file {}", Arrays.toString(e.getStackTrace()));
+		}
+
+		// Add all the remaining text into contents.
+		for (Element element : page.getAllElements()) {
+			if (element.parent() == null)
+				contents.append(element.text() + " ");
+		}
+
+		return contents.toString();
 	}
 }

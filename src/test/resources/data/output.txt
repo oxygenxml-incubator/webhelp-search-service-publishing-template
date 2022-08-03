@@ -1,0 +1,142 @@
+Publishing your documentation with WebHelp Responsive using GitHub Actions How to use GitHub actions in order to build documentation and deploy it to Netlify How to use GitHub Actions to run a WebHelp Responsive transformation How to use GitHub Actions workflows in order to build documentation in WebHelp Responsive format Access "Actions" tab in your repository on GitHub Press "New workflow" button in the left side of the page Choose "Simple workflow" template and press "Configure" button Delete the whole content of the file and let's begin writing our workflow Firstly, we'll give a name for our workflow name: CI Then we have to add some triggers when workflow will be executed name: CI
+on:
+  push:
+    branches:
+      - master Let's write our job, we have to specify the name and the version of the OS name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest The first step of the job will be to checkout the current branch of repository so it can access repository files name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2 Create a file containing licensekey.txt so we can use WebHelp Responsive plugin for DITA-OT, we'll take it from repository secrets name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" > licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }} Then we have to download the engine name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" > licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Download the engine
+        run: |
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt Upon downloading unzip it by adding these commands(newline) sudo apt-get install unzip
+sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip Finally, copy the licensekey.txt file we created into root folder of engine by adding this line sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt The last step will be to build the documentation by using dita.bat. Go to oxygen-publishing-engine-3.x/bin - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin Add this line in order to get documentation built sudo ./dita --input=inputPath --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=outputPath Our final workflow should look like this name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" > licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Download the engine
+        run: |
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
+            
+      - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin
+            sudo ./dita --input=inputPath --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=outputPath Publishing documentation on Netlify How to publish documentation build on Netlify using GitHub Actions We have to create a Netlify account, visit https://www.netlify.com In the "overview" tab after creating your account, press "Add new site" button and select "Deploy manually" Add any files you want because eventually they will be changed by GitHub Actions workflow After that go back to "overview" tab and press on your site Click "site settings" Copy the "Site ID" and add it to secrets in your GitHub repository Press on your profile picture and select "User settings" Select "Applications" tab in the left side of the page Create a new access token Give it a name and add its value to the secrets in your Github repository We're done with Netlify, now go to "Actions" tab in your GitHub repository and edit the workflow you've created in the previous task Add these lines at the end of the file and type in your secrets and --dir(--dir is the website's folder, in your case "outputPath" from the previous task") - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=outputPath --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]' Save the workflow file and we're done, your workflow should look now like this name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" > licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Download the engine
+        run: |
+            sudo wget "http://mirror.oxygenxml.com/maven-nightly/com/oxygenxml/oxygen-publishing-engine-3.x/25.0-SNAPSHOT/oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip"
+            sudo apt-get install unzip
+            sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
+            
+      - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin
+            sudo ./dita --input=../../doc/flowers/flowers.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/flowers/out
+            
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=outputPath --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]' 
