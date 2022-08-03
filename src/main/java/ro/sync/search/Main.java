@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 public class Main {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
+	 * 
+	 * TODO: Remove unused code
+	 * 
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
