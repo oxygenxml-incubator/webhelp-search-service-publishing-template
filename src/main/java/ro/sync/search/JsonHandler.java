@@ -26,8 +26,10 @@ public class JsonHandler {
 		this.pages = pages;
 	}
 
-	/*
-	 * /** Creates JSON record of all the pages.
+	/**
+	 * Creates JSON record of all the pages.
+	 * 
+	 * TODO: Get methods should not trigger methods that builds something...
 	 * 
 	 * @return The json model with data prepared for Algolia.
 	 */
@@ -36,8 +38,10 @@ public class JsonHandler {
 		return this.json.toString();
 	}
 
-	/*
-	 * /** Creates JSON record of the page with given index.
+	/**
+	 * Creates JSON record of the page with given index.
+	 * 
+	 * TODO: Get methods should not trigger methods that builds something...
 	 * 
 	 * @return The json model with data prepared for Algolia.
 	 */
@@ -85,6 +89,9 @@ public class JsonHandler {
 		this.json.append("}\n");
 	}
 
+	/**
+	 * TODO private methods should have comments
+	 */
 	private void createJson() {
 		this.json = new StringBuilder();
 

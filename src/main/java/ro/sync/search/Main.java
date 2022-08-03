@@ -14,8 +14,7 @@ public class Main {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
 	 * 
-	 * TODO: Remove unused code
-	 * 
+	 * TODO: Delete this class. We have AlgoliaClient.main() with same functionality.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 

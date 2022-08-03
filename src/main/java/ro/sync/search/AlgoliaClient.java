@@ -61,6 +61,7 @@ public class AlgoliaClient {
 
 			client = DefaultSearchClient.create(appId, adminApiKey);
 		} catch (IOException e) {
+			// TODO This exception should be thrown. AlgoliaClient object is invalid without properties
 			logger.error("An error occured when trying to load properties");
 			logger.error(Arrays.toString(e.getStackTrace()));
 		}
@@ -87,6 +88,8 @@ public class AlgoliaClient {
 			logger.error("An error occured when crawling URL: {}", url);
 			logger.error(Arrays.toString(e.getStackTrace()));
 		}
+		
+		// TODO: Can be crawler object null here?
 		crawler.crawl();
 
 		index.saveObjects(crawler.getCrawledPages());
@@ -100,7 +103,9 @@ public class AlgoliaClient {
 	 */
 	public static void main(String[] args) {
 		AlgoliaClient client = new AlgoliaClient();
+		// TODO index name is not from args?
 		client.initIndex("webhelp-search-service-publishing-template");
+		// TODO What if args[0], args[1] are not suplied?!??!
 		client.addObjectToIndex(args[0], args[1]);
 	}
 }

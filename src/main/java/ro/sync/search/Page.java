@@ -37,6 +37,9 @@ public class Page {
 
 	/**
 	 * Constructor with no parameters.
+	 * 
+	 * TODO: Keep only relevant constructors. Is it valid an object with null or EMPTY URL?
+	 * 
 	 */
 	public Page() {
 		this("", new ArrayList<>());
