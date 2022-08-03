@@ -1,8 +1,11 @@
 package ro.sync.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -157,7 +160,8 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		assertEquals("Page Two", crawler.getCrawledPages().get(0).getTitle());
+		assertEquals("Publishing your documentation with WebHelp Responsive using GitHub Actions",
+				crawler.getCrawledPages().get(0).getTitle());
 	}
 
 	/**
@@ -183,7 +187,8 @@ class CrawlerTest {
 	/**
 	 * Tests if contents are extracted correctly.
 	 * 
-	 * @throws IOException when a problem with reading HTML code occurred.
+	 * @throws IOException when a problem with reading HTML code or output.txt
+	 *                     occurred.
 	 */
 	@Test
 	void getContentsTest() throws IOException {
@@ -192,6 +197,16 @@ class CrawlerTest {
 
 		crawler.crawl();
 
-		assertEquals("Lorem Ipsum", crawler.getCrawledPages().get(0).getContents().toString());
+		StringBuilder expected = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/data/output.txt"))) {
+			String line = reader.readLine();
+
+			while (line != null) {
+				expected.append(line + "\n");
+				line = reader.readLine();
+			}
+		}
+
+		assertTrue(expected.compareTo(new StringBuilder(crawler.getCrawledPages().get(0).getContents())) == 1);
 	}
 }
