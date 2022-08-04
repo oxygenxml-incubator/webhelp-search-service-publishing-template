@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map>
+   <appContext helpID="publishing_your_documentation_with_webhelp_responsive_using_github_actions"
+               path="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html"/>
+   <appContext helpID="how_to_use_github_actions_to_run_a_webhelp_responsive_transformation"
+               path="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html#how_to_use_github_actions_to_run_a_webhelp_responsive_transformation"/>
+   <appContext helpID="publishing_documentation_on_netlify"
+               path="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html#publishing_documentation_on_netlify"/>
+   <appContext helpID="crawling_data_and_use_it_with_algolia"
+               path="topics/crawling_data_and_use_it_with_algolia.html"/>
+   <appContext helpID="html_crawler"
+               path="topics/crawling_data_and_use_it_with_algolia.html#html_crawler"/>
+   <appContext helpID="algolia_search"
+               path="topics/crawling_data_and_use_it_with_algolia.html#algolia_search"/>
+</map>
