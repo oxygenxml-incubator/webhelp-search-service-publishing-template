@@ -1,13 +1,13 @@
 const path = require('path');
 
 // Use for production.
-const distFolder = path.resolve(__dirname, '../templates/webhelp-documentation-template/js');
+// const distFolder = path.resolve(__dirname, '../templates/webhelp-documentation-template/js');
 // Uncomment to use for development.
-// const distFolder = path.resolve(__dirname, '../doc/project-documentation/out/webhelp-responsive/oxygen-webhelp/template/js');
+const distFolder = path.resolve(__dirname, '../doc/project-documentation/out/webhelp-responsive/oxygen-webhelp/template/js');
 
 module.exports = {
 	entry: { //location of your main js file
-		algoliaEs6: './app/main.js'
+		algolia: './app/main.js'
 	},
     output: {
         path: distFolder,
