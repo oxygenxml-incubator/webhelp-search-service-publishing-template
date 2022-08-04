@@ -54,6 +54,7 @@ public class AlgoliaClient {
 
 			// load a properties file
 			properties.load(input);
+			
 			appId = properties.getProperty("algolia.appId");
 			adminApiKey = properties.getProperty("algolia.adminApiKey");
 
@@ -95,10 +96,14 @@ public class AlgoliaClient {
 		try {
 			Crawler crawler = new Crawler(url, baseUrl);
 			crawler.crawl();
+			// TODO: clear index before add new Pages
 			index.saveObjects(crawler.getCrawledPages());
 			logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 					index.getUrlEncodedIndexName());
 		} catch (MalformedURLException e) {
+			// TODO: Handle Exception twice
+			// TODO: logger.error(String, Throable);
+			// logger.error(String.format(String, args), Throable);
 			logger.error("An error occured when crawling URL: {}", url);
 			logger.error(Arrays.toString(e.getStackTrace()));
 			throw e;
@@ -116,7 +121,7 @@ public class AlgoliaClient {
 			client = new AlgoliaClient();
 			// TODO Is it better to call this method from constructor?
 			
-			// TODO Why webhelp-search-service-publishing-template is hardcoded?
+			// TODO Why webhelp-search-service-publishing-template is hardcoded? Add to args
 			client.initIndex("webhelp-search-service-publishing-template");
 
 			
@@ -124,9 +129,11 @@ public class AlgoliaClient {
 				logger.error("There are no arguments passed to main function!");
 				
 				// TODO print how to use a program
+				// --url=URL --baseURL=BASEURL --indexName=name 
 				// Print git in a command line for instance 
-			} else
+			} else {
 				client.addObjectToIndex(args[0], args[1]);
+			}
 
 		} catch (IOException e) {
 			logger.error("An error occurred when initializing AlgoliaClient, check your properties file! {}",

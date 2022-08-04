@@ -156,7 +156,7 @@ public class Crawler {
 
 			} catch (IOException e) {
 				// TODO Is this log correct?
-				logger.error("An error with reading HTML file occured! {}", Arrays.toString(e.getStackTrace()));
+				logger.error("An error with reading HTML file occured!", e);
 				throw e;
 			}
 		}
@@ -251,6 +251,7 @@ public class Crawler {
 		
 		// TODO nodesToIgnore.csv can be a constant
 		// TODO read this file once per program execution
+		// TODO Use StringTokenizer if you cannot reset scanner
 		try (Scanner sc = new Scanner(new File("nodesToIgnore.csv"));) {
 			sc.useDelimiter(",");
 
@@ -265,6 +266,8 @@ public class Crawler {
 		// Add all the remaining text into contents.
 		// TODO Are page.getAllElements() in document order?!
 		// TODO page.body.text() is better?!
+		
+		// TODO Try wyth a recursive method.
 		for (Element element : page.getAllElements()) {
 			if (element.parent() == null)
 				contents.append(element.text() + " ");
