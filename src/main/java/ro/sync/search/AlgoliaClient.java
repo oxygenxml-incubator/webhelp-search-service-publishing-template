@@ -59,6 +59,9 @@ public class AlgoliaClient {
 
 			client = DefaultSearchClient.create(appId, adminApiKey);
 		} catch (IOException e) {
+			// TODO use logger(String, Throwable) signature. It is simplest
+			
+			// TODO Why you handle this exception twice?
 			logger.error("An error occured when trying to load properties");
 			logger.error(Arrays.toString(e.getStackTrace()));
 			throw e;
@@ -111,11 +114,18 @@ public class AlgoliaClient {
 		AlgoliaClient client;
 		try {
 			client = new AlgoliaClient();
+			// TODO Is it better to call this method from constructor?
+			
+			// TODO Why webhelp-search-service-publishing-template is hardcoded?
 			client.initIndex("webhelp-search-service-publishing-template");
 
-			if (args.length < 2)
+			
+			if (args.length < 2) { 
 				logger.error("There are no arguments passed to main function!");
-			else
+				
+				// TODO print how to use a program
+				// Print git in a command line for instance 
+			} else
 				client.addObjectToIndex(args[0], args[1]);
 
 		} catch (IOException e) {

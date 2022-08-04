@@ -38,6 +38,8 @@ public class Page {
 	/**
 	 * Constructor with title and keywords parameters.
 	 * 
+	 * TODO: This constructor is not used
+	 * 
 	 * @param title is the page's title from metadata.
 	 * @param url   is the page's url
 	 */

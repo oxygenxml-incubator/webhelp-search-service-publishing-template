@@ -40,7 +40,7 @@ public class Crawler {
 	private String baseUrl;
 
 	/**
-	 * Represents the state of URL. If URL has "http:// or "https://" protcol then
+	 * Represents the state of URL. If URL has "http:// or "https://" protocol then
 	 * it's a website, if "file://" then it's a file.
 	 */
 	private boolean isFile;
@@ -148,12 +148,14 @@ public class Crawler {
 		while (!queue.isEmpty()) {
 			try {
 				String currentUrl = queue.remove(0);
+				// TODO Read HTML file twice. Read file operations are time consuming
 				findUrls(readHtml(currentUrl), currentUrl);
-
+				
 				if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
 					collectData(readHtml(currentUrl));
 
 			} catch (IOException e) {
+				// TODO Is this log correct?
 				logger.error("An error with reading HTML file occured! {}", Arrays.toString(e.getStackTrace()));
 				throw e;
 			}
@@ -224,6 +226,7 @@ public class Crawler {
 	 * @return Short description of the page
 	 */
 	private String collectShortDescription(final Document page) {
+		// TODO: Make this constant
 		return page.select("p[class=\"- topic/shortdesc shortdesc\"]").text();
 	}
 
@@ -245,7 +248,9 @@ public class Crawler {
 	 */
 	private String collectContents(final Document page) {
 		StringBuilder contents = new StringBuilder();
-
+		
+		// TODO nodesToIgnore.csv can be a constant
+		// TODO read this file once per program execution
 		try (Scanner sc = new Scanner(new File("nodesToIgnore.csv"));) {
 			sc.useDelimiter(",");
 
@@ -258,6 +263,8 @@ public class Crawler {
 		}
 
 		// Add all the remaining text into contents.
+		// TODO Are page.getAllElements() in document order?!
+		// TODO page.body.text() is better?!
 		for (Element element : page.getAllElements()) {
 			if (element.parent() == null)
 				contents.append(element.text() + " ");

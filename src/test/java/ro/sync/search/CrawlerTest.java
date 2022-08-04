@@ -191,11 +191,13 @@ class CrawlerTest {
 	 */
 	@Test
 	void getContentsTest() throws IOException {
-		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+		Crawler crawler = new Crawler(
+				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
 		crawler.crawl();
-
+		
+		// TODO: Use a string inside test. It is easier to read
 		StringBuilder expected = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/data/output.txt"))) {
 			String line = reader.readLine();
