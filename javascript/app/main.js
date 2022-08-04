@@ -8,24 +8,20 @@ if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
 }
 
 // Connect to Algolia App with Search-only API key.
+const algoliasearch = require('algoliasearch');
 const searchClient = algoliasearch(
   "40V95VH5YU",
   "8e4e1e3ae2fc1931b0a5f5d3c8f7544d"
 );
 
-// Connect Instant Search to needed index.
-const search = instantsearch({
-  indexName: "webhelp-search-service-publishing-template",
-  searchClient,
-  routing: true,
-});
+const indexName = "webhelp-search-service-publishing-template"
 
 // Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
 const algoliaSearch = {
   // Method that is called when Submit is performed.
   performSearchOperation(query, successHandler, errorHandler) {
     // Search for hits for the given query.
-    const result = searchClient.initIndex(search.indexName).search(query);
+    const result = searchClient.initIndex(indexName).search(query);
     result
       .then((obj) => {
         // Extract data from Promise and create a SearchMeta object with extracted data.
@@ -68,7 +64,7 @@ const algoliaSearch = {
   // Actions to do when page of results is changed.
   onPageChangedHandler(pageToShow, query, successHandler, searchFailed) {
     // Get results on the next page using the given by user query.
-    const result = searchClient.initIndex(search.indexName).search(query, {
+    const result = searchClient.initIndex(indexName).search(query, {
       page: pageToShow,
     });
 
@@ -114,6 +110,15 @@ if (WebHelpAPI.setCustomSearchEngine) {
   WebHelpAPI.setCustomSearchEngine(algoliaSearch);
 }
 
+const navigateToSearch = (state) => {
+  const path =
+    document.querySelector('meta[name="wh-path2root"]').content +
+    "search.html?searchQuery=" +
+    state.collections[0].items[state.activeItemId].title;
+
+  window.location = path;
+};
+
 // If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
 if (document.getElementById("autocomplete")) {
   autocomplete({
@@ -121,27 +126,24 @@ if (document.getElementById("autocomplete")) {
     container: "#autocomplete",
     placeholder: "Search",
 
-    // Actions to perform when user submits the query.
-    onSubmit(params) {
-      // Check if it's not empty
-      if (params.state.query != "") {
-        // Otherwise send the user to search page with given query.
-        const path =
-          document.querySelector('meta[name="wh-path2root"]').content +
-          "search.html?searchQuery=" +
-          params.state.query;
-        window.location = path;
-      }
+    initialState: {
+      query: window.location.href.includes('=') ? decodeURI(window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.length)) : "",
     },
 
-    // Actions to perform when search's state has changed.
-    onStateChange(params) {
-      // If an item from suggestions is selected then put it into query.
-      if (params.state.activeItemId != null) {
-        params.state.completion =
-          params.state.collections[0].items[params.state.activeItemId].title;
-        params.state.query =
-          params.state.collections[0].items[params.state.activeItemId].title;
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      // Check if it's not empty
+      if (state.query != "") {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+          window.location = path;
+        } else {
+          navigateToSearch(state);
+        }
       }
     },
 
@@ -160,7 +162,7 @@ if (document.getElementById("autocomplete")) {
               searchClient,
               queries: [
                 {
-                  indexName: search.indexName,
+                  indexName: indexName,
                   query,
                   params: {
                     hitsPerPage: 5,
@@ -173,8 +175,13 @@ if (document.getElementById("autocomplete")) {
           },
           // HTML template that is used in order to display suggestions.
           templates: {
-            item({ item, components, html }) {
-              return html`<div class="aa-ItemWrapper">
+            item({ item, components, html, state }) {
+              return html`<div
+                class="aa-ItemWrapper"
+                onclick="${() => {
+                  navigateToSearch(state);
+                }}"
+              >
                 <div class="aa-ItemContent">
                   <div class="aa-ItemContentBody">
                     <div class="aa-ItemContentTitle">
@@ -200,14 +207,7 @@ if (document.getElementById("autocomplete")) {
     // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
     navigator: {
       navigate({ state }) {
-        state.completion = state.query;
-        if (state.query != "") {
-          const path =
-            document.querySelector('meta[name="wh-path2root"]').content +
-            "search.html?searchQuery=" +
-            state.query;
-          window.location = path;
-        }
+        navigateToSearch(state);
       },
     },
   });
