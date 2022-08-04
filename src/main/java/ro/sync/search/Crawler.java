@@ -136,8 +136,10 @@ public class Crawler {
 	 * Using the given url in the constructor it visits every resource that haves
 	 * the same host and crawls its data.
 	 * 
+	 * @throws IOException if a problem with reading HTML File occured.
+	 * 
 	 */
-	public void crawl() {
+	public void crawl() throws IOException {
 		visitedUrls.clear();
 
 		// Add to the queue the starting url so it starts with it
@@ -152,8 +154,8 @@ public class Crawler {
 					collectData(readHtml(currentUrl));
 
 			} catch (IOException e) {
-				e.printStackTrace();
-				logger.error("An error with reading HTML file occured!");
+				logger.error("An error with reading HTML file occured! {}", Arrays.toString(e.getStackTrace()));
+				throw e;
 			}
 		}
 
@@ -168,7 +170,7 @@ public class Crawler {
 	 * @throws IOException when a problem with reading the HTML code occurred.
 	 */
 	Document readHtml(final String url) throws IOException {
-		return this.isFile ? Jsoup.parse(new File(url.substring(6)), "UTF-8") : Jsoup.connect(url).get();
+		return this.isFile ? Jsoup.parse(new File(url.substring(5)), "UTF-8") : Jsoup.connect(url).get();
 	}
 
 	/**

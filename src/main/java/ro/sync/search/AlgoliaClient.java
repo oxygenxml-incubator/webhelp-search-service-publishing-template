@@ -27,10 +27,6 @@ public class AlgoliaClient {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(AlgoliaClient.class);
 	/**
-	 * Crawler that crawls a URL and extracts data from it.
-	 */
-	private Crawler crawler;
-	/**
 	 * Algolia application's id.
 	 */
 	private String appId;
@@ -64,7 +60,6 @@ public class AlgoliaClient {
 
 			client = DefaultSearchClient.create(appId, adminApiKey);
 		} catch (IOException e) {
-			// TODO This exception should be thrown. AlgoliaClient object is invalid without properties
 			logger.error("An error occured when trying to load properties");
 			logger.error(Arrays.toString(e.getStackTrace()));
 			throw e;
@@ -91,22 +86,21 @@ public class AlgoliaClient {
 	/**
 	 * Adds crawled pages from Crawler object to index.
 	 * 
-	 * @throws MalformedURLException if crawler was failed to initiate.
+	 * @throws IOException if Crawler was failed to initiate or the HTML File
+	 *                     couldn't be read.
 	 */
-	public void addObjectToIndex(final String url, final String baseUrl) throws MalformedURLException {
+	public void addObjectToIndex(final String url, final String baseUrl) throws IOException {
 		try {
-			crawler = new Crawler(url, baseUrl);
+			Crawler crawler = new Crawler(url, baseUrl);
 			crawler.crawl();
+			index.saveObjects(crawler.getCrawledPages());
+			logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+					index.getUrlEncodedIndexName());
 		} catch (MalformedURLException e) {
 			logger.error("An error occured when crawling URL: {}", url);
 			logger.error(Arrays.toString(e.getStackTrace()));
 			throw e;
 		}
-
-		// TODO: Can be crawler object null here?
-		index.saveObjects(crawler.getCrawledPages());
-		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
-				index.getUrlEncodedIndexName());
 	}
 
 	/**
@@ -120,8 +114,7 @@ public class AlgoliaClient {
 			client = new AlgoliaClient();
 			client.initIndex("webhelp-search-service-publishing-template");
 
-			// TODO What if args[0], args[1] are not suplied?!??!
-			if (args.length == 0)
+			if (args.length < 2)
 				logger.error("There are no arguments passed to main function!");
 			else
 				client.addObjectToIndex(args[0], args[1]);

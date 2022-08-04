@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,11 @@ class CrawlerTest {
 	 * Tests the case when an HTML page depends on another one. For example
 	 * index.html references to other.html and vice versa.
 	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initialization of URL or reading HTML
+	 *                     File occurred.
 	 */
 	@Test
-	void recursionTest() throws MalformedURLException {
+	void recursionTest() throws IOException {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/recursion/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/recursion/").toUri().toURL().toString(), true);
 		crawler.crawl();
@@ -44,11 +43,11 @@ class CrawlerTest {
 	/**
 	 * Tests the case when tags in HTML code are written on multiple lines.
 	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initialization of URL or reading HTML
+	 *                     File occurred.
 	 */
 	@Test
-	void multipleLinesTest() throws MalformedURLException {
+	void multipleLinesTest() throws IOException {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 		crawler.crawl();
@@ -64,11 +63,11 @@ class CrawlerTest {
 	 * href should not be added to visited links because it is out of parents'
 	 * bound.
 	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initialization of URL or reading HTML
+	 *                     File occurred.
 	 */
 	@Test
-	void relativeHrefTest() throws MalformedURLException {
+	void relativeHrefTest() throws IOException {
 		Crawler crawler = new Crawler(
 				Path.of("src/test/resources/relativeHref/index/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/relativeHref/index/").toUri().toURL().toString(), true);
