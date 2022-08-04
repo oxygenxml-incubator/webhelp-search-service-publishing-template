@@ -24,6 +24,16 @@ jobs:
             sudo unzip oxygen-publishing-engine-3.x-25.0-SNAPSHOT-package-full.zip
             sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
             
+      - name: Build Javascript Bundle
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - run: |
+          cd javascript
+          npm install
+          npm run build
+            
       - name: Build WebHelp Responsive
         run: |
             cd oxygen-publishing-engine-3.x/bin
