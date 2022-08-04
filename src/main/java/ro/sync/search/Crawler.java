@@ -60,6 +60,15 @@ public class Crawler {
 	 * List that stores all crawled pages
 	 */
 	private List<Page> pages = new ArrayList<>();
+	/**
+	 * Class and attribute that represents short description in DOM.
+	 */
+	final String SHORT_DESCRIPTION_ELEMENT = "p[class=\"- topic/shortdesc shortdesc\"]";
+	/**
+	 * File that represents class and attributes that should be ignored for
+	 * collection.
+	 */
+	static final String NODES_TO_IGNORE = "nodesToIgnore.csv";
 
 	/**
 	 * Constructor with url and baseUrl parameters.
@@ -146,19 +155,12 @@ public class Crawler {
 		queue.add(url);
 
 		while (!queue.isEmpty()) {
-			try {
-				String currentUrl = queue.remove(0);
-				// TODO Read HTML file twice. Read file operations are time consuming
-				findUrls(readHtml(currentUrl), currentUrl);
-				
-				if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
-					collectData(readHtml(currentUrl));
+			String currentUrl = queue.remove(0);
+			Document page = readHtml(currentUrl);
+			findUrls(page, currentUrl);
 
-			} catch (IOException e) {
-				// TODO Is this log correct?
-				logger.error("An error with reading HTML file occured!", e);
-				throw e;
-			}
+			if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
+				collectData(page);
 		}
 
 		logger.info("The crawling went successfully! {} page(s) has/have been crawled!", getCrawledPages().size());
@@ -226,8 +228,7 @@ public class Crawler {
 	 * @return Short description of the page
 	 */
 	private String collectShortDescription(final Document page) {
-		// TODO: Make this constant
-		return page.select("p[class=\"- topic/shortdesc shortdesc\"]").text();
+		return page.select(SHORT_DESCRIPTION_ELEMENT).text();
 	}
 
 	/**
@@ -248,11 +249,10 @@ public class Crawler {
 	 */
 	private String collectContents(final Document page) {
 		StringBuilder contents = new StringBuilder();
-		
-		// TODO nodesToIgnore.csv can be a constant
+
 		// TODO read this file once per program execution
 		// TODO Use StringTokenizer if you cannot reset scanner
-		try (Scanner sc = new Scanner(new File("nodesToIgnore.csv"));) {
+		try (Scanner sc = new Scanner(new File(NODES_TO_IGNORE));) {
 			sc.useDelimiter(",");
 
 			// Clear the DOM of tags to ignore.
@@ -266,7 +266,7 @@ public class Crawler {
 		// Add all the remaining text into contents.
 		// TODO Are page.getAllElements() in document order?!
 		// TODO page.body.text() is better?!
-		
+
 		// TODO Try wyth a recursive method.
 		for (Element element : page.getAllElements()) {
 			if (element.parent() == null)

@@ -3,7 +3,6 @@ package ro.sync.search;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -48,42 +47,28 @@ public class AlgoliaClient {
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
-	public AlgoliaClient() throws IOException {
+	public AlgoliaClient(final String indexName) throws IOException {
 		try (InputStream input = new FileInputStream("config.properties")) {
 			Properties properties = new Properties();
 
 			// load a properties file
 			properties.load(input);
-			
+
 			appId = properties.getProperty("algolia.appId");
 			adminApiKey = properties.getProperty("algolia.adminApiKey");
 
 			client = DefaultSearchClient.create(appId, adminApiKey);
-		} catch (IOException e) {
-			// TODO use logger(String, Throwable) signature. It is simplest
-			
-			// TODO Why you handle this exception twice?
-			logger.error("An error occured when trying to load properties");
-			logger.error(Arrays.toString(e.getStackTrace()));
-			throw e;
-		}
-	}
 
-	/**
-	 * Initialize a new index containing all the pages and sets it to "index"
-	 * property. If indexName exists then it selects it without recreating it.
-	 * 
-	 * @param indexName is the name to be assigned to index.
-	 */
-	public void initIndex(final String indexName) {
-		index = client.initIndex(indexName, Page.class);
-		index.setSettings(new IndexSettings()
-				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
-				.setCustomRanking(
-						Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
-				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
-				.setAttributesToSnippet(Arrays.asList("contents:30")).setAttributesForFaceting(Arrays.asList("title")));
-		logger.info("Index {} succesfully created/selected!", indexName);
+			index = client.initIndex(indexName, Page.class);
+			index.setSettings(new IndexSettings()
+					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
+					.setCustomRanking(
+							Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
+					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
+					.setAttributesToSnippet(Arrays.asList("contents:30"))
+					.setAttributesForFaceting(Arrays.asList("title")));
+			logger.info("Index {} succesfully created/selected!", indexName);
+		}
 	}
 
 	/**
@@ -93,21 +78,13 @@ public class AlgoliaClient {
 	 *                     couldn't be read.
 	 */
 	public void addObjectToIndex(final String url, final String baseUrl) throws IOException {
-		try {
-			Crawler crawler = new Crawler(url, baseUrl);
-			crawler.crawl();
-			// TODO: clear index before add new Pages
-			index.saveObjects(crawler.getCrawledPages());
-			logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
-					index.getUrlEncodedIndexName());
-		} catch (MalformedURLException e) {
-			// TODO: Handle Exception twice
-			// TODO: logger.error(String, Throable);
-			// logger.error(String.format(String, args), Throable);
-			logger.error("An error occured when crawling URL: {}", url);
-			logger.error(Arrays.toString(e.getStackTrace()));
-			throw e;
-		}
+		Crawler crawler = new Crawler(url, baseUrl);
+		crawler.crawl();
+
+		index.clearObjects();
+		index.saveObjects(crawler.getCrawledPages());
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+				index.getUrlEncodedIndexName());
 	}
 
 	/**
@@ -118,26 +95,20 @@ public class AlgoliaClient {
 	public static void main(String[] args) {
 		AlgoliaClient client;
 		try {
-			client = new AlgoliaClient();
-			// TODO Is it better to call this method from constructor?
-			
-			// TODO Why webhelp-search-service-publishing-template is hardcoded? Add to args
-			client.initIndex("webhelp-search-service-publishing-template");
+			client = new AlgoliaClient(args[0]);
 
-			
-			if (args.length < 2) { 
+			if (args.length < 3) {
 				logger.error("There are no arguments passed to main function!");
-				
+
 				// TODO print how to use a program
-				// --url=URL --baseURL=BASEURL --indexName=name 
-				// Print git in a command line for instance 
+				// --url=URL --baseURL=BASEURL --indexName=name
+				// Print git in a command line for instance
 			} else {
-				client.addObjectToIndex(args[0], args[1]);
+				client.addObjectToIndex(args[1], args[2]);
 			}
 
 		} catch (IOException e) {
-			logger.error("An error occurred when initializing AlgoliaClient, check your properties file! {}",
-					Arrays.asList(e.getStackTrace()));
+			logger.error("An error occurred when initializing AlgoliaClient, check your properties file!", e);
 		}
 	}
 }
