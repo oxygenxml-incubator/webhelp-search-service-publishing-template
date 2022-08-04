@@ -46,31 +46,10 @@
 		          <id>report</id>
 		          <goals>
 		            <goal>report</goal>
-		          </goals>
-		          <configuration>
-		            <formats>
-		              <format>XML</format>
-		            </formats>
-		          </configuration>
+		          </goals>		          
 		        </execution>
 		      </executions>
 		    </plugin>
-		    
-		      <plugin>
-		   	    <groupId>org.sonarsource.scanner.maven</groupId>
-		       	<artifactId>sonar-maven-plugin</artifactId>
-		       	<version>3.7.0.1746</version>
-		       	<executions>
-		       		<execution>
-		       			<id>sonar</id>
-		       			<phase>prepare-package</phase>
-		       			<goals>
-		       				<goal>sonar</goal>
-		       			</goals>
-		       		</execution>
-		       	</executions>        	
-		     </plugin>
-		    
 		</plugins>
 	</build>
 
