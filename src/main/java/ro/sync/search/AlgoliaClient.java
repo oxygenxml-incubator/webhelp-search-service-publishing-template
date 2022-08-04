@@ -37,6 +37,7 @@ public class AlgoliaClient {
 	 * Client that performs operations such as indices management.
 	 */
 	private SearchClient client;
+	
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
