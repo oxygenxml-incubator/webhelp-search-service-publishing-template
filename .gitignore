@@ -4,7 +4,6 @@
 .settings/
 /target/
 
-
 # dependencies
 /react/node_modules
 /react/.pnp
@@ -27,3 +26,6 @@
 /reactnpm-debug.log*
 /reactyarn-debug.log*
 /reactyarn-error.log*
+
+/doc/project-documentation/out/
+/javascript/node_modules/
