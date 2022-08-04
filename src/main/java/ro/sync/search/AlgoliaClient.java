@@ -19,7 +19,6 @@ import com.algolia.search.models.settings.IndexSettings;
  * Class that handles Algolia API calls.
  * 
  * @author Artiom Bozieac
- *
  */
 public class AlgoliaClient {
 	/**
