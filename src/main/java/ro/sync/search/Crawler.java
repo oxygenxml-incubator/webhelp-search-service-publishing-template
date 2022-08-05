@@ -70,6 +70,10 @@ public class Crawler {
 	 * collection.
 	 */
 	static final String NODES_TO_IGNORE_PATH = "nodesToIgnore.csv";
+	/**
+	 * A list of strings that represents selectors of elements that should be ignore
+	 * during the crawling process.
+	 */
 	private final List<String> nodesToIgnore = new ArrayList<>();
 
 	/**
