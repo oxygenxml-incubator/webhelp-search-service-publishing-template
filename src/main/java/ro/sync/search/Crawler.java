@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -63,7 +62,7 @@ public class Crawler {
 	/**
 	 * Class and attribute that represents short description in DOM.
 	 */
-	final String SHORT_DESCRIPTION_ELEMENT = "p[class=\"- topic/shortdesc shortdesc\"]";
+	static final String SHORT_DESCRIPTION_ELEMENT = "p[class=\"- topic/shortdesc shortdesc\"]";
 	/**
 	 * File that represents class and attributes that should be ignored for
 	 * collection.
@@ -189,17 +188,14 @@ public class Crawler {
 		Elements links = page.select("a");
 		// Search for ".html" hrefs
 		for (Element link : links) {
-			if (!link.attr("href").endsWith(".html"))
-				continue;
+			if (link.attr("href").endsWith(".html")) {
 
-			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
+				String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
-			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
-				if (currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))
-					continue;
-
-				visitedUrls.add(currentUrl);
-				queue.add(currentUrl);
+				if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
+					visitedUrls.add(currentUrl);
+					queue.add(currentUrl);
+				}
 			}
 		}
 	}
@@ -250,8 +246,6 @@ public class Crawler {
 	private String collectContents(final Document page) {
 		StringBuilder contents = new StringBuilder();
 
-		// TODO read this file once per program execution
-		// TODO Use StringTokenizer if you cannot reset scanner
 		try (Scanner sc = new Scanner(new File(NODES_TO_IGNORE));) {
 			sc.useDelimiter(",");
 
@@ -260,16 +254,13 @@ public class Crawler {
 				page.select(sc.next()).remove();
 			}
 		} catch (IOException e) {
-			logger.error("An error ocurred when reading .csv file {}", Arrays.toString(e.getStackTrace()));
+			logger.error("An error ocurred when reading .csv file", e);
 		}
 
 		// Add all the remaining text into contents.
-		// TODO Are page.getAllElements() in document order?!
-		// TODO page.body.text() is better?!
-
 		// TODO Try wyth a recursive method.
-		for (Element element : page.getAllElements()) {
-			if (element.parent() == null)
+		for (Element element : page.select("body *")) {
+			if (element.parent() == page.select("body").get(0))
 				contents.append(element.text() + " ");
 		}
 

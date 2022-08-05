@@ -1,6 +1,5 @@
 package ro.sync.search;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,18 +33,6 @@ public class Page {
 	 * Page's collected contents from body section.
 	 */
 	private String contents;
-
-	/**
-	 * Constructor with title and keywords parameters.
-	 * 
-	 * TODO: This constructor is not used
-	 * 
-	 * @param title is the page's title from metadata.
-	 * @param url   is the page's url
-	 */
-	public Page(final String title, final String url) {
-		this(title, "", new ArrayList<>(), "", url);
-	}
 
 	/**
 	 * Constructor with title, keywords, contents and url parameters.

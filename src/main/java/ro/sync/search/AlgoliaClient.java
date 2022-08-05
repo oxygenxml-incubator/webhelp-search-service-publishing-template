@@ -51,7 +51,7 @@ public class AlgoliaClient {
 		try (InputStream input = new FileInputStream("config.properties")) {
 			Properties properties = new Properties();
 
-			// load a properties file
+			// Load a properties file.
 			properties.load(input);
 
 			appId = properties.getProperty("algolia.appId");
@@ -64,9 +64,10 @@ public class AlgoliaClient {
 					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
 					.setCustomRanking(
 							Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
-					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
+					.setAttributesToHighlight(Arrays.asList("contents"))
 					.setAttributesToSnippet(Arrays.asList("contents:30"))
 					.setAttributesForFaceting(Arrays.asList("title")));
+
 			logger.info("Index {} succesfully created/selected!", indexName);
 		}
 	}
@@ -77,7 +78,7 @@ public class AlgoliaClient {
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
-	public void addObjectToIndex(final String url, final String baseUrl) throws IOException {
+	public void populateIndex(final String url, final String baseUrl) throws IOException {
 		Crawler crawler = new Crawler(url, baseUrl);
 		crawler.crawl();
 
@@ -104,11 +105,11 @@ public class AlgoliaClient {
 				// --url=URL --baseURL=BASEURL --indexName=name
 				// Print git in a command line for instance
 			} else {
-				client.addObjectToIndex(args[1], args[2]);
+				client.populateIndex(args[1], args[2]);
 			}
 
 		} catch (IOException e) {
-			logger.error("An error occurred when initializing AlgoliaClient, check your properties file!", e);
+			logger.error("An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!", e);
 		}
 	}
 }
