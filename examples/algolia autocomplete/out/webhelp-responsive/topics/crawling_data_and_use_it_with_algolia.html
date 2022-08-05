@@ -1,158 +1,403 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" data-whc_version="25.0">
-    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="description" content="How to use HTML crawler and why do we need it for Algolia? Usually we don't use HTML crawler separately but in case you would like to, here are all the possible methods! We created our HTML crawler ..."/><meta name="DC.rights.owner" content="(C) Copyright 2022"/><meta name="copyright" content="(C) Copyright 2022"/><meta name="generator" content="DITA-OT"/><meta name="DC.type" content="dita"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="crawling_data_and_use_it_with_algolia"/><title>Crawling data and use it with Algolia</title><!--  Generated with Oxygen version 25.0, build number 2022080217.  --><meta name="wh-path2root" content="../"/><meta name="wh-toc-id" content="crawling_data_and_use_it_with_algolia-d160e42"/><meta name="wh-source-relpath" content="topics/crawling_data_and_use_it_with_algolia.dita"/><meta name="wh-out-relpath" content="topics/crawling_data_and_use_it_with_algolia.html"/>
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  lang="en"
+  data-whc_version="25.0"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="How to use HTML crawler and why do we need it for Algolia? Usually we don't use HTML crawler separately but in case you would like to, here are all the possible methods! We created our HTML crawler ..."
+    />
+    <meta name="DC.rights.owner" content="(C) Copyright 2022" />
+    <meta name="copyright" content="(C) Copyright 2022" />
+    <meta name="generator" content="DITA-OT" />
+    <meta name="DC.type" content="dita" />
+    <meta name="DC.format" content="HTML5" />
+    <meta
+      name="DC.identifier"
+      content="crawling_data_and_use_it_with_algolia"
+    />
+    <title>Crawling data and use it with Algolia</title>
+    <!--  Generated with Oxygen version 25.0, build number 2022080217.  -->
+    <meta name="wh-path2root" content="../" />
+    <meta
+      name="wh-toc-id"
+      content="crawling_data_and_use_it_with_algolia-d160e42"
+    />
+    <meta
+      name="wh-source-relpath"
+      content="topics/crawling_data_and_use_it_with_algolia.dita"
+    />
+    <meta
+      name="wh-out-relpath"
+      content="topics/crawling_data_and_use_it_with_algolia.html"
+    />
 
-    <link rel="stylesheet" type="text/css" href="../oxygen-webhelp/app/commons.css?buildId=2022080217"/>
-    <link rel="stylesheet" type="text/css" href="../oxygen-webhelp/app/topic.css?buildId=2022080217"/>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../oxygen-webhelp/app/commons.css?buildId=2022080217"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../oxygen-webhelp/app/topic.css?buildId=2022080217"
+    />
 
     <script>
-        let oxy_webhelp_navlinks = {};
+      let oxy_webhelp_navlinks = {};
     </script>
     <script src="../oxygen-webhelp/app/options/properties.js?buildId=20220804174513"></script>
     <script src="../oxygen-webhelp/app/localization/strings.js?buildId=2022080217"></script>
     <script src="../oxygen-webhelp/app/search/index/keywords.js?buildId=20220804174513"></script>
     <script src="../oxygen-webhelp/app/commons.js?buildId=2022080217"></script>
     <script src="../oxygen-webhelp/app/topic.js?buildId=2022080217"></script>
-<link rel="stylesheet" type="text/css" href="../oxygen-webhelp/template/style.css?buildId=2022080217"/>
-    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js" integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js" integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
-    <script src="../oxygen-webhelp/template/js/algolia.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../oxygen-webhelp/template/style.css?buildId=2022080217"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"
+      integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js"
+      integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM="
+      crossorigin="anonymous"
+    ></script>
   </head>
 
-    <body class="wh_topic_page frmBody">
-        <a href="#wh_topic_body" class="sr-only sr-only-focusable">
-            Jump to main content
-        </a>
-        
-        
-        
-        
-        <header class="navbar navbar-default wh_header">
-    <div class="container-fluid">
-        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-dark">
-            <div class="wh_logo_and_publication_title_container">
-                <div class="wh_logo_and_publication_title">
-                    
-                    <a href="../index.html" class=" wh_logo d-none d-sm-block "><img src="../oxygen-webhelp\template\img/logo.png" alt="Search service's documenation"/></a>
-                    <div class=" wh_publication_title "><a href="../index.html"><span class="title">Search service's documenation</span></a></div>
-                    
-                </div>
-                
-                <button type="button" data-target="#wh_top_menu_and_indexterms_link" id="wh_menu_mobile_button" data-toggle="collapse" class="navbar-toggler collapsed wh_toggle_button" aria-expanded="false" aria-label="Toggle menu" aria-controls="wh_top_menu_and_indexterms_link">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+  <body class="wh_topic_page frmBody">
+    <a href="#wh_topic_body" class="sr-only sr-only-focusable">
+      Jump to main content
+    </a>
+
+    <header class="navbar navbar-default wh_header">
+      <div class="container-fluid">
+        <div
+          class="wh_header_flex_container navbar-nav navbar-expand-md navbar-dark"
+        >
+          <div class="wh_logo_and_publication_title_container">
+            <div class="wh_logo_and_publication_title">
+              <a href="../index.html" class="wh_logo d-none d-sm-block"
+                ><img
+                  src="../oxygen-webhelp\template\img/logo.png"
+                  alt="Search service's documenation"
+              /></a>
+              <div class="wh_publication_title">
+                <a href="../index.html"
+                  ><span class="title">Search service's documenation</span></a
+                >
+              </div>
             </div>
 
-            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
-                
-                <nav class=" wh_top_menu " aria-label="Menu Container"><ul role="menubar" aria-label="Menu"><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d160e11-mi" data-tocid="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d160e11" data-state="not-ready" class=" topicref " data-id="publishing_your_documentation_with_webhelp_responsive_using_github_actions"><span class="title"><a href="../topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html">Publishing your documentation with WebHelp Responsive using GitHub Actions</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="crawling_data_and_use_it_with_algolia-d160e42-mi" data-tocid="crawling_data_and_use_it_with_algolia-d160e42" data-state="not-ready" class=" topicref " data-id="crawling_data_and_use_it_with_algolia"><span class="title"><a href="../topics/crawling_data_and_use_it_with_algolia.html">Crawling data and use it with Algolia</a></span></span></li></ul></nav>
-                
-                
-            </div>
+            <button
+              type="button"
+              data-target="#wh_top_menu_and_indexterms_link"
+              id="wh_menu_mobile_button"
+              data-toggle="collapse"
+              class="navbar-toggler collapsed wh_toggle_button"
+              aria-expanded="false"
+              aria-label="Toggle menu"
+              aria-controls="wh_top_menu_and_indexterms_link"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+
+          <div
+            class="wh_top_menu_and_indexterms_link collapse navbar-collapse"
+            id="wh_top_menu_and_indexterms_link"
+          >
+            <nav class="wh_top_menu" aria-label="Menu Container">
+              <ul role="menubar" aria-label="Menu">
+                <li
+                  role="menuitem"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="has-children"
+                >
+                  <span
+                    id="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d160e11-mi"
+                    data-tocid="publishing_your_documentation_with_webhelp_responsive_using_github_actions-d160e11"
+                    data-state="not-ready"
+                    class="topicref"
+                    data-id="publishing_your_documentation_with_webhelp_responsive_using_github_actions"
+                    ><span class="title"
+                      ><a
+                        href="../topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html"
+                        >Publishing your documentation with WebHelp Responsive
+                        using GitHub Actions</a
+                      ></span
+                    ></span
+                  >
+                </li>
+                <li
+                  role="menuitem"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="has-children"
+                >
+                  <span
+                    id="crawling_data_and_use_it_with_algolia-d160e42-mi"
+                    data-tocid="crawling_data_and_use_it_with_algolia-d160e42"
+                    data-state="not-ready"
+                    class="topicref"
+                    data-id="crawling_data_and_use_it_with_algolia"
+                    ><span class="title"
+                      ><a
+                        href="../topics/crawling_data_and_use_it_with_algolia.html"
+                        >Crawling data and use it with Algolia</a
+                      ></span
+                    ></span
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
+      </div>
+    </header>
+
+    <div
+      class="wh_search_input navbar-form wh_topic_page_search search"
+      role="form"
+    >
+      <form id="searchForm" method="get" role="search" action="../search.html">
+        <div id="autocomplete"></div>
+      </form>
     </div>
-</header>
-        
-        
-         
-        
-        <div class=" wh_search_input navbar-form wh_topic_page_search search " role="form">
-            
-            
-            
-            <form id="searchForm" method="get" role="search" action="../search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form>
-            
-            
-            
-        </div>
-        
-        <div class="container-fluid" id="wh_topic_container">
-            <div class="row">
 
-                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
-                    
-                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "><ol class="d-print-none"><li><span class="home"><a href="../index.html"><span>Home</span></a></span></li><li class="active"><div class="topicref" data-id="crawling_data_and_use_it_with_algolia"><div class="title"><a href="../topics/crawling_data_and_use_it_with_algolia.html">Crawling data and use it with Algolia</a></div></div></li></ol></div>
-                    
-                    
-                    
-                    <div class="wh_right_tools">
-                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
-                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
-                        
-                        
-                        
-                        
-                        <div class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page"></button></div>
-                        
-                        
+    <div class="container-fluid" id="wh_topic_container">
+      <div class="row">
+        <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+          <div data-tooltip-position="bottom" class="wh_breadcrumb">
+            <ol class="d-print-none">
+              <li>
+                <span class="home"
+                  ><a href="../index.html"><span>Home</span></a></span
+                >
+              </li>
+              <li class="active">
+                <div
+                  class="topicref"
+                  data-id="crawling_data_and_use_it_with_algolia"
+                >
+                  <div class="title">
+                    <a
+                      href="../topics/crawling_data_and_use_it_with_algolia.html"
+                      >Crawling data and use it with Algolia</a
+                    >
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="wh_right_tools">
+            <button
+              class="wh_hide_highlight"
+              aria-label="Toggle search highlights"
+              title="Toggle search highlights"
+            ></button>
+            <button
+              class="webhelp_expand_collapse_sections"
+              data-next-state="collapsed"
+              aria-label="Collapse sections"
+              title="Collapse sections"
+            ></button>
+
+            <div class="wh_print_link print d-none d-md-inline-block">
+              <button
+                onClick="window.print()"
+                title="Print this page"
+                aria-label="Print this page"
+              ></button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="wh_content_area">
+        <div class="row">
+          <div
+            class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+            id="wh_topic_body"
+          >
+            <button
+              id="wh_close_topic_toc_button"
+              class="close-toc-button d-none"
+              aria-label="Toggle topic table of content"
+              aria-controls="wh_topic_toc"
+              aria-expanded="true"
+            >
+              <span class="close-toc-icon-container">
+                <span class="close-toc-icon"></span>
+              </span>
+            </button>
+
+            <div class="wh_topic_content body">
+              <main role="main">
+                <article
+                  class=""
+                  role="article"
+                  aria-labelledby="ariaid-title1"
+                >
+                  <article
+                    class="nested0"
+                    aria-labelledby="ariaid-title1"
+                    id="crawling_data_and_use_it_with_algolia"
+                  >
+                    <h1
+                      class="- topic/title title topictitle1"
+                      id="ariaid-title1"
+                    >
+                      Crawling data and use it with Algolia
+                    </h1>
+                    <div class="- topic/body body">
+                      <p class="- topic/p p">
+                        How to use HTML crawler and why do we need it for
+                        Algolia?
+                      </p>
                     </div>
-                    
-                </nav>
-            </div>
-            
-            
-            
-            
-            <div class="wh_content_area">
-                <div class="row">
-                    
-                    
-                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12" id="wh_topic_body">
-                        
-                        <button id="wh_close_topic_toc_button" class="close-toc-button d-none" aria-label="Toggle topic table of content" aria-controls="wh_topic_toc" aria-expanded="true">
-                            <span class="close-toc-icon-container">
-                                <span class="close-toc-icon"></span>     
-                            </span>
-                        </button>
-                        
-                        <div class=" wh_topic_content body "><main role="main"><article class="" role="article" aria-labelledby="ariaid-title1"><article class="nested0" aria-labelledby="ariaid-title1" id="crawling_data_and_use_it_with_algolia">
-    <h1 class="- topic/title title topictitle1" id="ariaid-title1">Crawling data and use it with Algolia</h1>
-    <div class="- topic/body body">
-        <p class="- topic/p p">How to use HTML crawler and why do we need it for Algolia?</p>
-    </div>
-<article class="- topic/topic task/task topic task nested1" aria-labelledby="ariaid-title2" id="html_crawler">
-    <h2 class="- topic/title title topictitle2" id="ariaid-title2">HTML Crawler</h2>
-    
-    <div class="- topic/body task/taskbody body taskbody"><p class="- topic/shortdesc shortdesc">Usually we don't use <strong class="+ topic/ph hi-d/b ph b">HTML crawler</strong> separately but in case you would like to,
-        here are all the possible methods! We created our HTML crawler using <strong class="+ topic/ph hi-d/b ph b">JSoup</strong>
-        library.</p>
-        <section class="- topic/section task/context section context">
-            <p class="- topic/p p">How to use Crawler and what's the goal of that class?</p>
-        </section>
-        <section class="- topic/ol task/steps ol steps"><ol class="- topic/ol task/steps ol steps"><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">First of all we have to create an instance of Crawler and send into constructor
-                        <strong class="+ topic/ph hi-d/b ph b">URL</strong> to be crawled, <strong class="+ topic/ph hi-d/b ph b">Base URL</strong> and <strong class="+ topic/ph hi-d/b ph b">isFile</strong> argument. We use
-                        <strong class="+ topic/ph hi-d/b ph b">Base URL</strong> in order to not get out of bounds. <strong class="+ topic/ph hi-d/b ph b">isFile</strong> is a
-                    boolean that tells the Cralwer if we're working with files or websites, by
-                    default it is set to false so you can skip it.</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>Crawler crawler = new Crawler(url, baseUrl, isFile); // Or
+                    <article
+                      class="- topic/topic task/task topic task nested1"
+                      aria-labelledby="ariaid-title2"
+                      id="html_crawler"
+                    >
+                      <h2
+                        class="- topic/title title topictitle2"
+                        id="ariaid-title2"
+                      >
+                        HTML Crawler
+                      </h2>
+
+                      <div class="- topic/body task/taskbody body taskbody">
+                        <p class="- topic/shortdesc shortdesc">
+                          Usually we don't use
+                          <strong class="+ topic/ph hi-d/b ph b"
+                            >HTML crawler</strong
+                          >
+                          separately but in case you would like to, here are all
+                          the possible methods! We created our HTML crawler
+                          using
+                          <strong class="+ topic/ph hi-d/b ph b">JSoup</strong>
+                          library.
+                        </p>
+                        <section
+                          class="- topic/section task/context section context"
+                        >
+                          <p class="- topic/p p">
+                            How to use Crawler and what's the goal of that
+                            class?
+                          </p>
+                        </section>
+                        <section class="- topic/ol task/steps ol steps">
+                          <ol class="- topic/ol task/steps ol steps">
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >First of all we have to create an instance of
+                                Crawler and send into constructor
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >URL</strong
+                                >
+                                to be crawled,
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >Base URL</strong
+                                >
+                                and
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >isFile</strong
+                                >
+                                argument. We use
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >Base URL</strong
+                                >
+                                in order to not get out of bounds.
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >isFile</strong
+                                >
+                                is a boolean that tells the Cralwer if we're
+                                working with files or websites, by default it is
+                                set to false so you can skip it.</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                ><code>Crawler crawler = new Crawler(url, baseUrl, isFile); // Or
 Crawler crawler = new Crawler(url, baseUrl); //By default "isFile" is false.</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">To start the crawler you should call <strong class="+ topic/ph hi-d/b ph b">crawl()</strong> method, it doesn't receive
-                    any arguments.</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>crawler.crawl();</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">After that all we're all set. Now you could access the crawled data and use it
-                    for your personal purposes. To get crawled pages we should call
-                        <strong class="+ topic/ph hi-d/b ph b">getCrawledPages()</strong> method. It retuns a List of Pages. Page is a
-                    created by us class that stores page's url, title, keywords and contents.</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>crawler.getCrawledPages();</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">So the whole cycle would look like this:</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>Crawler crawler = new Crawler(url, baseUrl, isFile);
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >To start the crawler you should call
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >crawl()</strong
+                                >
+                                method, it doesn't receive any arguments.</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                ><code>crawler.crawl();</code></pre>
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >After that all we're all set. Now you could
+                                access the crawled data and use it for your
+                                personal purposes. To get crawled pages we
+                                should call
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >getCrawledPages()</strong
+                                >
+                                method. It retuns a List of Pages. Page is a
+                                created by us class that stores page's url,
+                                title, keywords and contents.</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                ><code>crawler.getCrawledPages();</code></pre>
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >So the whole cycle would look like this:</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                ><code>Crawler crawler = new Crawler(url, baseUrl, isFile);
 crawler.crawl();
 List&lt;Page&gt; pages = crawler.getCrawledPages();</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">List of all the methods and explanations:</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock"><code>/**
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >List of all the methods and explanations:</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                ><code>/**
 * Constructor with url and baseUrl parameters.
 * 
 * @param url     is the page that should be crawled for data.
@@ -211,44 +456,132 @@ public List&lt;Page&gt; getCrawledPages()
 * 
 */
 public void crawl()</code></pre>
-                </div>
-            </li></ol></section>
-    </div>
-</article><article class="- topic/topic task/task topic task nested1" aria-labelledby="ariaid-title3" id="algolia_search">
-    <h2 class="- topic/title title topictitle2" id="ariaid-title3">Algolia Search</h2>
-    
-    <div class="- topic/body task/taskbody body taskbody"><p class="- topic/shortdesc shortdesc">For our custom search service in WebHelp we used Algolia and its API.</p>
-        <section class="- topic/section task/context section context">
-            <p class="- topic/p p">How to connect <strong class="+ topic/ph hi-d/b ph b">HTML Crawler</strong> with <strong class="+ topic/ph hi-d/b ph b">Algolia</strong> and use it in
-                <strong class="+ topic/ph hi-d/b ph b">WebHelp</strong>.</p>
-        </section>
-        <section class="- topic/ol task/steps ol steps"><ol class="- topic/ol task/steps ol steps"><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">Create an <strong class="+ topic/ph hi-d/b ph b">Algolia</strong> account by accesing: <a class="- topic/xref xref" href="https://www.algolia.com" target="_blank" rel="external noopener">https://www.algolia.com</a></span>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">Go to Settings and search for <strong class="+ topic/ph hi-d/b ph b">Application ID</strong>, <strong class="+ topic/ph hi-d/b ph b">Admin API Key</strong> and
-                        <strong class="+ topic/ph hi-d/b ph b">Search-Only API key</strong>. Save Application ID and Admin API Key to
-                        "<strong class="+ topic/ph hi-d/b ph b">config.properties</strong>" file in repository. We'll need the Seach-Only API
-                    key later.</span>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">To create a new Index with crawled pages we use <strong class="+ topic/ph hi-d/b ph b">AlgoliaClient</strong> class and
-                    here's how to do it:</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock" id="algolia_search__codeblock_cmx_1yh_35b" data-ofbid="algolia_search__codeblock_cmx_1yh_35b"><code>AlgoliaClient client = new AlgoliaClient();
+                              </div>
+                            </li>
+                          </ol>
+                        </section>
+                      </div>
+                    </article>
+                    <article
+                      class="- topic/topic task/task topic task nested1"
+                      aria-labelledby="ariaid-title3"
+                      id="algolia_search"
+                    >
+                      <h2
+                        class="- topic/title title topictitle2"
+                        id="ariaid-title3"
+                      >
+                        Algolia Search
+                      </h2>
+
+                      <div class="- topic/body task/taskbody body taskbody">
+                        <p class="- topic/shortdesc shortdesc">
+                          For our custom search service in WebHelp we used
+                          Algolia and its API.
+                        </p>
+                        <section
+                          class="- topic/section task/context section context"
+                        >
+                          <p class="- topic/p p">
+                            How to connect
+                            <strong class="+ topic/ph hi-d/b ph b"
+                              >HTML Crawler</strong
+                            >
+                            with
+                            <strong class="+ topic/ph hi-d/b ph b"
+                              >Algolia</strong
+                            >
+                            and use it in
+                            <strong class="+ topic/ph hi-d/b ph b"
+                              >WebHelp</strong
+                            >.
+                          </p>
+                        </section>
+                        <section class="- topic/ol task/steps ol steps">
+                          <ol class="- topic/ol task/steps ol steps">
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >Create an
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >Algolia</strong
+                                >
+                                account by accesing:
+                                <a
+                                  class="- topic/xref xref"
+                                  href="https://www.algolia.com"
+                                  target="_blank"
+                                  rel="external noopener"
+                                  >https://www.algolia.com</a
+                                ></span
+                              >
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >Go to Settings and search for
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >Application ID</strong
+                                >,
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >Admin API Key</strong
+                                >
+                                and
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >Search-Only API key</strong
+                                >. Save Application ID and Admin API Key to
+                                "<strong class="+ topic/ph hi-d/b ph b"
+                                  >config.properties</strong
+                                >" file in repository. We'll need the Seach-Only
+                                API key later.</span
+                              >
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >To create a new Index with crawled pages we use
+                                <strong class="+ topic/ph hi-d/b ph b"
+                                  >AlgoliaClient</strong
+                                >
+                                class and here's how to do it:</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                  id="algolia_search__codeblock_cmx_1yh_35b"
+                                  data-ofbid="algolia_search__codeblock_cmx_1yh_35b"
+                                ><code>AlgoliaClient client = new AlgoliaClient();
 client.initIndex(indexName);
 client.addObjectToIndex(url, baseUrl);</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">We don't need to create a Crawler because AlgoliaClient uses its internal
-                    intstance of Crawler. We just need to send URL and baseURL into
-                    addObjectToIndex(url, baseUrl) method. The method will call the Crawler to crawl
-                    the sent URL and will post crawled pages into indexName on Algolia.</span>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">After adding objects to our index we can use with Algolia search engine. Access
-                    your template folder for WebHelp Responsive. Create a new "search.html" file
-                    where we will connect our Algolia JS dependecies. It should look like
-                    this:</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock" id="algolia_search__codeblock_z1d_vyh_35b" data-ofbid="algolia_search__codeblock_z1d_vyh_35b"><code>&lt;!DOCTYPE html&gt;
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >We don't need to create a Crawler because
+                                AlgoliaClient uses its internal intstance of
+                                Crawler. We just need to send URL and baseURL
+                                into addObjectToIndex(url, baseUrl) method. The
+                                method will call the Crawler to crawl the sent
+                                URL and will post crawled pages into indexName
+                                on Algolia.</span
+                              >
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >After adding objects to our index we can use
+                                with Algolia search engine. Access your template
+                                folder for WebHelp Responsive. Create a new
+                                "search.html" file where we will connect our
+                                Algolia JS dependecies. It should look like
+                                this:</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                  id="algolia_search__codeblock_z1d_vyh_35b"
+                                  data-ofbid="algolia_search__codeblock_z1d_vyh_35b"
+                                ><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
     &lt;head&gt;
         &lt;script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"
@@ -259,24 +592,45 @@ client.addObjectToIndex(url, baseUrl);</code></pre>
     &lt;/head&gt;
     &lt;body&gt;&lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">Create "algolia.js" file in the same directory. We'll use it to replace search
-                    engine. In order to connect this HTML file with JS source files we have to add
-                    these lines to our template:</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock" id="algolia_search__codeblock_bjv_zyh_35b" data-ofbid="algolia_search__codeblock_bjv_zyh_35b"><code> &lt;resources&gt;
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >Create "algolia.js" file in the same directory.
+                                We'll use it to replace search engine. In order
+                                to connect this HTML file with JS source files
+                                we have to add these lines to our
+                                template:</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                  id="algolia_search__codeblock_bjv_zyh_35b"
+                                  data-ofbid="algolia_search__codeblock_bjv_zyh_35b"
+                                ><code> &lt;resources&gt;
             &lt;fileset&gt;&lt;include name="algolia.js"/&gt;&lt;/fileset&gt;
  &lt;/resources&gt;
  &lt;html-fragments&gt;
             &lt;fragment file="search.html" placeholder="webhelp.fragment.head"/&gt;
  &lt;/html-fragments&gt;</code></pre>
-                </div>
-            </li><li class="- topic/li task/step li step">
-                <span class="- topic/ph task/cmd ph cmd">In algolia.js we have to disable current search engine and change it to our
-                    Algolia engine.</span>
-                <div class="- topic/itemgroup task/info itemgroup info">
-                    <pre class="+ topic/pre pr-d/codeblock pre codeblock" id="algolia_search__codeblock_vg5_fzh_35b" data-ofbid="algolia_search__codeblock_vg5_fzh_35b"><code>// Connect and authenticate with your Algolia app
+                              </div>
+                            </li>
+                            <li class="- topic/li task/step li step">
+                              <span class="- topic/ph task/cmd ph cmd"
+                                >In algolia.js we have to disable current search
+                                engine and change it to our Algolia
+                                engine.</span
+                              >
+                              <div
+                                class="- topic/itemgroup task/info itemgroup info"
+                              >
+                                <pre
+                                  class="+ topic/pre pr-d/codeblock pre codeblock"
+                                  id="algolia_search__codeblock_vg5_fzh_35b"
+                                  data-ofbid="algolia_search__codeblock_vg5_fzh_35b"
+                                ><code>// Connect and authenticate with your Algolia app
 const searchClient = algoliasearch('your_app_id', 'your_search_only_api_key');
 const searchInstance = instantsearch({
 	indexName: your_index_name,
@@ -321,49 +675,60 @@ const algoliaSearch = {
 
 WebHelpAPI.disableWebHelpDefaultSearchEngine();
 WebHelpAPI.setCustomSearchEngine(algoliaSearch);</code></pre>
-                </div>
-            </li></ol></section>
-    </div>
-</article></article></article></main></div>
-                        
-                        
-                        
-                        
-                        
-                        
-                    </div>
-                    
-                        <nav role="navigation" id="wh_topic_toc" aria-label="On this page" class="col-lg-2 d-none d-lg-block navbar d-print-none"> 
-                            <div id="wh_topic_toc_content">
-		                        
-	                            <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#html_crawler" data-tocid="html_crawler">HTML Crawler</a></li><li class="topic-item"><a href="#algolia_search" data-tocid="algolia_search">Algolia Search</a></li></ul></div>
-	                        	
-                        	</div>
-                        </nav>
-                    
-                </div>
+                              </div>
+                            </li>
+                          </ol>
+                        </section>
+                      </div>
+                    </article>
+                  </article>
+                </article>
+              </main>
             </div>
-            
-            
-            
-        </div> 
-        <footer class="navbar navbar-default wh_footer">
-  <div class=" footer-container mx-auto ">
-    This site is powered by Netlify
-  </div>
-</footer>
-        
-        <div id="go2top" class="d-print-none">
-            <span class="oxy-icon oxy-icon-up"></span>
+          </div>
+
+          <nav
+            role="navigation"
+            id="wh_topic_toc"
+            aria-label="On this page"
+            class="col-lg-2 d-none d-lg-block navbar d-print-none"
+          >
+            <div id="wh_topic_toc_content">
+              <div class="wh_topic_toc">
+                <div class="wh_topic_label">On this page</div>
+                <ul>
+                  <li class="topic-item">
+                    <a href="#html_crawler" data-tocid="html_crawler"
+                      >HTML Crawler</a
+                    >
+                  </li>
+                  <li class="topic-item">
+                    <a href="#algolia_search" data-tocid="algolia_search"
+                      >Algolia Search</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
         </div>
-        
-        <div id="modal_img_large" class="modal">
-            <span class="close oxy-icon oxy-icon-remove"></span>
-            <div id="modal_img_container"></div>
-            <div id="caption"></div>
-        </div>
-        
-        
-        
-    </body>
+      </div>
+    </div>
+    <footer class="navbar navbar-default wh_footer">
+      <div class="footer-container mx-auto">
+        This site is powered by Netlify
+      </div>
+    </footer>
+
+    <div id="go2top" class="d-print-none">
+      <span class="oxy-icon oxy-icon-up"></span>
+    </div>
+
+    <div id="modal_img_large" class="modal">
+      <span class="close oxy-icon oxy-icon-remove"></span>
+      <div id="modal_img_container"></div>
+      <div id="caption"></div>
+    </div>
+    <script src="../oxygen-webhelp/template/js/algolia.js"></script>
+  </body>
 </html>

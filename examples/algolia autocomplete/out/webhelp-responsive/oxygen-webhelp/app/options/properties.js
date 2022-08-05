@@ -18,4 +18,5 @@ const properties =
     "webhelp.show.main.page.tiles" : "no",
     "webhelp.show.main.page.toc" : "yes",
     "webhelp.top.menu.depth" : "3",
+    "webhelp.enable.search.autocomplete" : "false",
     "webhelp.topic.collapsible.elements.initial.state" : "expanded" };
