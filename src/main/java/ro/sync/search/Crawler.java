@@ -202,7 +202,8 @@ public class Crawler {
 
 				String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
-				if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
+				if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)
+						&& (currentUrl.equals(this.url + "/index.html") || !currentUrl.equals(this.url))) {
 					visitedUrls.add(currentUrl);
 					queue.add(currentUrl);
 				}

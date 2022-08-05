@@ -1,4 +1,4 @@
-Publishing your documentation with WebHelp Responsive using GitHub Actions How to use GitHub actions in order to build documentation and deploy it to Netlify How to use GitHub Actions to run a WebHelp Responsive transformation How to use GitHub Actions workflows in order to build documentation in WebHelp Responsive format Access "Actions" tab in your repository on GitHub Press "New workflow" button in the left side of the page Choose "Simple workflow" template and press "Configure" button Delete the whole content of the file and let's begin writing our workflow Firstly, we'll give a name for our workflow name: CI Then we have to add some triggers when workflow will be executed name: CI
+ Publishing your documentation with WebHelp Responsive using GitHub Actions How to use GitHub actions in order to build documentation and deploy it to Netlify How to use GitHub Actions to run a WebHelp Responsive transformation How to use GitHub Actions workflows in order to build documentation in WebHelp Responsive format Access "Actions" tab in your repository on GitHub Press "New workflow" button in the left side of the page Choose "Simple workflow" template and press "Configure" button Delete the whole content of the file and let's begin writing our workflow Firstly, we'll give a name for our workflow name: CI Then we have to add some triggers when workflow will be executed name: CI
 on:
   push:
     branches:
@@ -139,4 +139,4 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
           args: deploy --dir=outputPath --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]' 
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'   
