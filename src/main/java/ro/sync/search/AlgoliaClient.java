@@ -94,22 +94,42 @@ public class AlgoliaClient {
 	 * @param args - URL and Base URl to be crawled.
 	 */
 	public static void main(String[] args) {
-		AlgoliaClient client;
 		try {
-			client = new AlgoliaClient(args[0]);
-
 			if (args.length < 3) {
-				logger.error("There are no arguments passed to main function!");
+				logger.error("There are no enough arguments passed!");
 
-				// TODO print how to use a program
-				// --url=URL --baseURL=BASEURL --indexName=name
-				// Print git in a command line for instance
+				logger.info(
+						"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
 			} else {
-				client.populateIndex(args[1], args[2]);
+				String url = "";
+				String baseUrl = "";
+				String indexName = "";
+
+				for (String arg : args) {
+					if (arg.startsWith("-url=")) {
+						url = arg.substring(5, arg.length());
+					} else if (arg.startsWith("-baseUrl=")) {
+						baseUrl = arg.substring(9, arg.length());
+					} else if (arg.startsWith("-indexName=")) {
+						indexName = arg.substring(11, arg.length());
+					}
+				}
+
+				if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty()) {
+					logger.error("Incorrect arguments passed!");
+					logger.info(
+							"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
+					return;
+				}
+
+				AlgoliaClient client = new AlgoliaClient(indexName);
+				client.populateIndex(url, baseUrl);
 			}
 
 		} catch (IOException e) {
-			logger.error("An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!", e);
+			logger.error(
+					"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
+					e);
 		}
 	}
 }
