@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html</loc>
+      <lastmod>2022-08-05T07:05:56Z</lastmod>
+   </url>
+   <url>
+      <loc>topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html#how_to_use_github_actions_to_run_a_webhelp_responsive_transformation</loc>
+      <lastmod>2022-08-05T07:05:56Z</lastmod>
+   </url>
+   <url>
+      <loc>topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.html#publishing_documentation_on_netlify</loc>
+      <lastmod>2022-08-05T07:05:56Z</lastmod>
+   </url>
+   <url>
+      <loc>topics/crawling_data_and_use_it_with_algolia.html</loc>
+      <lastmod>2022-08-05T07:05:56Z</lastmod>
+   </url>
+   <url>
+      <loc>topics/crawling_data_and_use_it_with_algolia.html#html_crawler</loc>
+      <lastmod>2022-08-05T07:05:56Z</lastmod>
+   </url>
+   <url>
+      <loc>topics/crawling_data_and_use_it_with_algolia.html#algolia_search</loc>
+      <lastmod>2022-08-05T07:05:56Z</lastmod>
+   </url>
+</urlset>
