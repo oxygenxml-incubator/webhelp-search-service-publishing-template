@@ -12,6 +12,7 @@
             <parameter name="args.tablelink.style" value="TITLE"/>
             <parameter name="force-unique" value="true"/>
             <parameter name="webhelp.fragment.footer" value="This site is powered by Netlify"/>
+            <parameter name="webhelp.enable.search.autocomplete" value="false"></parameter>
         </parameters>
         <resources>
             <css file="style.css"/>
