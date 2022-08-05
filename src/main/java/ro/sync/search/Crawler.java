@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,23 +64,23 @@ public class Crawler {
 	/**
 	 * Class and attribute that represents short description in DOM.
 	 */
-	static final String SHORT_DESCRIPTION_ELEMENT = "p[class=\"- topic/shortdesc shortdesc\"]";
+	static final String SHORT_DESCRIPTION_SELECTOR = "p[class=\"- topic/shortdesc shortdesc\"]";
 	/**
 	 * File that represents class and attributes that should be ignored for
 	 * collection.
 	 */
-	static final String NODES_TO_IGNORE = "nodesToIgnore.csv";
+	static final String NODES_TO_IGNORE_PATH = "nodesToIgnore.csv";
+	private final List<String> nodesToIgnore = new ArrayList<>();
 
 	/**
 	 * Constructor with url and baseUrl parameters.
 	 * 
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
-	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl) throws MalformedURLException {
+	public Crawler(final String url, final String baseUrl) throws IOException {
 		this(url, baseUrl, false);
 	}
 
@@ -88,14 +90,18 @@ public class Crawler {
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
 	 * @param isFile  is the state of URL
-	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl, final boolean isFile) throws MalformedURLException {
+	public Crawler(final String url, final String baseUrl, final boolean isFile) throws IOException {
 		this.url = url;
 		this.baseUrl = baseUrl;
 		this.isFile = isFile;
+
+		StringTokenizer tokenizer = new StringTokenizer(Files.readString(Path.of(NODES_TO_IGNORE_PATH)), ",");
+		while (tokenizer.hasMoreTokens()) {
+			nodesToIgnore.add(tokenizer.nextToken());
+		}
 	}
 
 	/**
@@ -224,7 +230,7 @@ public class Crawler {
 	 * @return Short description of the page
 	 */
 	private String collectShortDescription(final Document page) {
-		return page.select(SHORT_DESCRIPTION_ELEMENT).text();
+		return page.select(SHORT_DESCRIPTION_SELECTOR).text();
 	}
 
 	/**
@@ -246,19 +252,10 @@ public class Crawler {
 	private String collectContents(final Document page) {
 		StringBuilder contents = new StringBuilder();
 
-		try (Scanner sc = new Scanner(new File(NODES_TO_IGNORE));) {
-			sc.useDelimiter(",");
-
-			// Clear the DOM of tags to ignore.
-			while (sc.hasNext()) {
-				page.select(sc.next()).remove();
-			}
-		} catch (IOException e) {
-			logger.error("An error ocurred when reading .csv file", e);
-		}
+		for (String selector : this.nodesToIgnore)
+			page.select(selector).remove();
 
 		// Add all the remaining text into contents.
-		// TODO Try wyth a recursive method.
 		for (Element element : page.select("body *")) {
 			if (element.parent() == page.select("body").get(0))
 				contents.append(element.text() + " ");
