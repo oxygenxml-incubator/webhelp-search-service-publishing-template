@@ -1,7 +1,6 @@
 package ro.sync.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -191,23 +190,21 @@ class CrawlerTest {
 	 */
 	@Test
 	void getContentsTest() throws IOException {
-		Crawler crawler = new Crawler(
-				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
 		crawler.crawl();
-		
-		// TODO: Use a string inside test. It is easier to read
-		StringBuilder expected = new StringBuilder();
+
+		String expected = "";
 		try (BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/data/output.txt"))) {
 			String line = reader.readLine();
 
 			while (line != null) {
-				expected.append(line + "\n");
+				expected += line + "\n";
 				line = reader.readLine();
 			}
 		}
 
-		assertTrue(expected.compareTo(new StringBuilder(crawler.getCrawledPages().get(0).getContents())) == 1);
+		assertEquals(expected.trim(), crawler.getCrawledPages().get(0).getContents().trim());
 	}
 }
