@@ -44,6 +44,8 @@ public class AlgoliaClient {
 	/**
 	 * Constructor with URL to get data from.
 	 * 
+	 * @param indexName is the name that should be given to index.
+	 * 
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
@@ -75,6 +77,9 @@ public class AlgoliaClient {
 	/**
 	 * Adds crawled pages from Crawler object to index.
 	 * 
+	 * @param url     is the URL whose pages should be added to index.
+	 * @param baseUrl is the base URL that is used to not go out of bounds.
+	 * 
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
@@ -89,6 +94,16 @@ public class AlgoliaClient {
 	}
 
 	/**
+	 * Outputs an example of correct usage of class. Is used when user didn't pass
+	 * the arguments correctly.
+	 */
+	private static void informUserAboutArguments() {
+		logger.error("There are no enough arguments passed!");
+		logger.info(
+				"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
+	}
+
+	/**
 	 * Main method that crawls data and stores it into Algolia Index.
 	 * 
 	 * @param args - URL and Base URl to be crawled.
@@ -96,10 +111,7 @@ public class AlgoliaClient {
 	public static void main(String[] args) {
 		try {
 			if (args.length < 3) {
-				logger.error("There are no enough arguments passed!");
-
-				logger.info(
-						"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
+				informUserAboutArguments();
 			} else {
 				String url = "";
 				String baseUrl = "";
@@ -116,9 +128,7 @@ public class AlgoliaClient {
 				}
 
 				if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty()) {
-					logger.error("Incorrect arguments passed!");
-					logger.info(
-							"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
+					informUserAboutArguments();
 					return;
 				}
 

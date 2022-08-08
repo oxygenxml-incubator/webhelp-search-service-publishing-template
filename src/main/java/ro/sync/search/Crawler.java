@@ -255,17 +255,11 @@ public class Crawler {
 	 * @return Page's collected contents from body section.
 	 */
 	private String collectContents(final Document page) {
-		StringBuilder contents = new StringBuilder();
-
+		// Delete from DOM every selector from file "nodesToIgnore.csv".
 		for (String selector : this.nodesToIgnore)
 			page.select(selector).remove();
 
-		// Add all the remaining text into contents.
-		for (Element element : page.select("body *")) {
-			if (element.parent() == page.select("body").get(0))
-				contents.append(element.text() + " ");
-		}
-
-		return contents.toString();
+		// Return remaining text from body.
+		return page.body().text();
 	}
 }
