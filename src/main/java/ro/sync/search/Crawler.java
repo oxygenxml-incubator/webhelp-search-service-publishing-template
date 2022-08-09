@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -60,17 +61,30 @@ public class Crawler {
 	 * List that stores all crawled pages
 	 */
 	private List<Page> pages = new ArrayList<>();
+	/**
+	 * Class and attribute that represents short description in DOM.
+	 */
+	static final String SHORT_DESCRIPTION_SELECTOR = "p[class=\"- topic/shortdesc shortdesc\"]";
+	/**
+	 * File that represents class and attributes that should be ignored for
+	 * collection.
+	 */
+	static final String NODES_TO_IGNORE_PATH = "nodesToIgnore.csv";
+	/**
+	 * A list of strings that represents selectors of elements that should be ignore
+	 * during the crawling process.
+	 */
+	private final List<String> nodesToIgnore = new ArrayList<>();
 
 	/**
 	 * Constructor with url and baseUrl parameters.
 	 * 
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
-	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl) throws MalformedURLException {
+	public Crawler(final String url, final String baseUrl) throws IOException {
 		this(url, baseUrl, false);
 	}
 
@@ -80,14 +94,18 @@ public class Crawler {
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
 	 * @param isFile  is the state of URL
-	 * 
-	 * @throws MalformedURLException if problems with initialization of URL
-	 *                               occurred.
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl, final boolean isFile) throws MalformedURLException {
+	public Crawler(final String url, final String baseUrl, final boolean isFile) throws IOException {
 		this.url = url;
 		this.baseUrl = baseUrl;
 		this.isFile = isFile;
+
+		StringTokenizer tokenizer = new StringTokenizer(Files.readString(Path.of(NODES_TO_IGNORE_PATH)), ",");
+		while (tokenizer.hasMoreTokens()) {
+			nodesToIgnore.add(tokenizer.nextToken());
+		}
 	}
 
 	/**
@@ -146,19 +164,12 @@ public class Crawler {
 		queue.add(url);
 
 		while (!queue.isEmpty()) {
-			try {
-				String currentUrl = queue.remove(0);
-				// TODO Read HTML file twice. Read file operations are time consuming
-				findUrls(readHtml(currentUrl), currentUrl);
-				
-				if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
-					collectData(readHtml(currentUrl));
+			String currentUrl = queue.remove(0);
+			Document page = readHtml(currentUrl);
+			findUrls(page, currentUrl);
 
-			} catch (IOException e) {
-				// TODO Is this log correct?
-				logger.error("An error with reading HTML file occured!", e);
-				throw e;
-			}
+			if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
+				collectData(page);
 		}
 
 		logger.info("The crawling went successfully! {} page(s) has/have been crawled!", getCrawledPages().size());
@@ -187,17 +198,15 @@ public class Crawler {
 		Elements links = page.select("a");
 		// Search for ".html" hrefs
 		for (Element link : links) {
-			if (!link.attr("href").endsWith(".html"))
-				continue;
+			if (link.attr("href").endsWith(".html")) {
 
-			String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
+				String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
-			if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)) {
-				if (currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url))
-					continue;
-
-				visitedUrls.add(currentUrl);
-				queue.add(currentUrl);
+				if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)
+						&& (currentUrl.equals(this.url + "/index.html") || !currentUrl.equals(this.url))) {
+					visitedUrls.add(currentUrl);
+					queue.add(currentUrl);
+				}
 			}
 		}
 	}
@@ -226,8 +235,7 @@ public class Crawler {
 	 * @return Short description of the page
 	 */
 	private String collectShortDescription(final Document page) {
-		// TODO: Make this constant
-		return page.select("p[class=\"- topic/shortdesc shortdesc\"]").text();
+		return page.select(SHORT_DESCRIPTION_SELECTOR).text();
 	}
 
 	/**
@@ -247,32 +255,11 @@ public class Crawler {
 	 * @return Page's collected contents from body section.
 	 */
 	private String collectContents(final Document page) {
-		StringBuilder contents = new StringBuilder();
-		
-		// TODO nodesToIgnore.csv can be a constant
-		// TODO read this file once per program execution
-		// TODO Use StringTokenizer if you cannot reset scanner
-		try (Scanner sc = new Scanner(new File("nodesToIgnore.csv"));) {
-			sc.useDelimiter(",");
+		// Delete from DOM every selector from file "nodesToIgnore.csv".
+		for (String selector : this.nodesToIgnore)
+			page.select(selector).remove();
 
-			// Clear the DOM of tags to ignore.
-			while (sc.hasNext()) {
-				page.select(sc.next()).remove();
-			}
-		} catch (IOException e) {
-			logger.error("An error ocurred when reading .csv file {}", Arrays.toString(e.getStackTrace()));
-		}
-
-		// Add all the remaining text into contents.
-		// TODO Are page.getAllElements() in document order?!
-		// TODO page.body.text() is better?!
-		
-		// TODO Try wyth a recursive method.
-		for (Element element : page.getAllElements()) {
-			if (element.parent() == null)
-				contents.append(element.text() + " ");
-		}
-
-		return contents.toString();
+		// Return remaining text from body.
+		return page.body().text();
 	}
 }

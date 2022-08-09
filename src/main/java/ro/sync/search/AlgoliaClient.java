@@ -3,7 +3,6 @@ package ro.sync.search;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -45,69 +44,63 @@ public class AlgoliaClient {
 	/**
 	 * Constructor with URL to get data from.
 	 * 
+	 * @param indexName is the name that should be given to index.
+	 * 
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
-	public AlgoliaClient() throws IOException {
+	public AlgoliaClient(final String indexName) throws IOException {
 		try (InputStream input = new FileInputStream("config.properties")) {
 			Properties properties = new Properties();
 
-			// load a properties file
+			// Load a properties file.
 			properties.load(input);
-			
+
 			appId = properties.getProperty("algolia.appId");
 			adminApiKey = properties.getProperty("algolia.adminApiKey");
 
 			client = DefaultSearchClient.create(appId, adminApiKey);
-		} catch (IOException e) {
-			// TODO use logger(String, Throwable) signature. It is simplest
-			
-			// TODO Why you handle this exception twice?
-			logger.error("An error occured when trying to load properties");
-			logger.error(Arrays.toString(e.getStackTrace()));
-			throw e;
-		}
-	}
 
-	/**
-	 * Initialize a new index containing all the pages and sets it to "index"
-	 * property. If indexName exists then it selects it without recreating it.
-	 * 
-	 * @param indexName is the name to be assigned to index.
-	 */
-	public void initIndex(final String indexName) {
-		index = client.initIndex(indexName, Page.class);
-		index.setSettings(new IndexSettings()
-				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
-				.setCustomRanking(
-						Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
-				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
-				.setAttributesToSnippet(Arrays.asList("contents:30")).setAttributesForFaceting(Arrays.asList("title")));
-		logger.info("Index {} succesfully created/selected!", indexName);
+			index = client.initIndex(indexName, Page.class);
+			index.setSettings(new IndexSettings()
+					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
+					.setCustomRanking(
+							Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
+					.setAttributesToHighlight(Arrays.asList("contents"))
+					.setAttributesToSnippet(Arrays.asList("contents:30"))
+					.setAttributesForFaceting(Arrays.asList("title")));
+
+			logger.info("Index {} succesfully created/selected!", indexName);
+		}
 	}
 
 	/**
 	 * Adds crawled pages from Crawler object to index.
 	 * 
+	 * @param url     is the URL whose pages should be added to index.
+	 * @param baseUrl is the base URL that is used to not go out of bounds.
+	 * 
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
-	public void addObjectToIndex(final String url, final String baseUrl) throws IOException {
-		try {
-			Crawler crawler = new Crawler(url, baseUrl);
-			crawler.crawl();
-			// TODO: clear index before add new Pages
-			index.saveObjects(crawler.getCrawledPages());
-			logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
-					index.getUrlEncodedIndexName());
-		} catch (MalformedURLException e) {
-			// TODO: Handle Exception twice
-			// TODO: logger.error(String, Throable);
-			// logger.error(String.format(String, args), Throable);
-			logger.error("An error occured when crawling URL: {}", url);
-			logger.error(Arrays.toString(e.getStackTrace()));
-			throw e;
-		}
+	public void populateIndex(final String url, final String baseUrl) throws IOException {
+		Crawler crawler = new Crawler(url, baseUrl);
+		crawler.crawl();
+
+		index.clearObjects();
+		index.saveObjects(crawler.getCrawledPages());
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+				index.getUrlEncodedIndexName());
+	}
+
+	/**
+	 * Outputs an example of correct usage of class. Is used when user didn't pass
+	 * the arguments correctly.
+	 */
+	private static void informUserAboutArguments() {
+		logger.error("There are no enough arguments passed!");
+		logger.info(
+				"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
 	}
 
 	/**
@@ -116,28 +109,37 @@ public class AlgoliaClient {
 	 * @param args - URL and Base URl to be crawled.
 	 */
 	public static void main(String[] args) {
-		AlgoliaClient client;
 		try {
-			client = new AlgoliaClient();
-			// TODO Is it better to call this method from constructor?
-			
-			// TODO Why webhelp-search-service-publishing-template is hardcoded? Add to args
-			client.initIndex("webhelp-search-service-publishing-template");
-
-			
-			if (args.length < 2) { 
-				logger.error("There are no arguments passed to main function!");
-				
-				// TODO print how to use a program
-				// --url=URL --baseURL=BASEURL --indexName=name 
-				// Print git in a command line for instance 
+			if (args.length < 3) {
+				informUserAboutArguments();
 			} else {
-				client.addObjectToIndex(args[0], args[1]);
+				String url = "";
+				String baseUrl = "";
+				String indexName = "";
+
+				for (String arg : args) {
+					if (arg.startsWith("-url=")) {
+						url = arg.substring(5, arg.length());
+					} else if (arg.startsWith("-baseUrl=")) {
+						baseUrl = arg.substring(9, arg.length());
+					} else if (arg.startsWith("-indexName=")) {
+						indexName = arg.substring(11, arg.length());
+					}
+				}
+
+				if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty()) {
+					informUserAboutArguments();
+					return;
+				}
+
+				AlgoliaClient client = new AlgoliaClient(indexName);
+				client.populateIndex(url, baseUrl);
 			}
 
 		} catch (IOException e) {
-			logger.error("An error occurred when initializing AlgoliaClient, check your properties file! {}",
-					Arrays.asList(e.getStackTrace()));
+			logger.error(
+					"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
+					e);
 		}
 	}
 }
