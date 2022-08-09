@@ -123,20 +123,6 @@ public class Crawler {
 	}
 
 	/**
-	 * @return true if URL is a file and false otherwise.
-	 */
-	public boolean isFile() {
-		return isFile;
-	}
-
-	/**
-	 * @param the value to set to "isFile" flag.
-	 */
-	public void setIsFile(final boolean isFile) {
-		this.isFile = isFile;
-	}
-
-	/**
 	 * @return list of visited urls after the crawl.
 	 */
 	public List<String> getVisitedUrls() {
