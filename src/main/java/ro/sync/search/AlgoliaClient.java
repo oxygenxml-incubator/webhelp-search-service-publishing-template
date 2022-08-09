@@ -116,7 +116,7 @@ public class AlgoliaClient {
 				String url = "";
 				String baseUrl = "";
 				String indexName = "";
-
+				
 				for (String arg : args) {
 					if (arg.startsWith("-url=")) {
 						url = arg.substring(5, arg.length());
@@ -135,7 +135,6 @@ public class AlgoliaClient {
 				AlgoliaClient client = new AlgoliaClient(indexName);
 				client.populateIndex(url, baseUrl);
 			}
-
 		} catch (IOException e) {
 			logger.error(
 					"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
