@@ -10,6 +10,9 @@
 
 		<sonar.organization>radu-pisoi-github</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.coverage.exclusions>
+			src/main/java/ro/sync/search/AlgoliaClient.java
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<build>
