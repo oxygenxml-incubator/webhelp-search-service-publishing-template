@@ -1,7 +1,7 @@
 import React from 'react';
 
-const HitsItem = (props) => {
+const HitsList = (props) => {
     return null;
 };
 
-export default HitsItem;
+export default HitsList;
