@@ -1,6 +1,6 @@
-import React from 'React'
+import React from 'react'
 
-const HitDescription = (description) => {
+const HitDescription = ({description}) => {
     return <p className="description">{description}</p>
 };
 

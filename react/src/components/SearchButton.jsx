@@ -1,7 +1,7 @@
-import React from 'React';
+import React from 'react';
 
-const SearchButton = (props) => {
-    return <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />;
+const SearchButton = () => {
+    return (<FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />);
 }
 
 export default SearchButton;
