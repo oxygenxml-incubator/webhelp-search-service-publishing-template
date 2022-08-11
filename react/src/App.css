@@ -1,3 +1,116 @@
-h1 {
-    color: red;
+body {
+    margin: 0;
+
+    font-family: 'Play', sans-serif;
+}
+
+/* Search Section */
+
+.search-field {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    height: 150px;
+}
+
+.search-input {
+    margin-top: auto;
+    margin-bottom: auto;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    width: 40%;
+    height: 30px;
+
+    border: 1px solid gray;
+    border-radius: 15px;
+
+    font-size: 16px;
+}
+
+.search-button {
+    margin-top: auto;
+    margin-bottom: auto;
+
+    padding-left: 5px;
+
+    height: 25px;
+    width: 25px;
+
+    border: none;
+    background-color: white;
+}
+
+.search-icon {
+    color: gray;
+    height: 25px;
+}
+
+.search-icon:hover{
+    color: black;
+    cursor: pointer;
+}
+
+/* Information Section */
+
+.information-container {
+    display: flex;
+
+    margin-left: 25px;
+    margin-right: 25px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.hits-information {
+    width: 50%;
+}
+
+.page-information {
+    width: 50%;
+
+    text-align: right;
+}
+
+/* Results section */
+
+.row {
+    margin-left: 50px;
+    margin-right: 50px;
+
+    display: block;  
+}
+
+.hits {
+    list-style: none;
+
+    padding: 0;
+}
+
+.hits-item {
+    padding-top: 25px;
+}
+
+.title {
+    text-decoration: none;
+
+    font-size: 18px;
+
+    display: block;
+}
+
+.description {
+    font-size: 16px;
+
+    display: block;
+}
+
+.error {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 30px; 
 }
