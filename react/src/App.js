@@ -13,8 +13,10 @@ const App = () => {
       </div>
       <div className="results-container">
         <SearchInformation
-          hitsInformation="0 documents found on query."
-          pageInformation="Page 0/0"
+          nHits="0"
+          query="query"
+          page="0"
+          pages="0"
         />
         <HitsList
           items={data.map((item) => {
