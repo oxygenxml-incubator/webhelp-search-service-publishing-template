@@ -1,37 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SearchComponent from "./components/SearchComponent.jsx";
 import SearchInformation from "./components/SearchInformation.jsx";
 import HitsList from "./components/HitsList.jsx";
 import HitsItem from "./components/hitsItem.jsx";
-import data from "./../data.json";
+import algoliasearch from "algoliasearch/lite";
+
+const searchClient = algoliasearch(
+  "KLFWXPOEHY",
+  "ff20cb14577be8b5eab7ead0857dd573"
+);
+const searchInstance = searchClient.initIndex(
+  "webhelp-search-service-publishing-template"
+);
 
 const App = () => {
+  const [result, setResult] = useState({ hits: [], nbHits: 0, nbPages: 0, page: 0, query: "" });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const search = async (searchTerm) => {
+    const result = await searchInstance.search(searchTerm);
+
+    setResult(result);
+  };
+
   return (
-    <div className="search-page">
+    <>
       <div className="search-container">
-        <SearchComponent />
+        <SearchComponent
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+          onClick={() => search(searchTerm)}
+        />
       </div>
       <div className="results-container">
         <SearchInformation
-          nHits="0"
-          query="query"
-          page="0"
-          pages="0"
+          nHits={result.nbHits}
+          query={result.query}
+          page={result.page}
+          pages={result.nbPages}
         />
         <HitsList
-          items={data.map((item) => {
+          items={ Object.keys(result.hits).length > 0 ? (result.hits.map((item) => {
             return (
               <HitsItem
+                key={item.objectId}
                 title={item.title}
                 description={item.shortDescription}
-                url={item.objectID}
-                key={item.objectID}
+                url={item.objectId}
               />
             );
-          })}
+          })) : []}
         />
       </div>
-    </div>
+    </>
   );
 };
 
