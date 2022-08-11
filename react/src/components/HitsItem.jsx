@@ -1,12 +1,12 @@
 import React from 'react';
-import HitTitle from "./HitTitle";
-import HitDescription from "./HitDescription";
 
-const HitsItem = (props) => {
-    return <li className="hits-item">
-                <HitTitle url={props.url} title={props.title}></HitTitle>
-                <HitDescription description={props.description}></HitDescription>
-            </li>;
+const HitsItem = ({url, title, description}) => {
+    return (
+    <li className="hits-item" key={url}>
+        <a href={url} className="title">{title}</a>
+        <span className="hits-information">{description}</span>
+    </li>
+    );
 };
 
 export default HitsItem;
