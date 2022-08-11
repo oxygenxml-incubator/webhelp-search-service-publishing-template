@@ -12,7 +12,7 @@ const App = () => {
       </div>
       <div className="results-container">
         <SearchInformation hitsInformation="0 documents found on query." pageInformation="Page 0/0" />
-        <HitsList items={[<HitsItem title="Title" description="Something" />]} />
+        <HitsList items={[<HitsItem url="https://example.com" title="Title" description="Something" key="title1something"/>]} />
       </div>
     </div>
   );
