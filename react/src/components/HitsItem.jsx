@@ -4,7 +4,7 @@ const HitsItem = ({url, title, description}) => {
     return (
     <li className="hits-item">
         <a href={url} className="title">{title}</a>
-        <span className="hits-information">{description}</span>
+        <span className="description">{description}</span>
     </li>
     );
 };

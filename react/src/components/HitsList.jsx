@@ -2,9 +2,9 @@ import React from 'react';
 
 const HitsList = ({items}) => {
     if(items?.length > 0)
-        return (<ul className="hits">{items.map(item => item)}</ul>);
+        return (<div className="row"><ul className="hits">{items.map(item => item)}</ul></div>);
     else
-        return (<h2 className="error">No results found!</h2>);
+        return (<div className="error"><strong>No results found!</strong></div>);
 }
 
 export default HitsList;

@@ -1,10 +1,10 @@
 import React from 'react';
 
-const SearchInformation = ({hitsInformation, pageInformation}) => {
+const SearchInformation = ({nHits, query, page, pages}) => {
     return (
         <div className="information-container">
-            <span className="hits-information">{hitsInformation}</span>
-            <span className="page-information">{pageInformation}</span>
+            <span className="hits-information">{nHits + " document(s) found for "}<strong>{query + "."}</strong></span>
+            <span className="page-information">{"Page " + page + "/" + pages}</span>
         </div>
     );
 }

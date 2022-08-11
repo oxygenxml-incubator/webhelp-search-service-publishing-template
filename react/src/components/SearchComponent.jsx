@@ -5,8 +5,8 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 const SearchComponent = () => {
     return (
     <div className="search-field">
-        <input type="text"></input>
-        <button><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+        <input className="search-input" type="text"></input>
+        <button className="search-button"><FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} /></button>
     </div>
     );
 }
