@@ -34,7 +34,7 @@ const App = () => {
 
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0)
-      response = await searchInstance.search(searchTerm, { hitsPerPage: 1, page: page });
+      response = await searchInstance.search(searchTerm, { page: page });
 
     setResult(response);
   };
@@ -53,7 +53,7 @@ const App = () => {
         <SearchInformation
           nHits={result.nbHits}
           query={result.query}
-          page={result.nbPages > 1 ? result.page + 1 : result.page}
+          page={result.nbPages >= 1 ? result.page + 1 : result.page}
           pages={result.nbPages}
         />
         <HitsList
@@ -74,7 +74,7 @@ const App = () => {
         />
         <div className="page-selection">
           {result.page == 0 ? (
-            result.nbPages >= 1 && (
+            result.nbPages > 1 && (
               <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button>
             )
           ) : result.page === result.nbPages - 1 ? (
@@ -83,8 +83,8 @@ const App = () => {
             </>
           ) : (
             <>
-              <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button>
               <button className="page-selector" onClick={() => search(searchTerm, result.page - 1)}>Previous</button>
+              <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button>
             </>
           )}
         </div>

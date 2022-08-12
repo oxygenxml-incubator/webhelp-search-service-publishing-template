@@ -95,7 +95,9 @@ body {
 
 .title {
     text-decoration: none;
-
+    line-height:20px;
+    letter-spacing: 2px;
+    color: cadetblue;
     font-size: 18px;
 
     display: block;
@@ -108,9 +110,47 @@ body {
 }
 
 .error {
-    width: 100%;
+    width: 50%;
 
     text-align: center;
-
+    color: cadetblue;
     font-size: 30px; 
+
+	margin: 0 auto;
+
+}
+
+/* Page selection */
+
+.page-selection {
+    width: 100%;
+    margin-top: 50px;
+
+    display: flex;
+}
+
+.page-selector {
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: #e1ecf4;
+    border-radius: 3px;
+    border: 1px solid #7aa7c7;
+    box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+    box-sizing: border-box;
+    color: cadetblue;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1.15385;
+    outline: none;
+    padding: 8px .8em;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    vertical-align: baseline;
+}
+
+.page-selector:hover {
+    background-color: #b3d3ea;
+    color: #2c5777;
 }
