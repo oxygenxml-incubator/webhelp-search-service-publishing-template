@@ -18,18 +18,24 @@ const searchInstance = searchClient.initIndex(
 
 const App = () => {
   // Create a state variable that stores the search result.
-  const [result, setResult] = useState({ hits: [], nbHits: 0, nbPages: 0, page: 0, query: "" });
+  const [result, setResult] = useState({
+    hits: [],
+    nbHits: 0,
+    nbPages: 0,
+    page: 0,
+    query: "",
+  });
   // Create a state variable that stores the search term.
   const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch the Algolia response based on written search term.
-  const search = async (searchTerm) => {
+  const search = async (searchTerm, page) => {
     let response = result;
 
     // If search term is not empty then get the results.
-    if(searchTerm.localeCompare("") !== 0)
-      response = await searchInstance.search(searchTerm);
-    
+    if (searchTerm.localeCompare("") !== 0)
+      response = await searchInstance.search(searchTerm, { hitsPerPage: 1, page: page });
+
     setResult(response);
   };
 
@@ -40,28 +46,48 @@ const App = () => {
           onChange={(e) => {
             setSearchTerm(e.target.value);
           }}
-          onClick={() => search(searchTerm)}
+          onClick={() => search(searchTerm, 0)}
         />
       </div>
       <div className="results-container">
         <SearchInformation
           nHits={result.nbHits}
           query={result.query}
-          page={result.page}
+          page={result.nbPages > 1 ? result.page + 1 : result.page}
           pages={result.nbPages}
         />
         <HitsList
-          items={ result.hits.length > 0 ? (result.hits.map((item) => {
-            return (
-              <HitsItem
-                key={"objectID" in item ? item.objectID : item.toString()}
-                title={item.title}
-                description={item.shortDescription}
-                url={item.objectID}
-              />
-            );
-          })) : []}
+          items={
+            result.hits.length > 0
+              ? result.hits.map((item) => {
+                  return (
+                    <HitsItem
+                      key={"objectID" in item ? item.objectID : item.toString()}
+                      title={item.title}
+                      description={item.shortDescription}
+                      url={item.objectID}
+                    />
+                  );
+                })
+              : []
+          }
         />
+        <div className="page-selection">
+          {result.page == 0 ? (
+            result.nbPages >= 1 && (
+              <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button>
+            )
+          ) : result.page === result.nbPages - 1 ? (
+            <>
+              <button className="page-selector" onClick={() => search(searchTerm, result.page - 1)}>Previous</button>
+            </>
+          ) : (
+            <>
+              <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button>
+              <button className="page-selector" onClick={() => search(searchTerm, result.page - 1)}>Previous</button>
+            </>
+          )}
+        </div>
       </div>
     </>
   );
