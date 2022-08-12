@@ -24,7 +24,7 @@ const App = () => {
 
   // Fetch the Algolia response based on written search term.
   const search = async (searchTerm) => {
-    let response = { hits: [], nbHits: 0, nbPages: 0, page: 0, query: "" };
+    let response = result;
 
     // If search term is not empty then get the results.
     if(searchTerm.localeCompare("") !== 0)
@@ -51,7 +51,7 @@ const App = () => {
           pages={result.nbPages}
         />
         <HitsList
-          items={ Object.keys(result.hits).length > 0 ? (result.hits.map((item) => {
+          items={ result.hits.length > 0 ? (result.hits.map((item) => {
             return (
               <HitsItem
                 key={"objectID" in item ? item.objectID : item.toString()}
