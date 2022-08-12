@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import SearchComponent from "./components/SearchComponent.jsx";
 import SearchInformation from "./components/SearchInformation.jsx";
 import HitsList from "./components/HitsList.jsx";
-import HitsItem from "./components/hitsItem.jsx";
 import algoliasearch from "algoliasearch/lite";
 
 // Create an Algolia SearchClient using App key and Search-only API key.
@@ -30,13 +29,11 @@ const App = () => {
 
   // Fetch the Algolia response based on written search term.
   const search = async (searchTerm, page) => {
-    let response = result;
-
-    // If search term is not empty then get the results.
-    if (searchTerm.localeCompare("") !== 0)
-      response = await searchInstance.search(searchTerm, { page: page });
-
-    setResult(response);
+  // If search term is not empty then get the results.
+    if (searchTerm.localeCompare("") !== 0){
+      let response = await searchInstance.search(searchTerm, { page: page });
+      setResult(response);
+    }
   };
 
   return (
@@ -57,20 +54,7 @@ const App = () => {
           pages={result.nbPages}
         />
         <HitsList
-          items={
-            result.hits.length > 0
-              ? result.hits.map((item) => {
-                  return (
-                    <HitsItem
-                      key={"objectID" in item ? item.objectID : item.toString()}
-                      title={item.title}
-                      description={item.shortDescription}
-                      url={item.objectID}
-                    />
-                  );
-                })
-              : []
-          }
+          hits={result.hits}
         />
         <div className="page-selection">
           {result.page == 0 ? (
