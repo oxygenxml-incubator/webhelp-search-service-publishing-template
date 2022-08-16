@@ -167,3 +167,10 @@ body {
     touch-action: manipulation;
     vertical-align: baseline;
 }
+
+/* Loader */
+
+.loader {
+    display: flex;
+    justify-content: center;
+}
