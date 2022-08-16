@@ -25,13 +25,13 @@ module.exports = {
       },
       {
         test: /\.css$/, // styles files
-        use: ["style-loader", "css-loader",],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name: 'img/[name].[ext]',
+          name: "img/[name].[ext]",
         },
       },
     ],

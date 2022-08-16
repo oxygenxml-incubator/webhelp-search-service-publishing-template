@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SearchInformation from './SearchInformation.jsx';
 import HitsList from './HitsList.jsx';
 
-const ResultsContainer = ({result, navigateToPage}) => {
+const ResultsContainer = ({ result, navigateToPage }) => {
 
     useEffect(() => {
         const [prevButton, nextButton] = document.getElementsByClassName('page-selector');
