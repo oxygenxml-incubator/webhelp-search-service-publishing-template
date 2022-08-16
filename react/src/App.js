@@ -41,9 +41,9 @@ const App = () => {
       <div className="search-container">
         <SearchComponent
           onChange={(e) => {
-            setSearchTerm(e.target.value);
+            setSearchTerm(e.target.value.trim());
           }}
-          onClick={() => search(searchTerm, 0)}
+          onClick={(e) => {e.preventDefault(), search(searchTerm, 0)}}
         />
       </div>
       <div className="results-container">
