@@ -109,7 +109,7 @@ body {
     display: block;
 }
 
-.error {
+.no-results {
     width: 50%;
 
     text-align: center;
