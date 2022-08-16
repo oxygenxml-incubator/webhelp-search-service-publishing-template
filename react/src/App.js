@@ -58,12 +58,14 @@ const App = () => {
         />
         <div className="page-selection">
           {result.page == 0 ? (
-            result.nbPages > 1 && (
-              <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button>
+            result.nbPages > 1 && (<>
+              <button className="page-selector-disabled" onClick={() => search(searchTerm, result.page - 1)} disabled>Previous</button>
+              <button className="page-selector" onClick={() => search(searchTerm, result.page + 1)}>Next</button></>
             )
           ) : result.page === result.nbPages - 1 ? (
             <>
               <button className="page-selector" onClick={() => search(searchTerm, result.page - 1)}>Previous</button>
+              <button className="page-selector-disabled" onClick={() => search(searchTerm, result.page + 1)} disabled>Next</button>
             </>
           ) : (
             <>

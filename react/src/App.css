@@ -127,12 +127,10 @@ body {
     margin-top: 50px;
 
     display: flex;
+    justify-content: center;
 }
 
 .page-selector {
-    margin-left: auto;
-    margin-right: auto;
-
     background-color: #e1ecf4;
     border-radius: 3px;
     border: 1px solid #7aa7c7;
@@ -144,7 +142,6 @@ body {
     line-height: 1.15385;
     outline: none;
     padding: 8px .8em;
-    position: relative;
     text-align: center;
     touch-action: manipulation;
     vertical-align: baseline;
@@ -153,4 +150,20 @@ body {
 .page-selector:hover {
     background-color: #b3d3ea;
     color: #2c5777;
+}
+
+.page-selector-disabled {
+    background-color: #e1ecf4;
+    border-radius: 3px;
+    border: 1px solid #7aa7c7;
+    box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+    box-sizing: border-box;
+    color: gray;
+    font-size: 13px;
+    line-height: 1.15385;
+    outline: none;
+    padding: 8px .8em;
+    text-align: center;
+    touch-action: manipulation;
+    vertical-align: baseline;
 }
