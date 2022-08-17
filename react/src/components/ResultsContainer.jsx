@@ -9,7 +9,7 @@ const ResultsContainer = ({ result, navigateToPage }) => {
     }
 
     const isNextButtonDisabled = () => {
-        return (result.page === 0 && !(result.nbPages > 1)) || (!result.nbPages > 1) || (result.page === result.nbPages - 1);
+        return result.page === result.nbPages - 1;
     }
 
     return (<div className="results-container">
@@ -20,20 +20,21 @@ const ResultsContainer = ({ result, navigateToPage }) => {
             pages={result.nbPages}
         />
         <HitsList hits={result.hits} />
-        <div className="page-selection">
-            <button
-                className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
-                onClick={() => navigateToPage(result.query, result.page - 1)} disabled={isPrevButtonDisabled() ? true : false}
-            >
-                Previous
-            </button>
-            <button
-                className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
-                onClick={() => navigateToPage(result.query, result.page + 1)} disabled={isNextButtonDisabled() ? true : false}
-            >
-                Next
-            </button>
-        </div>
+        {result.nbPages !== 0 &&
+            (<div className="page-selection">
+                <button
+                    className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
+                    onClick={() => navigateToPage(result.query, result.page - 1)} disabled={isPrevButtonDisabled() ? true : false}
+                >
+                    Previous
+                </button>
+                <button
+                    className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
+                    onClick={() => navigateToPage(result.query, result.page + 1)} disabled={isNextButtonDisabled() ? true : false}
+                >
+                    Next
+                </button>
+            </div>)}
     </div>);
 
 }

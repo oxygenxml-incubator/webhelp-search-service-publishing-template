@@ -35,7 +35,7 @@ const App = () => {
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
       let response = await searchInstance.search(searchTerm, {
-        hitsPerPage: 1,
+        hitsPerPage: 10,
         page: page,
       });
       setResult(response);
