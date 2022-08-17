@@ -5,17 +5,11 @@ import HitsList from './HitsList.jsx';
 const ResultsContainer = ({ result, navigateToPage }) => {
 
     const isPrevButtonDisabled = () => {
-        if (result.page === 0)
-            return true;
-
-        return false;
+        return result.page === 0;
     }
 
     const isNextButtonDisabled = () => {
-        if ((result.page === 0 && !(result.nbPages > 1)) || (!result.nbPages > 1) || (result.page === result.nbPages - 1))
-            return true;
-
-        return false;
+        return (result.page === 0 && !(result.nbPages > 1)) || (!result.nbPages > 1) || (result.page === result.nbPages - 1);
     }
 
     return (<div className="results-container">
