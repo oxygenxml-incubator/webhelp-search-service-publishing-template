@@ -55,12 +55,13 @@ body {
 .error-message {
   display: block;
 
-  height: 75px;
+  min-height: 75px;
   width: 100%;
 
   text-align: center;
 
   color: red;
+
 }
 
 /* Information Section */
