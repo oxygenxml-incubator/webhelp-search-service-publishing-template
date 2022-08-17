@@ -1,156 +1,180 @@
 body {
-    margin: 0;
+  margin: 0;
 
-    font-family: 'Play', sans-serif;
+  font-family: "Play", sans-serif;
 }
 
 /* Search Section */
 
 .search-field {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 
-    width: 100%;
-    height: 150px;
+  width: 100%;
+  height: 100px;
 }
 
 .search-input {
-    margin-top: auto;
-    margin-bottom: auto;
+  margin-top: auto;
 
-    padding-left: 10px;
-    padding-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 
-    width: 40%;
-    height: 30px;
+  width: 40%;
+  height: 30px;
 
-    border: 1px solid gray;
-    border-radius: 15px;
+  border: 1px solid gray;
+  border-radius: 15px;
 
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .search-button {
-    margin-top: auto;
-    margin-bottom: auto;
+  margin-top: auto;
+  margin-bottom: 5px;
 
-    padding-left: 5px;
+  padding-left: 5px;
 
-    height: 25px;
-    width: 25px;
+  height: 25px;
+  width: 25px;
 
-    border: none;
-    background-color: white;
+  border: none;
+  background-color: white;
 }
 
 .search-icon {
-    color: gray;
-    height: 25px;
+  color: gray;
+  height: 25px;
 }
 
-.search-icon:hover{
-    color: black;
-    cursor: pointer;
+.search-icon:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.error-message {
+  display: block;
+
+  min-height: 75px;
+  width: 100%;
+
+  text-align: center;
+
+  color: red;
+
 }
 
 /* Information Section */
 
 .information-container {
-    display: flex;
+  display: flex;
 
-    margin-left: 25px;
-    margin-right: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
 
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .hits-information {
-    width: 50%;
+  width: 50%;
 }
 
 .page-information {
-    width: 50%;
+  width: 50%;
 
-    text-align: right;
+  text-align: right;
 }
 
 /* Results section */
 
 .row {
-    margin-left: 50px;
-    margin-right: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
 
-    display: block;  
+  display: block;
 }
 
 .hits {
-    list-style: none;
+  list-style: none;
 
-    padding: 0;
+  padding: 0;
 }
 
 .hits-item {
-    padding-top: 25px;
+  padding-top: 25px;
 }
 
 .title {
-    text-decoration: none;
-    line-height:20px;
-    letter-spacing: 2px;
-    color: cadetblue;
-    font-size: 18px;
+  text-decoration: none;
+  line-height: 20px;
+  letter-spacing: 2px;
+  color: cadetblue;
+  font-size: 18px;
 
-    display: block;
+  display: block;
 }
 
 .description {
-    font-size: 16px;
+  font-size: 16px;
 
-    display: block;
+  display: block;
 }
 
 .no-results {
-    width: 50%;
+  width: 50%;
 
-    text-align: center;
-    color: cadetblue;
-    font-size: 30px; 
+  text-align: center;
+  color: cadetblue;
+  font-size: 30px;
 
-	margin: 0 auto;
-
+  margin: 0 auto;
 }
 
 /* Page selection */
 
 .page-selection {
-    width: 100%;
-    margin-top: 50px;
+  width: 100%;
+  margin-top: 50px;
 
-    display: flex;
+  display: flex;
+  justify-content: center;
 }
 
 .page-selector {
-    margin-left: auto;
-    margin-right: auto;
-
-    background-color: #e1ecf4;
-    border-radius: 3px;
-    border: 1px solid #7aa7c7;
-    box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
-    box-sizing: border-box;
-    color: cadetblue;
-    cursor: pointer;
-    font-size: 13px;
-    line-height: 1.15385;
-    outline: none;
-    padding: 8px .8em;
-    position: relative;
-    text-align: center;
-    touch-action: manipulation;
-    vertical-align: baseline;
+  background-color: #e1ecf4;
+  border-radius: 3px;
+  border: 1px solid #7aa7c7;
+  box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
+  box-sizing: border-box;
+  color: cadetblue;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.15385;
+  outline: none;
+  padding: 8px 0.8em;
+  text-align: center;
+  touch-action: manipulation;
+  vertical-align: baseline;
 }
 
 .page-selector:hover {
-    background-color: #b3d3ea;
-    color: #2c5777;
+  background-color: #b3d3ea;
+  color: #2c5777;
+}
+
+.page-selector-disabled {
+  color: gray;
+  cursor: default;
+}
+
+.page-selector-disabled:hover {
+  background-color: #e1ecf4;
+  color: gray;
+}
+
+/* Loader */
+
+.loader {
+  display: flex;
+  justify-content: center;
 }
