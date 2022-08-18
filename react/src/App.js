@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SearchComponent from "./components/SearchComponent.jsx";
+import SearchComponentProxy from "./components/SearchComponentProxy.jsx";
 import ResultsContainer from "./components/ResultsContainer.jsx";
 import algoliasearch from "algoliasearch/lite";
 import loaderImage from "./img/loader.gif";
@@ -47,7 +47,7 @@ const App = () => {
   return (
     <>
       <div className="search-container">
-        <SearchComponent performSearch={search} />
+        <SearchComponentProxy performSearch={search} />
       </div>
       {isLoading ? (
         <div className="loader">
