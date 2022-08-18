@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import SearchComponentProxy from "./components/SearchComponentProxy.jsx";
+import React, { useState } from "react";
 import ResultsContainer from "./components/ResultsContainer.jsx";
 import algoliasearch from "algoliasearch/lite";
 import loaderImage from "./img/loader.gif";
+import AutocompleteComponent from "./components/AutocompleteComponent.jsx";
 
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
@@ -46,9 +46,7 @@ const App = () => {
 
   return (
     <>
-      <div className="search-container">
-        <SearchComponentProxy performSearch={search} />
-      </div>
+      <AutocompleteComponent searchClient={searchClient} performSearch={search} />
       {isLoading ? (
         <div className="loader">
           <img src={loaderImage} />
