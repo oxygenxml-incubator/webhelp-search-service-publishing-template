@@ -3,6 +3,8 @@ import { getAlgoliaResults } from '@algolia/autocomplete-preset-algolia';
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 
+import { Highlight } from 'react-instantsearch-hooks-web';
+
 import '@algolia/autocomplete-theme-classic';
 
 const AutocompleteComponent = (props) => {
@@ -46,6 +48,8 @@ const AutocompleteComponent = (props) => {
                                     query,
                                     params: {
                                         hitsPerPage: 5,
+                                        highlightPreTag: '<mark>',
+                                        highlightPostTag: '</mark>'
                                     },
                                 },
                             ],
@@ -161,10 +165,10 @@ const AutocompleteComponent = (props) => {
                                                             <div className="aa-ItemContent">
                                                                 <div className="aa-ItemContentBody">
                                                                     <div className="aa-ItemContentTitle">
-                                                                        {item.title}
+                                                                        <Highlight hit={item} attribute="title" />;
                                                                     </div>
                                                                     <div className="aa-ItemContentDescription">
-                                                                        {item.shortDescription}
+                                                                        <Highlight hit={item} attribute="shortDescription" />;
                                                                     </div>
                                                                 </div>
                                                             </div>
