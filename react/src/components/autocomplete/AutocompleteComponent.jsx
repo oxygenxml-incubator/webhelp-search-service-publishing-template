@@ -131,7 +131,7 @@ const AutocompleteComponent = (props) => {
                     <div className="aa-PanelLayout aa-Panel--scrollable">
                         {autocompleteState.collections.map((collection, index) => {
                             return (
-                                <AutocompleteList performSearch={props.performSearch} index={index} items={collection.items} source={collection.source} autocomplete={autocomplete} />
+                                <AutocompleteList key={`source-${index}`} performSearch={props.performSearch} index={index} items={collection.items} source={collection.source} autocomplete={autocomplete} />
                             );
                         })}
                     </div>
