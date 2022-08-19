@@ -125,11 +125,24 @@ body {
   max-width: 640px;
   width: 100%;
 
-  margin-bottom: 10%;
   margin-top: 10%;
 }
 
 .aa-Input {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.error-message {
+  display: block;
+  margin: 0 auto;
+
+  width: 100%;
+  max-width: 640px;
+
+  height: 150px;
+
+  text-align: center;
+
+  color: red;
 }

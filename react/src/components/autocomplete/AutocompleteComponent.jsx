@@ -11,6 +11,8 @@ import SubmitButton from ".././buttons/SubmitButton.jsx"
 import '@algolia/autocomplete-theme-classic';
 
 const AutocompleteComponent = (props) => {
+    const [errorMessage, setErrorMessage] = useState("");
+
     const [autocompleteState, setAutocompleteState] = useState({
         collections: [],
         completion: null,
@@ -25,9 +27,14 @@ const AutocompleteComponent = (props) => {
         onSubmit({ state }) {
             if (state.query.trim().length !== 0)
                 props.performSearch(state.query, 0)
+            else
+                setErrorMessage("Please fill in the empty fields!")
         },
 
         onStateChange({ state }) {
+            if (state.query.trim().localeCompare(""))
+                setErrorMessage("")
+
             setAutocompleteState(state);
         },
 
@@ -137,6 +144,7 @@ const AutocompleteComponent = (props) => {
                     </div>
                 </div>
             )}
+            <span className="error-message">{errorMessage}</span>
         </div>
     );
 }
