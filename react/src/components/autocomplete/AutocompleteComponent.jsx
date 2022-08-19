@@ -29,19 +29,23 @@ const AutocompleteComponent = (props) => {
 
         onStateChange({ state }) {
             setAutocompleteState(state);
+        },
 
-            if (state.activeItemId != null) {
-                state.completion =
-                    state.collections[0].items[state.activeItemId].title;
-                state.query =
-                    state.collections[0].items[state.activeItemId].title;
-            }
+        navigator: {
+            navigate({ item }) {
+                props.performSearch(item.title, 0)
+            },
         },
 
         getSources() {
             return [
                 {
                     sourceId: 'documents',
+
+                    getItemUrl({ item }) {
+                        return item.objectID;
+                    },
+
                     getItems({ query }) {
                         return getAlgoliaResults({
                             searchClient: props.searchClient,
@@ -126,9 +130,8 @@ const AutocompleteComponent = (props) => {
                 >
                     <div className="aa-PanelLayout aa-Panel--scrollable">
                         {autocompleteState.collections.map((collection, index) => {
-
                             return (
-                                <AutocompleteList index={index} items={collection.items} source={collection.source} autocomplete={autocomplete} />
+                                <AutocompleteList performSearch={props.performSearch} index={index} items={collection.items} source={collection.source} autocomplete={autocomplete} />
                             );
                         })}
                     </div>
