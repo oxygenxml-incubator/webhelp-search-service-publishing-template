@@ -5,6 +5,9 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 import { Highlight } from 'react-instantsearch-hooks-web';
 
+import ClearButton from '.././buttons/ClearButton.jsx';
+import SubmitButton from ".././buttons/SubmitButton.jsx"
+
 import '@algolia/autocomplete-theme-classic';
 
 const AutocompleteComponent = (props) => {
@@ -94,19 +97,7 @@ const AutocompleteComponent = (props) => {
             >
                 <div className="aa-InputWrapperPrefix">
                     <label className="aa-Label" {...autocomplete.getLabelProps({})}>
-                        <button className="aa-SubmitButton" type="submit" title="Submit">
-                            <svg width="20" height="20" viewBox="0 0 20 20">
-                                <path
-                                    d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
-                                    fill="none"
-                                    fillRule="evenodd"
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="1.4"
-                                />
-                            </svg>
-                        </button>
+                        <SubmitButton />
                     </label>
                 </div>
                 <div className="aa-InputWrapper">
@@ -117,20 +108,7 @@ const AutocompleteComponent = (props) => {
                     />
                 </div>
                 <div className="aa-InputWrapperSuffix">
-                    <button className="aa-ClearButton" title="Clear" type="reset">
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                    </button>
+                    <ClearButton />
                 </div>
             </form>
 
@@ -171,18 +149,6 @@ const AutocompleteComponent = (props) => {
                                                                         <Highlight hit={item} attribute="shortDescription" />;
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="aa-ItemActions">
-                                                                <button
-                                                                    className="aa-ItemActionButton aa-DesktopOnly aa-ActiveOnly"
-                                                                    type="button"
-                                                                    title="Select"
-                                                                    style={{ pointerEvents: 'none' }}
-                                                                >
-                                                                    <svg fill="currentColor" viewBox="0 0 24 24">
-                                                                        <path d="M18.984 6.984h2.016v6h-15.188l3.609 3.609-1.406 1.406-6-6 6-6 1.406 1.406-3.609 3.609h13.172v-4.031z" />
-                                                                    </svg>
-                                                                </button>
                                                             </div>
                                                         </div>
                                                     </li>

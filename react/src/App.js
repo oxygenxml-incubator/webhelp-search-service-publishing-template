@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import ResultsContainer from "./components/ResultsContainer.jsx";
+import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 import algoliasearch from "algoliasearch/lite";
 import loaderImage from "./img/loader.gif";
-import AutocompleteComponent from "./components/AutocompleteComponent.jsx";
+import AutocompleteComponent from "./components/autocomplete/AutocompleteComponent.jsx";
 
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
