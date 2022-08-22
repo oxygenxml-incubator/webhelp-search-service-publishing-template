@@ -10,4 +10,8 @@
         <topicref href="tasks/html_crawler.dita"></topicref>
         <topicref href="tasks/algolia_search.dita"></topicref>
     </topicref>
+    <topicref chunk="to-content" href="topics/react_search_page.dita">
+        <topicref href="tasks/create_react_search_page.dita"></topicref>
+        <topicref href="tasks/react-page-algolia-autocomplete.dita"></topicref>
+    </topicref>
 </map>

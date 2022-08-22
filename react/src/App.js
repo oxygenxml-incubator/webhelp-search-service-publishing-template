@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import SearchComponent from "./components/SearchComponent.jsx";
-import ResultsContainer from "./components/ResultsContainer.jsx";
+import React, { useState } from "react";
+import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 import algoliasearch from "algoliasearch/lite";
 import loaderImage from "./img/loader.gif";
+import AutocompleteComponent from "./components/autocomplete/AutocompleteComponent.jsx";
 
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
@@ -42,13 +42,16 @@ const App = () => {
     }
 
     setLoading(false);
+
+    document.getElementsByClassName("aa-Input")[0].blur();
   };
 
   return (
     <>
-      <div className="search-container">
-        <SearchComponent performSearch={search} />
-      </div>
+      <AutocompleteComponent
+        searchClient={searchClient}
+        performSearch={search}
+      />
       {isLoading ? (
         <div className="loader">
           <img src={loaderImage} />
