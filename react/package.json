@@ -11,9 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.1.2",
-    "@fortawesome/free-solid-svg-icons": "^6.1.2",
-    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@algolia/autocomplete-core": "^1.7.1",
+    "@algolia/autocomplete-preset-algolia": "^1.7.1",
+    "@algolia/autocomplete-theme-classic": "^1.7.1",
     "algoliasearch": "^4.14.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
