@@ -42,7 +42,7 @@ body {
 
   float: right;
 
-  margin-right: 25px;
+  margin-right: 5%;
 
   position: relative;
 }
@@ -173,9 +173,9 @@ body {
   width: 15%;
   height: 100vh;
 
-  margin-left: 25px;
-  margin-right: 25px;
-  margin-top: 40px;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 3%;
 
   float: left;
 
