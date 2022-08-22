@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="create_react_search_page">
+    <title>How to create a React search page with Algolia?</title>
+    <shortdesc>How to use both React and Algolia to create a search page?</shortdesc>
+    <taskbody>
+        <steps>
+            <step>
+                <cmd>Create a folder and initialize NPM</cmd>
+                <info>
+                    <codeblock id="codeblock_r5m_5tn_p5b">npm init -y</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Install the following packages:</cmd>
+                <info>
+                    <codeblock id="codeblock_ib3_vtn_p5b">npm i react react-dom
+npm i -D @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader html-webpack-plugin style-loader file-loader webpack webpack-cli webpack-dev-server algoliasearch @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create .babelrc file</cmd>
+                <info>
+                    <codeblock id="codeblock_otf_d5n_p5b">{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a webpack.config.js file</cmd>
+                <info>
+                    <codeblock id="codeblock_jyy_d5n_p5b">const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  output: {
+    path: path.join(__dirname, "/build"), // the bundle output path
+    filename: "bundle.js", // the name of the bundle
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/template.html", // to import index.html file inside index.js
+    }),
+  ],
+  devServer: {
+    port: 3030, // you can change the port
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/, // .js and .jsx files
+        exclude: /node_modules/, // excluding the node_modules folder
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      {
+        test: /\.css$/, // styles files
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: "file-loader",
+        options: {
+          name: "img/[name].[ext]",
+        },
+      },
+    ],
+  },
+};
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create an <codeph>/src</codeph> folder and create the following files and
+                    directories inside it</cmd>
+                <info>
+                    <codeblock id="codeblock_qty_g5n_p5b">|-- src
+  |-- App.js
+  |-- App.css
+  |-- template.html
+  |-- index.js
+  |-- components
+     |-- HitsItem.jsx
+     |-- HitsList.jsx
+     |-- ResultsContainer.jsx
+     |-- SearchComponent.jsx
+     |-- SearchInformation.jsx</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Then add a loader GIF to /src/img with name loader.gif</cmd>
+                <info>
+                    <codeblock id="codeblock_lv3_w5n_p5b">https://github.com/oxygenxml-incubator/webhelp-search-service-publishing-template/blob/development/react/src/img/loader.gif</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>App.js</cmd>
+                <info>
+                    <codeblock id="codeblock_u5y_x5n_p5b">es (54 sloc)  1.6 KB
+
+import React, { useState, useEffect } from "react";
+import SearchComponent from "./components/SearchComponent.jsx";
+import ResultsContainer from "./components/ResultsContainer.jsx";
+import algoliasearch from "algoliasearch/lite";
+import loaderImage from "./img/loader.gif";
+
+// Create an Algolia SearchClient using App key and Search-only API key.
+const searchClient = algoliasearch(
+  "KLFWXPOEHY",
+  "ff20cb14577be8b5eab7ead0857dd573"
+);
+
+// Create a Search Instance with needed index.
+const searchInstance = searchClient.initIndex(
+  "webhelp-search-service-publishing-template"
+);
+
+const App = () => {
+  // Create preloader state
+  const [isLoading, setLoading] = useState(false);
+
+  // Create a state variable that stores the search result.
+  const [result, setResult] = useState({
+    hits: [],
+    nbHits: 0,
+    nbPages: 0,
+    page: 0,
+    query: "",
+  });
+
+  // Fetch the Algolia response based on written search term.
+  const search = async (searchTerm, page) => {
+    setLoading(true);
+
+    // If search term is not empty then get the results.
+    if (searchTerm.localeCompare("") !== 0) {
+      let response = await searchInstance.search(searchTerm, {
+        hitsPerPage: 10,
+        page: page,
+      });
+      setResult(response);
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    &lt;>
+      &lt;div className="search-container">
+        &lt;SearchComponent performSearch={search} />
+      &lt;/div>
+      {isLoading ? (
+        &lt;div className="loader">
+          &lt;img src={loaderImage} />
+        &lt;/div>
+      ) : (
+        &lt;ResultsContainer result={result} navigateToPage={search} />
+      )}
+    &lt;/>
+  );
+};
+
+export default App;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>App.css</cmd>
+                <info>
+                    <codeblock id="codeblock_dkl_bvn_p5b">body {
+  margin: 0;
+
+  font-family: "Play", sans-serif;
+}
+
+/* Search Section */
+
+.search-field {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  height: 100px;
+}
+
+.search-input {
+  margin-top: auto;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  width: 40%;
+  height: 30px;
+
+  border: 1px solid gray;
+  border-radius: 15px;
+
+  font-size: 16px;
+}
+
+.search-button {
+  margin-top: auto;
+  margin-bottom: 5px;
+
+  padding-left: 5px;
+
+  height: 25px;
+  width: 25px;
+
+  border: none;
+  background-color: white;
+}
+
+.search-icon {
+  color: gray;
+  height: 25px;
+}
+
+.search-icon:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.error-message {
+  display: block;
+
+  min-height: 75px;
+  width: 100%;
+
+  text-align: center;
+
+  color: red;
+
+}
+
+/* Information Section */
+
+.information-container {
+  display: flex;
+
+  margin-left: 25px;
+  margin-right: 25px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.hits-information {
+  width: 50%;
+}
+
+.page-information {
+  width: 50%;
+
+  text-align: right;
+}
+
+/* Results section */
+
+.row {
+  margin-left: 50px;
+  margin-right: 50px;
+
+  display: block;
+}
+
+.hits {
+  list-style: none;
+
+  padding: 0;
+}
+
+.hits-item {
+  padding-top: 25px;
+}
+
+.title {
+  text-decoration: none;
+  line-height: 20px;
+  letter-spacing: 2px;
+  color: cadetblue;
+  font-size: 18px;
+
+  display: block;
+}
+
+.description {
+  font-size: 16px;
+
+  display: block;
+}
+
+.no-results {
+  width: 50%;
+
+  text-align: center;
+  color: cadetblue;
+  font-size: 30px;
+
+  margin: 0 auto;
+}
+
+/* Page selection */
+
+.page-selection {
+  width: 100%;
+  margin-top: 50px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.page-selector {
+  background-color: #e1ecf4;
+  border-radius: 3px;
+  border: 1px solid #7aa7c7;
+  box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
+  box-sizing: border-box;
+  color: cadetblue;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.15385;
+  outline: none;
+  padding: 8px 0.8em;
+  text-align: center;
+  touch-action: manipulation;
+  vertical-align: baseline;
+}
+
+.page-selector:hover {
+  background-color: #b3d3ea;
+  color: #2c5777;
+}
+
+.page-selector-disabled {
+  color: gray;
+  cursor: default;
+}
+
+.page-selector-disabled:hover {
+  background-color: #e1ecf4;
+  color: gray;
+}
+
+/* Loader */
+
+.loader {
+  display: flex;
+  justify-content: center;
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>template.html</cmd>
+                <info>
+                    <codeblock id="codeblock_czn_cvn_p5b">&lt;!DOCTYPE html>
+&lt;html lang="en">
+  &lt;head>
+    &lt;meta charset="UTF-8" />
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    &lt;script
+      src="https://kit.fontawesome.com/5dab7a0ad3.js"
+      crossorigin="anonymous"
+    >&lt;/script>
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com" />
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    &lt;link
+      href="https://fonts.googleapis.com/css2?family=Play&amp;display=swap"
+      rel="stylesheet"
+    />
+    &lt;title>Search page with React&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;div id="root">&lt;/div>
+
+    &lt;script src="bundle.js">&lt;/script>
+  &lt;/body>
+&lt;/html></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>HitsItem.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_chh_2vn_p5b">import React from 'react';
+
+const HitsItem = ({url, title, description}) => {
+    return (
+    &lt;li className="hits-item">
+        &lt;a href={url} className="title">{title}&lt;/a>
+        &lt;span className="description">{description}&lt;/span>
+    &lt;/li>
+    );
+};
+
+export default HitsItem;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>HitsList.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_jj2_fvn_p5b">import React from 'react';
+import HitsItem from './HitsItem.jsx';
+
+const HitsList = ({ hits }) => {
+    if (hits?.length > 0){
+        return (&lt;div className="row">&lt;ul className="hits">{
+            hits.map((hit) => {
+                return (
+                    &lt;HitsItem
+                        key={"objectID" in hit ? hit.objectID : hit.toString()}
+                        title={hit.title}
+                        description={hit.shortDescription}
+                        url={hit.objectID}
+                    />
+                );
+            })
+        }&lt;/ul>&lt;/div>);
+    }
+    else
+        return (&lt;div className="no-results">&lt;strong>No results found!&lt;/strong>&lt;/div>);
+}
+
+export default HitsList;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>ResultsContainer.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_nrc_gvn_p5b">import React from 'react';
+import SearchInformation from './SearchInformation.jsx';
+import HitsList from './HitsList.jsx';
+
+const ResultsContainer = ({ result, navigateToPage }) => {
+
+    const isPrevButtonDisabled = () => {
+        return result.page === 0;
+    }
+
+    const isNextButtonDisabled = () => {
+        return result.page === result.nbPages - 1;
+    }
+
+    return (&lt;div className="results-container">
+        &lt;SearchInformation
+            nHits={result.nbHits}
+            query={result.query}
+            page={result.nbPages >= 1 ? result.page + 1 : result.page}
+            pages={result.nbPages}
+        />
+        &lt;HitsList hits={result.hits} />
+        {result.nbPages !== 0 &amp;&amp;
+            (&lt;div className="page-selection">
+                &lt;button
+                    className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
+                    onClick={() => navigateToPage(result.query, result.page - 1)} disabled={isPrevButtonDisabled() ? true : false}
+                >
+                    Previous
+                &lt;/button>
+                &lt;button
+                    className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
+                    onClick={() => navigateToPage(result.query, result.page + 1)} disabled={isNextButtonDisabled() ? true : false}
+                >
+                    Next
+                &lt;/button>
+            &lt;/div>)}
+    &lt;/div>);
+
+}
+
+export default ResultsContainer;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>SearchComponent.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_wgf_hvn_p5b">import React, { useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+const SearchComponent = ({ performSearch }) => {
+    // Create a state variable that stores the search term.
+    const [searchTerm, setSearchTerm] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const performSearchInternal = (e) => {
+        e.preventDefault();
+
+        if (searchTerm.length === 0)
+            setErrorMessage("Please fill in the empty field!");
+        else
+            performSearch(searchTerm, 0);
+    }
+
+    const onChangeInput = (e) => {
+        setErrorMessage("");
+
+        setSearchTerm(e.target.value.trim());
+    }
+
+    return (
+        &lt;>
+            &lt;form>
+                &lt;div className="search-field">
+                    &lt;input className="search-input" type="search" onChange={(e) => { onChangeInput(e) }} required="required">&lt;/input>
+                    &lt;button className="search-button" type="submit" onClick={(e) => { performSearchInternal(e) }}>&lt;FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />&lt;/button>
+                &lt;/div>
+            &lt;/form>
+            &lt;span className="error-message">{errorMessage}&lt;/span>
+        &lt;/>
+    );
+}
+
+export default SearchComponent;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>SearchInformation.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_n2y_hvn_p5b">import React from 'react';
+
+const SearchInformation = ({nHits, query, page, pages}) => {
+    return (
+        &lt;div className="information-container">
+            &lt;span className="hits-information">{nHits + " document(s) found for "}&lt;strong>{query + "."}&lt;/strong>&lt;/span>
+            &lt;span className="page-information">{"Page " + page + "/" + pages}&lt;/span>
+        &lt;/div>
+    );
+}
+
+export default SearchInformation;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>To run the React project use:</cmd>
+                <info>
+                    <codeblock id="codeblock_vwd_jvn_p5b">npm run build //To build an output for production
+npm run dev //To run development mode</codeblock>
+                </info>
+            </step>
+        </steps>
+    </taskbody>
+</task>
