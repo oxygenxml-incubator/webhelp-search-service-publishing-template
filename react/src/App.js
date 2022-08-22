@@ -6,8 +6,6 @@ import loaderImage from "./img/loader.gif";
 
 import AutocompleteComponent from "./components/autocomplete/AutocompleteComponent.jsx";
 
-import FilterComponent from "./components/hits/FilterComponent.jsx";
-
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
   "KLFWXPOEHY",
@@ -22,7 +20,6 @@ const searchInstance = searchClient.initIndex(
 const App = () => {
   // Create preloader state
   const [isLoading, setLoading] = useState(false);
-  const [isFound, setFound] = useState(false);
 
   // Create a state variable that stores the search result.
   const [result, setResult] = useState({
@@ -35,8 +32,6 @@ const App = () => {
 
   // Fetch the Algolia response based on written search term.
   const search = async (searchTerm, page) => {
-    setFound(false);
-
     setLoading(true);
 
     // If search term is not empty then get the results.
@@ -45,10 +40,8 @@ const App = () => {
         hitsPerPage: 10,
         page: page,
       });
-      
-      setResult(response);
 
-      if (response.hits.length > 0) setFound(true);
+      setResult(response);
     }
 
     setLoading(false);
@@ -69,7 +62,6 @@ const App = () => {
       ) : (
         <>
           <ResultsContainer result={result} navigateToPage={search} />
-          {isFound && <FilterComponent />}
         </>
       )}
     </>

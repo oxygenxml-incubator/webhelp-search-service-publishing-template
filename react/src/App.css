@@ -27,14 +27,29 @@ body {
 
 /* Results section */
 
-.row {
-  margin-left: 50px;
-  margin-right: 50px;
+.results-container {
+  display: flex;
+  flex-direction: column;
 
-  display: block;
+  height: 100vh;
+}
+
+.hits-container {
+  position: absolute;
+
+  width: 75%;
+  height: 100%;
+
+  float: right;
+
+  margin-right: 25px;
+
+  position: relative;
 }
 
 .hits {
+  position: absolute;
+
   list-style: none;
 
   padding: 0;
@@ -42,6 +57,7 @@ body {
 
 .hits-item {
   padding-top: 25px;
+  position: relative;
 }
 
 .title {
@@ -133,6 +149,10 @@ body {
   padding-right: 10px;
 }
 
+.aa-Panel {
+  z-index: 1;
+}
+
 .error-message {
   display: block;
   margin: 0 auto;
@@ -145,4 +165,34 @@ body {
   text-align: center;
 
   color: red;
+}
+
+/* Filtering */
+
+.filter-container {
+  width: 15%;
+  height: 100vh;
+
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-top: 40px;
+
+  float: left;
+
+  border: 1px solid cadetblue;
+
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.filter-title {
+  text-align: center;
+}
+
+.filter-selection {
+  text-align: center;
+}
+
+.filter-label {
+  text-align: center;
 }
