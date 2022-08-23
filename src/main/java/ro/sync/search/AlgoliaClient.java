@@ -66,7 +66,7 @@ public class AlgoliaClient {
 					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "keywords", "contents"))
 					.setCustomRanking(
 							Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
-					.setAttributesToHighlight(Arrays.asList("contents"))
+					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
 					.setAttributesToSnippet(Arrays.asList("contents:30"))
 					.setAttributesForFaceting(Arrays.asList("title")));
 
