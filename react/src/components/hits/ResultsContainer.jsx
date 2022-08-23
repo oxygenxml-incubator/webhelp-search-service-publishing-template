@@ -28,8 +28,8 @@ const ResultsContainer = ({ result, navigateToPage }) => {
             pages={result.nbPages}
         />
         <div className="hits-and-manipulation">
-            {isFound && <FilterContainer sections={[{ title: "Indices", options: [{ description: "First", id: "indices-first" }, { description: "Second", id: "indices-second" }, { description: "Third", id: "indices-third" }] },
-                                                    { title: "Topics", options: [{ description: "First", id: "topics-first" }, { description: "Second", id: "topics-second" }, { description: "Third", id: "topics-third" }] }]} />}
+            {isFound && <FilterContainer sections={[{ title: "Find query in:", options: [{ description: "Title", id: "attribute-title" }, { description: "Keywords", id: "attribute-keywords" }, { description: "Short Description", id: "attribute-short-description" }, { description: "Contents", id: "attribute-contents" }] },
+            { title: "Topics", options: [{ description: "First", id: "topics-first" }, { description: "Second", id: "topics-second" }, { description: "Third", id: "topics-third" }] }]} />}
             <HitsList hits={result.hits} />
         </div>
         {result.nbPages !== 0 &&

@@ -68,7 +68,7 @@ public class AlgoliaClient {
 							Arrays.asList("desc(title)", "desc(keywords)", "desc(shortDescription)", "desc(contents)"))
 					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
 					.setAttributesToSnippet(Arrays.asList("contents:30"))
-					.setAttributesForFaceting(Arrays.asList("title")));
+					.setAttributesForFaceting(Arrays.asList("title", "keywords", "shortDescription", "contents")));
 
 			logger.info("Index {} succesfully created/selected!", indexName);
 		}
