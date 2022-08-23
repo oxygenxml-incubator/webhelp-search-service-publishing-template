@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchInformation from './SearchInformation.jsx';
 import HitsList from './HitsList.jsx';
-import FilterComponent from "./FilterComponent.jsx";
+import FilterContainer from "../filter/FilterContainer.jsx";
 
 const ResultsContainer = ({ result, navigateToPage }) => {
     const [isFound, setFound] = useState(false);
@@ -28,7 +28,8 @@ const ResultsContainer = ({ result, navigateToPage }) => {
             pages={result.nbPages}
         />
         <div className="hits-and-manipulation">
-            {isFound && <FilterComponent />}
+            {isFound && <FilterContainer sections={[{ title: "Indices", options: [{ description: "First", id: "indices-first" }, { description: "Second", id: "indices-second" }, { description: "Third", id: "indices-third" }] },
+                                                    { title: "Topics", options: [{ description: "First", id: "topics-first" }, { description: "Second", id: "topics-second" }, { description: "Third", id: "topics-third" }] }]} />}
             <HitsList hits={result.hits} />
         </div>
         {result.nbPages !== 0 &&
