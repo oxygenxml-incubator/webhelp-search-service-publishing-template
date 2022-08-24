@@ -31,7 +31,11 @@ const App = () => {
   });
 
   // Fetch the Algolia response based on written search term.
-  const search = async (searchTerm, page) => {
+  const search = async (
+    searchTerm,
+    page,
+    searchableAttributes = ["title", "shortDescription", "contents"]
+  ) => {
     setLoading(true);
 
     // If search term is not empty then get the results.
@@ -39,6 +43,7 @@ const App = () => {
       let response = await searchInstance.search(searchTerm, {
         hitsPerPage: 10,
         page: page,
+        restrictSearchableAttributes: searchableAttributes,
       });
 
       setResult(response);
