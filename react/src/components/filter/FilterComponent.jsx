@@ -1,6 +1,6 @@
 import React from 'react';
 
-let searchableAttributes = ["title", "shortDescription", "contents"];
+export let searchableAttributes = [];
 
 const FilterComponent = ({ performSearch, query }) => {
     return (<form onChange={null}><div className="filter-container">

@@ -8,6 +8,8 @@ import AutocompleteList from './AutocompleteList.jsx';
 import ClearButton from '.././buttons/ClearButton.jsx';
 import SubmitButton from ".././buttons/SubmitButton.jsx"
 
+import { searchableAttributes } from '../filter/FilterComponent.jsx';
+
 import '@algolia/autocomplete-theme-classic';
 
 const AutocompleteComponent = (props) => {
@@ -26,7 +28,7 @@ const AutocompleteComponent = (props) => {
     const autocomplete = useMemo(() => createAutocomplete({
         onSubmit({ state }) {
             if (state.query.trim().length !== 0)
-                props.performSearch(state.query, 0)
+                props.performSearch(state.query, 0, searchableAttributes)
             else
                 setErrorMessage("Please fill in the empty fields!")
         },
@@ -40,7 +42,7 @@ const AutocompleteComponent = (props) => {
 
         navigator: {
             navigate({ item }) {
-                props.performSearch(item.title, 0)
+                props.performSearch(item.title, 0, searchableAttributes)
             },
         },
 

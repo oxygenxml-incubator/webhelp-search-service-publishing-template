@@ -34,7 +34,7 @@ const App = () => {
   const search = async (
     searchTerm,
     page,
-    searchableAttributes = ["title", "shortDescription", "contents"]
+    searchableAttributes
   ) => {
     setLoading(true);
 
