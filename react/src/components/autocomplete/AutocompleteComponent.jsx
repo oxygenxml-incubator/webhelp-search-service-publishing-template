@@ -60,7 +60,7 @@ const AutocompleteComponent = (props) => {
                             searchClient: props.searchClient,
                             queries: [
                                 {
-                                    indexName: "webhelp-search-service-publishing-template",
+                                    indexName: "mobile-phone",
                                     query,
                                     params: {
                                         hitsPerPage: 5,

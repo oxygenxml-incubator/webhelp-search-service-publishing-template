@@ -32,13 +32,17 @@ const FilterComponent = ({ performSearch, query }) => {
         </div>
         <div className="product-selection">
             <h4 className="filter-title">Product:</h4>
-            <input className="filter-selection" type="checkbox" id="facet-product" defaultChecked={facetFilters.has('product:X2000') ? true : false} onChange={() => { facetFilters.has('product:X2000') ? (facetFilters.delete('product:X2000')) : (facetFilters.add('product:X2000')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>
-            <label className="filter-label" htmlFor="facet-product">X2000</label><br />
+            <input className="filter-selection" type="checkbox" id="facet-product-x2000" defaultChecked={facetFilters.has('product:X2000') ? true : false} onChange={() => { facetFilters.has('product:X2000') ? (facetFilters.delete('product:X2000')) : (facetFilters.add('product:X2000')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>
+            <label className="filter-label" htmlFor="facet-product-x2000">X2000 Phone Guide</label><br />
+            <input className="filter-selection" type="checkbox" id="facet-product-x1000" defaultChecked={facetFilters.has('product:X1000') ? true : false} onChange={() => { facetFilters.has('product:X1000') ? (facetFilters.delete('product:X1000')) : (facetFilters.add('product:X1000')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>
+            <label className="filter-label" htmlFor="facet-product-x1000">X1000 Phone Guide</label><br />
         </div>
         <div className="audience-selection">
             <h4 className="filter-title">Audience:</h4>
-            <input className="filter-selection" type="checkbox" id="facet-audience" defaultChecked={facetFilters.has('audience:Tehnician') ? true : false} onChange={() => { facetFilters.has('audience:Tehnician') ? (facetFilters.delete('audience:Tehnician')) : (facetFilters.add('audience:Tehnician')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>
-            <label className="filter-label" htmlFor="facet-audience">Tehnician</label><br />
+            <input className="filter-selection" type="checkbox" id="facet-audience-tehnician" defaultChecked={facetFilters.has('audience:Tehnician') ? true : false} onChange={() => { facetFilters.has('audience:Tehnician') ? (facetFilters.delete('audience:Tehnician')) : (facetFilters.add('audience:Tehnician')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>
+            <label className="filter-label" htmlFor="facet-audience-tehnician">Technician Level</label><br />
+            <input className="filter-selection" type="checkbox" id="facet-audience-basic" defaultChecked={facetFilters.has('audience:BasicUser') ? true : false} onChange={() => { facetFilters.has('audience:BasicUser') ? (facetFilters.delete('audience:BasicUser')) : (facetFilters.add('audience:BasicUser')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>
+            <label className="filter-label" htmlFor="facet-audience-basic">Basic User Level</label><br />
         </div>
     </div></form>);
 }

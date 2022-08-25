@@ -14,10 +14,10 @@ const AutocompleteItem = ({ performSearch, item, source, autocomplete }) => {
                 <div className="aa-ItemContent">
                     <div className="aa-ItemContentBody">
                         <div className="aa-ItemContentTitle">
-                            <Highlight hit={item} attribute="title" />;
+                            <Highlight hit={item} attribute="title" />
                         </div>
                         <div className="aa-ItemContentDescription">
-                            <Highlight hit={item} attribute="shortDescription" />;
+                            <Highlight hit={item} attribute="shortDescription" />
                         </div>
                     </div>
                 </div>
