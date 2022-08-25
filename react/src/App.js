@@ -14,8 +14,8 @@ const searchClient = algoliasearch(
 
 // Create a Search Instance with needed index.
 const searchInstance = searchClient.initIndex(
-  "webhelp-search-service-publishing-template"
-  //"mobile-phone"
+  //"webhelp-search-service-publishing-template"
+  "mobile-phone"
 );
 
 const App = () => {

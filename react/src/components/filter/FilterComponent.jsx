@@ -4,7 +4,23 @@ export let searchableAttributes = new Set([]);
 export let facetFilters = new Set([]);
 
 const FilterComponent = ({ performSearch, query }) => {
+    const clearAllFilters = (e) => {
+        e.preventDefault();
+        let checkboxes = document.querySelectorAll(['.filter-container input[type="checkbox"'])
+
+        for (let i = 0; i < checkboxes.length; i++)
+            checkboxes[i].checked = false;
+
+        searchableAttributes.clear();
+        facetFilters.clear();
+
+        performSearch(query, 0);
+    }
+
     return (<form onChange={null}><div className="filter-container">
+        <div className="filter-buttons">
+            <button className="filter-clear" onClick={e => clearAllFilters(e)}>Clear all filters</button>
+        </div>
         <div className="attribute-selection">
             <h4 className="filter-title">Find query in:</h4>
             <input className="filter-selection" type="checkbox" id="attribute-title" defaultChecked={searchableAttributes.has('title') ? true : false} onChange={() => { searchableAttributes.has('title') ? (searchableAttributes.delete('title')) : (searchableAttributes.add('title')), performSearch(query, 0, [...searchableAttributes], [...facetFilters]) }}></input>

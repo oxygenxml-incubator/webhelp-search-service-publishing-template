@@ -196,3 +196,14 @@ body {
 .filter-label {
   text-align: center;
 }
+
+.filter-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.filter-clear {
+  margin-top: 10%;
+  width: 75%;
+}
