@@ -118,6 +118,7 @@ const AutocompleteComponent = (props) => {
                         className="aa-Input"
                         ref={inputRef}
                         {...autocomplete.getInputProps({ inputElement: inputRef.current })}
+                        placeholder={autocompleteState.query}
                     />
                 </div>
                 <div className="aa-InputWrapperSuffix">
