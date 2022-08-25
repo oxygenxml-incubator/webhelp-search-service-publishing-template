@@ -15,6 +15,7 @@ const searchClient = algoliasearch(
 // Create a Search Instance with needed index.
 const searchInstance = searchClient.initIndex(
   "webhelp-search-service-publishing-template"
+  //"mobile-phone"
 );
 
 const App = () => {
@@ -34,7 +35,8 @@ const App = () => {
   const search = async (
     searchTerm,
     page,
-    searchableAttributes
+    searchableAttributes,
+    facetFilters
   ) => {
     setLoading(true);
 
@@ -44,6 +46,7 @@ const App = () => {
         hitsPerPage: 10,
         page: page,
         restrictSearchableAttributes: searchableAttributes,
+        facetFilters: facetFilters
       });
 
       setResult(response);

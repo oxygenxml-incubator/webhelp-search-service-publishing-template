@@ -29,13 +29,13 @@ const ResultsContainer = ({ result, navigateToPage }) => {
             (<div className="page-selection">
                 <button
                     className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
-                    onClick={() => navigateToPage(result.query, result.page - 1, searchableAttributes)} disabled={isPrevButtonDisabled() ? true : false}
+                    onClick={() => navigateToPage(result.query, result.page - 1, [...searchableAttributes])} disabled={isPrevButtonDisabled() ? true : false}
                 >
                     Previous
                 </button>
                 <button
                     className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
-                    onClick={() => navigateToPage(result.query, result.page + 1, searchableAttributes)} disabled={isNextButtonDisabled() ? true : false}
+                    onClick={() => navigateToPage(result.query, result.page + 1, [...searchableAttributes])} disabled={isNextButtonDisabled() ? true : false}
                 >
                     Next
                 </button>
