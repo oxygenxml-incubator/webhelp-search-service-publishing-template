@@ -42,6 +42,7 @@ const AutocompleteComponent = (props) => {
 
         navigator: {
             navigate({ item }) {
+                setAutocompleteState({...autocompleteState, query: item.title})
                 props.performSearch(item.title, 0, [...searchableAttributes])
             },
         },
