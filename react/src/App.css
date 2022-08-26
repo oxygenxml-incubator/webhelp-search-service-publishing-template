@@ -179,7 +179,8 @@ body {
 
   float: left;
 
-  border: 1px solid cadetblue;
+  border: 2px solid cadetblue;
+  border-radius: 10px;
 
   text-align: left;
   overflow-wrap: break-word;
@@ -203,7 +204,24 @@ body {
   justify-content: center;
 }
 
-.filter-clear {
+.filter-button {
   margin-top: 10%;
   width: 75%;
+  font-size: 14px;
+  font-weight: 550;
+
+  transition-duration: 0.4s;
+
+  background: none;
+  border: 1px solid cadetblue;
+  border-radius: 5px;
+}
+
+.filter-button:hover {
+  background-color: cadetblue;
+  color: white;
+}
+
+.filter-button:active {
+  background-color: #2c5777;
 }
