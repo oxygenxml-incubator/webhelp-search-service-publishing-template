@@ -18,6 +18,7 @@ const searchClient = algoliasearch(
 const searchInstance = searchClient.initIndex(
   //"webhelp-search-service-publishing-template"
   "mobile-phone"
+  //"mobile-phone-2"
 );
 
 const App = () => {
@@ -49,7 +50,7 @@ const App = () => {
           hitsPerPage: 10,
           page: page,
           restrictSearchableAttributes: searchableAttributes,
-          facetFilters: Parser.findMatches(searchTerm),
+          facetFilters: Parser.createFilters(searchTerm),
         });
 
         setResult(response);
