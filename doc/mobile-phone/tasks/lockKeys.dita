@@ -3,6 +3,14 @@
 <task id="task_egl_jxl_3g">
     <title>Locking and unlocking your phone</title>
     <shortdesc/>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>locking</keyword>
+                <keyword>unlocking</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>You can lock the keyboard of your phone to avoid pressing keys or call

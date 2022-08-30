@@ -3,6 +3,15 @@
 <topic id="troubleshooting">
   <title>Troubleshooting</title>
   <shortdesc>How to fix common problems.</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>troubleshooting</keyword>
+        <keyword>problems</keyword>
+        <keyword>issues</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
   <body>
     <p>Troubleshoot most common issues.</p>
   </body>

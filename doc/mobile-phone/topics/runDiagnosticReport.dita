@@ -2,6 +2,15 @@
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
 <topic id="topic_jtn_y2c_fg">
   <title>Running problem diagnostic report</title>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>diagnostic</keyword>
+        <keyword>report</keyword>
+        <keyword>troubleshooting</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
   <body>
     <p>If you have connectivity problems, you can run a diagnostic report that helps you to identity
       the issues the phone might have. To run the report, follow this procedure:<ol

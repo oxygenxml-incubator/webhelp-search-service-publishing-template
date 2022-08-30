@@ -4,6 +4,15 @@
     <title>Setting up an e-mail address</title>
     <shortdesc>You can use the Mail application to set up your email and other POP3 or IMAP email
         accounts.</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>mail</keyword>
+                <keyword>email</keyword>
+                <keyword>setting up</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>From the home menu, select <term>Messaging -&gt; Options -&gt; Settings -&gt; Email

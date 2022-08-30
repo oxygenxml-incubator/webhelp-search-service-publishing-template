@@ -4,6 +4,14 @@
     <title>Receiving files using Bluetooth&#174;</title>
     <shortdesc> When a file is sent to your phone using Bluetooth&#174; technology, a dialog box
         appears on your phone screen. </shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>bluetooth</keyword>
+                <keyword>files</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>To perform this task, the Bluetooth&#174; must be turned on. See <xref

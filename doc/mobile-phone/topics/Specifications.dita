@@ -2,6 +2,15 @@
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
 <topic id="topic_d5p_h3b_fg">
   <title>Brief specifications</title>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>specifications</keyword>
+        <keyword>resolution</keyword>
+        <keyword>size</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
   <body>
     <dl>
       <dlentry>

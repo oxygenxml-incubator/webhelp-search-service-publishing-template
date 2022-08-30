@@ -5,6 +5,14 @@
     <shortdesc>You can easily set up a conference call with your family, friends, co-workers. Call
         the first participant and then join calls together as described  in the following
         procedure.</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>conference</keyword>
+                <keyword>call</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>Before starting, make sure that your <term>SIM card</term> is enabled for conference

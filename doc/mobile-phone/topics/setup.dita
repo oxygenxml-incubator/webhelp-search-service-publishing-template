@@ -3,5 +3,14 @@
 <topic id="setup">
   <title>Phone Setup</title>
   <shortdesc>Basic phone setup.</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>basic setup</keyword>
+        <keyword>setup</keyword>
+        <keyword>basics</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
   <body/>
 </topic>

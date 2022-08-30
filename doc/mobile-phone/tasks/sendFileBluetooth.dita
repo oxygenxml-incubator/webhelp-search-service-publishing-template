@@ -4,6 +4,14 @@
     <title>Sending files using Bluetooth&#174;</title>
     <shortdesc> You can use Bluetooth&#174; to send your picture, videos, and audio files to another
         Bluetooth&#174; enabled device such as a phone or notebook computer. </shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>bluetooth</keyword>
+                <keyword>files</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p> Before you begin, make sure that the receiving device is set to discoverable mode </p>

@@ -5,6 +5,13 @@
     <shortdesc>Turn off <term>Bluetooth</term> when you are not using it to save battery power.
         Also, turned it off in places where using a wireless device is not allowed (for example on
         board an aircraft). </shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>bluetooth</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <steps>
             <step>

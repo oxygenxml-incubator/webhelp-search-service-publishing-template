@@ -3,6 +3,13 @@
 <task id="task_ww1_fh3_rf">
     <title>Inserting the battery</title>
     <shortdesc/>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>battery</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>Before proceeding with these steps, make sure that your mobile phone is turned
