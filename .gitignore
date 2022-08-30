@@ -31,3 +31,4 @@
 /src/main/javascript/node_modules/
 /src/main/javascript/package-lock.json
 /templates/webhelp-documentation-template/html/temp/webhelp-responsive/wh-template-copy-resources.xml
+/templates/webhelp-documentation-template/js/*.js

@@ -117,6 +117,11 @@ const navigateToSearch = (state) => {
     state.collections[0].items[state.activeItemId].title;
 
   window.location = path;
+<<<<<<< HEAD:javascript/app/main.js
+=======
+
+  state.completion = state.collections[0].items[state.activeItemId].title;
+>>>>>>> c0111fd (#28 Add fixes):src/main/javascript/app/main.js
 };
 
 // If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
@@ -126,6 +131,7 @@ if (document.getElementById("autocomplete")) {
     container: "#autocomplete",
     placeholder: "Search",
 
+<<<<<<< HEAD:javascript/app/main.js
     initialState: {
       query: window.location.href.includes('=') ? decodeURI(window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.length)) : "",
     },
@@ -140,6 +146,19 @@ if (document.getElementById("autocomplete")) {
             "search.html?searchQuery=" +
             state.state.query;
 
+=======
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      console.log(state);
+      // Check if it's not empty
+      if (state.query != "") {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+>>>>>>> c0111fd (#28 Add fixes):src/main/javascript/app/main.js
           window.location = path;
         } else {
           navigateToSearch(state);
