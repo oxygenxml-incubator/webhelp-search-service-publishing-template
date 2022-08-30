@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -229,12 +230,8 @@ public class Crawler {
 	 */
 	private List<String> collectKeywords(final Document page) {
 		Element element = page.select("meta[name=keywords]").first();
-		List<String> keywords = new ArrayList<>();
 
-		if (page.select("meta[name=keywords]").first() != null)
-			keywords.add(element.attr("content"));
-
-		return keywords;
+		return Arrays.asList(element.attr("content").split("[ ,]+"));
 	}
 
 	/**
