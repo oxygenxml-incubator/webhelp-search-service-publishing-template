@@ -14,13 +14,18 @@
             <parameter name="webhelp.fragment.footer" value="This site is powered by Netlify"/>
             <parameter name="webhelp.enable.search.autocomplete" value="false"></parameter>
         </parameters>
+        <xslt>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createMainPage"/>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createSearchPage"/>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.dita2webhelp"/>
+        </xslt>
         <resources>
             <css file="style.css"/>
             <logo file="img/logo.png"></logo>
             <fileset><include name="js/**"/></fileset>
         </resources>
         <html-fragments>
-            <fragment file="html/search.html" placeholder="webhelp.fragment.head"/>
+            <fragment file="html/search.html" placeholder="webhelp.fragment.after.body"/>
         </html-fragments>
         <tags>
             <tag type="layout">tree</tag>
