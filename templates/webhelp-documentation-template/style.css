@@ -406,3 +406,11 @@ Example:
 .aa-Panel {
   z-index: 1000;
 }
+
+input {
+  margin: 0;
+}
+
+mark {
+  padding: 0;
+}
