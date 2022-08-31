@@ -32,3 +32,26 @@
 /src/main/javascript/package-lock.json
 /templates/webhelp-documentation-template/html/temp/webhelp-responsive/wh-template-copy-resources.xml
 /templates/webhelp-documentation-template/js/*.js
+
+# dependencies
+/react/node_modules
+/react/.pnp
+/react.pnp.js
+/react/package-lock.json
+
+# testing
+/react/coverage
+
+# production
+/react/build
+
+# misc
+/react.DS_Store
+/react.env.local
+/react.env.development.local
+/react.env.test.local
+/react.env.production.local
+
+/reactnpm-debug.log*
+/reactyarn-debug.log*
+/reactyarn-error.log*
