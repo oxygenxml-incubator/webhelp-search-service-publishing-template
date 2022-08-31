@@ -6,8 +6,6 @@ import loaderImage from "./img/loader.gif";
 
 import AutocompleteComponent from "./components/autocomplete/AutocompleteComponent.jsx";
 
-import Parser from "./utils/Parser";
-
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
   "KLFWXPOEHY",
@@ -45,25 +43,14 @@ const App = () => {
 
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
-      if (searchTerm.includes(":")) {
-        let response = await searchInstance.search("", {
-          hitsPerPage: 10,
-          page: page,
-          restrictSearchableAttributes: searchableAttributes,
-          facetFilters: Parser.createFilters(searchTerm),
-        });
+      let response = await searchInstance.search(searchTerm, {
+        hitsPerPage: 10,
+        page: page,
+        restrictSearchableAttributes: searchableAttributes,
+        facetFilters: facetFilters,
+      });
 
-        setResult(response);
-      } else {
-        let response = await searchInstance.search(searchTerm, {
-          hitsPerPage: 10,
-          page: page,
-          restrictSearchableAttributes: searchableAttributes,
-          facetFilters: facetFilters,
-        });
-
-        setResult(response);
-      }
+      setResult(response);
     }
 
     setLoading(false);

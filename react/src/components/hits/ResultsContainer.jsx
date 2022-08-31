@@ -4,6 +4,7 @@ import HitsList from './HitsList.jsx';
 import FilterComponent from "../filter/FilterComponent.jsx";
 
 import { searchableAttributes } from '../filter/FilterComponent.jsx';
+import { facetFilters } from '../filter/FilterComponent.jsx';
 
 const ResultsContainer = ({ result, navigateToPage }) => {
     const isPrevButtonDisabled = () => {
@@ -29,13 +30,13 @@ const ResultsContainer = ({ result, navigateToPage }) => {
             (<div className="page-selection">
                 <button
                     className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
-                    onClick={() => navigateToPage(result.query, result.page - 1, [...searchableAttributes])} disabled={isPrevButtonDisabled() ? true : false}
+                    onClick={() => navigateToPage(result.query, result.page - 1, [...searchableAttributes], [...facetFilters])} disabled={isPrevButtonDisabled() ? true : false}
                 >
                     Previous
                 </button>
                 <button
                     className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
-                    onClick={() => navigateToPage(result.query, result.page + 1, [...searchableAttributes])} disabled={isNextButtonDisabled() ? true : false}
+                    onClick={() => navigateToPage(result.query, result.page + 1, [...searchableAttributes], [...facetFilters])} disabled={isNextButtonDisabled() ? true : false}
                 >
                     Next
                 </button>
