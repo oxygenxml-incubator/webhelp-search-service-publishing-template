@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="integrate_algolia_autocomplete_into_webhelp_output">
+    <title>Integrate Algolia Autocomplete into Webhelp output</title>
+    <shortdesc>How to replace WebHelp search with Algolia autocomplete by using a WebHelp
+        output.</shortdesc>
+    <taskbody>
+        <context/>
+        <steps>
+            <step>
+                <cmd>Firstly we had to generate a WebHelp output using oxygen publishing oxygen with
+                    WebHelp Responsive plugin.</cmd>
+            </step>
+            <step>
+                <cmd>Open directory with out files and open index.html in an editor you like.</cmd>
+            </step>
+            <step>
+                <cmd>Find in HTML code this container:  </cmd>
+                <info>
+                    <codeblock id="codeblock_x3j_2rr_l5b">&lt;div class="wh_search_input navbar-form wh_topic_page_search search" role="form">&lt;/div></codeblock>
+                </info>
+            </step>
+            <step>
+                <note id="note_nbt_f5r_l5b">You have to do this with every .html file where you want
+                    Algolia autocomplete to be used.</note>
+                <cmd>Replace its contents with this form, we'll need this for Algolia
+                    autocomplete:</cmd>
+                <info>
+                    <codeblock id="codeblock_jv1_grr_l5b">&lt;form id="searchForm" method="get" role="search" action="../search.html">
+        &lt;div id="autocomplete">&lt;/div>
+&lt;/form></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>You also have to move this line to the bottom of &lt;body> tag in order to let
+                    the DOM to load before Javascript.</cmd>
+                <info>
+                    <codeblock id="codeblock_jmd_jvr_l5b">&lt;script src="./oxygen-webhelp/template/js/algolia.js">&lt;/script></codeblock>
+                </info>
+            </step>
+            <step>
+        <cmd>In root of the repository we created "src/main/javascript" folder where our Webpack
+          project is configured.</cmd>
+      </step>
+            <step>
+        <cmd>Open the "javascript" directory and run these commands to create base config</cmd>
+        <info>
+          <codeblock id="codeblock_qdm_rrr_l5b">npm init -y
+npm install webpack webpack-cli --save-dev</codeblock>
+        </info>
+      </step>
+            <step>
+                <cmd>Create a file named "app/main.js" or whatever you want, we'll use it to set up
+                    Algolia autocomplete.</cmd>
+            </step>
+            <step>
+                <cmd>Let's set up our package.json, copy this into it:</cmd>
+                <info>
+                    <codeblock id="codeblock_pjw_wrr_l5b">{
+  "name": "algolia-autocomplete-and-search",
+  "version": "1.0.0",
+  "description": "Will create a bundle js file to be used in the WebHelp Responsive output to run the Algolia search engine",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-dynamic-import-node-babel-7": "^2.0.7",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
+    "css-loader": "^6.7.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "@algolia/autocomplete-js": "^1.7.1",
+    "@algolia/autocomplete-theme-classic": "^1.7.1"
+  }
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <note id="note_wjh_psr_l5b">We use Webpack in order to bundle our multiple files
+                    into one Javascript file and use it for our Webhelp output.</note>
+                <cmd>Then let's create a config file for out Webpack project, call it
+                    "webpack.config.js" and copy this into it: </cmd>
+                <info>
+                    <codeblock id="codeblock_akd_csr_l5b">// const path = require('path');
+// Uncomment to use for production.
+// const distFolder = path.resolve(__dirname, '../../../templates/webhelp-documentation-template/js');
+// Uncomment to use for development.
+const distFolder = path.resolve(__dirname, '../../../doc/project-documentation/out/webhelp-responsive/oxygen-webhelp/template/js');
+
+module.exports = {
+	entry: { //location of your main js file
+		algolia: './app/main.js'
+	},
+    output: {
+        path: distFolder,
+        filename: '[name].js',  // where js files would be bundled to
+    },
+    module: {
+	    rules: [
+	        {
+	            test: /\.js$/, //using regex to tell babel exactly what files to transcompile
+	            exclude: /node_modules/, // files to be ignored
+	            use: {
+	                loader: 'babel-loader' // specify the loader
+	            } 
+	        },
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			}
+		]
+	}
+ } </codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>And last but not least we need to configure Babel that is used to transpile
+                    Javascript code so browsers understand it. Create ".babelrc.js" file and copy
+                    this:</cmd>
+                <info>
+                    <codeblock id="codeblock_ekw_qsr_l5b">module.exports = function (api) {
+	api.cache(true);
+
+	const presets = ['@babel/preset-env'];
+	
+	return {
+		presets
+	}
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Open our "src/main.js" file and paste this:</cmd>
+                <info>
+                    <codeblock id="codeblock_ijz_d5r_l5b">import { autocomplete, getAlgoliaResults } from "@algolia/autocomplete-js";
+
+import "@algolia/autocomplete-theme-classic";
+
+// Check if disableWebHelpDefaultSearchEngine() method is present.
+if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
+  WebHelpAPI.disableWebHelpDefaultSearchEngine();
+}
+
+// Connect to Algolia App with Search-only API key.
+const algoliasearch = require('algoliasearch');
+const searchClient = algoliasearch(
+  "40V95VH5YU",
+  "8e4e1e3ae2fc1931b0a5f5d3c8f7544d"
+);
+
+const indexName = "webhelp-search-service-publishing-template"
+
+// Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
+const algoliaSearch = {
+  // Method that is called when Submit is performed.
+  performSearchOperation(query, successHandler, errorHandler) {
+    // Search for hits for the given query.
+    const result = searchClient.initIndex(indexName).search(query);
+    result
+      .then((obj) => {
+        // Extract data from Promise and create a SearchMeta object with extracted data.
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        // Extract data from Promise and create SearxhDocument object with extracted data.
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it._snippetResult.contents.value,
+            [],
+            0,
+            [],
+            it._highlightResult.contents.matchedWords
+          );
+        });
+
+        // Pass the extracted data to SearchResult so it can be displayed by WebHelp.
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  // Actions to do when page of results is changed.
+  onPageChangedHandler(pageToShow, query, successHandler, searchFailed) {
+    // Get results on the next page using the given by user query.
+    const result = searchClient.initIndex(indexName).search(query, {
+      page: pageToShow,
+    });
+
+    result
+      .then((obj) => {
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it._snippetResult.contents.value,
+            [],
+            0,
+            [],
+            it._highlightResult.contents.matchedWords
+          );
+        });
+
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+};
+
+// Check if setCustomSearchEngine() method is present in order to change it to Algolia engine.
+if (WebHelpAPI.setCustomSearchEngine) {
+  WebHelpAPI.setCustomSearchEngine(algoliaSearch);
+}
+
+const navigateToSearch = (state) => {
+  const path =
+    document.querySelector('meta[name="wh-path2root"]').content +
+    "search.html?searchQuery=" +
+    state.collections[0].items[state.activeItemId].title;
+
+  window.location = path;
+};
+
+// If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
+if (document.getElementById("autocomplete")) {
+  autocomplete({
+    id: "webhelp-algolia-search",
+    container: "#autocomplete",
+    placeholder: "Search",
+
+    initialState: {
+      query: window.location.href.includes('=') ? decodeURI(window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.length)) : "",
+    },
+
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      // Check if it's not empty
+      if (state.query != "") {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+          window.location = path;
+        } else {
+          navigateToSearch(state);
+        }
+      }
+    },
+
+    // Actions to perform to get suggestions for user.
+    getSources({ query }) {
+      return [
+        {
+          sourceId: "topics",
+          // Return URL of the selected item.
+          getItemUrl({ item }) {
+            return item.objectID;
+          },
+          // Get suggestions.
+          getItems() {
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    hitsPerPage: 5,
+                    attributesToSnippet: ["title:10", "contents:30"],
+                    snippetEllipsisText: "…",
+                  },
+                },
+              ],
+            });
+          },
+          // HTML template that is used in order to display suggestions.
+          templates: {
+            item({ item, components, html, state }) {
+              return html`&lt;div
+                class="aa-ItemWrapper"
+                onclick="${() => {
+                  navigateToSearch(state);
+                }}"
+              >
+                &lt;div class="aa-ItemContent">
+                  &lt;div class="aa-ItemContentBody">
+                    &lt;div class="aa-ItemContentTitle">
+                      ${components.Highlight({
+                        hit: item,
+                        attribute: "title",
+                      })}
+                    &lt;/div>
+                    &lt;div class="aa-ItemContentDescription">
+                      ${components.Snippet({
+                        hit: item,
+                        attribute: "contents",
+                      })}
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>`;
+            },
+          },
+        },
+      ];
+    },
+    // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
+    navigator: {
+      navigate({ state }) {
+        navigateToSearch(state);
+      },
+    },
+  });
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>All you have to do now to generate Javascript bundle is to run these commands
+                    in "javascript" directory:</cmd>
+                <info>
+                    <codeblock id="codeblock_ptt_35r_l5b">npm run build 
+// OR
+npm run dev
+// In dependence of the mode you want to run it</codeblock>
+                    <note id="note_o4r_l5r_l5b">You also have to change the path where to build your
+                        bundle. You can change this in "webpack.config.js".</note>
+                </info>
+            </step>
+        </steps>
+    </taskbody>
+</task>
