@@ -30,7 +30,7 @@ jobs:
           node-version: 16
           cache: 'npm'
       - run: |
-          cd javascript
+          cd src/main/javascript
           npm install
           npm run build
             
