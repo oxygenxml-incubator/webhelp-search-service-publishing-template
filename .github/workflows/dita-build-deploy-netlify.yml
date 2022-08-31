@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - development
 jobs:
   build-dita-and-deploy-netlify:
     name: Build DITA WebHelp Responsive and deploy to Netlify
