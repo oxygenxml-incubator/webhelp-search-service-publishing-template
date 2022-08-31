@@ -15,5 +15,6 @@
         <topicref href="tasks/react-page-algolia-autocomplete.dita"></topicref>
     <topicref chunk="to-content" href="topics/integrate_algolia_autocomplete_into_webhelp.dita">
         <topicref href="tasks/integrate_algolia_autocomplete_into_webhelp_output.dita"></topicref>
+        <topicref href="tasks/integrate_algolia_autocomplete_into_webhelp_template.dita"></topicref>
     </topicref>
 </map>
