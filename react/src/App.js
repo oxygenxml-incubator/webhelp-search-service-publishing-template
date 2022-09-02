@@ -54,16 +54,10 @@ const App = () => {
     }
 
     setLoading(false);
-
-    document.getElementsByClassName("aa-Input")[0].blur();
   };
 
   return (
     <>
-      <AutocompleteComponent
-        searchClient={searchClient}
-        performSearch={search}
-      />
       {isLoading ? (
         <div className="loader">
           <img src={loaderImage} />

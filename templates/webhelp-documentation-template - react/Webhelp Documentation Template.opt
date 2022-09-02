@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<publishing-template>
+    <name>Webhelp Documentation Template</name>
+    <description>Webhelp Documentation Template for the search service project</description>
+    <webhelp>
+        <preview-image file="img/template-preview.png"/>
+        <parameters>
+            <parameter name="webhelp.show.main.page.tiles" value="no"/>
+            <parameter name="webhelp.show.main.page.toc" value="yes"/>
+            <parameter name="webhelp.top.menu.depth" value="3"/>
+            <parameter name="args.figurelink.style" value="TITLE"/>
+            <parameter name="args.tablelink.style" value="TITLE"/>
+            <parameter name="force-unique" value="true"/>
+            <parameter name="webhelp.fragment.footer" value="This site is powered by Netlify"/>
+            <parameter name="webhelp.enable.search.autocomplete" value="false"></parameter>
+            <parameter name="webhelp.publication.toc.links" value="all"></parameter>
+        </parameters>
+        <xslt>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createMainPage"/>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createSearchPage"/>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.dita2webhelp"/>
+        </xslt>
+        <resources>
+            <css file="style.css"/>
+            <logo file="img/logo.png"></logo>
+            <fileset><include name="js/**"/></fileset>
+        </resources>
+        <html-fragments>
+            <fragment file="html/search.html" placeholder="webhelp.fragment.after.body"/>
+        </html-fragments>
+        <tags>
+            <tag type="layout">tree</tag>
+            <tag type="color">blue</tag>
+        </tags>
+    </webhelp>
+</publishing-template>
