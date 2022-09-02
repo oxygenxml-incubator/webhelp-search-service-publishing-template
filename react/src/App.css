@@ -31,7 +31,7 @@ body {
   display: flex;
   flex-direction: column;
 
-  height: 100vh;
+  height: 100%;
 }
 
 .hits-container {
@@ -171,7 +171,7 @@ body {
 
 .filter-container {
   width: 15%;
-  height: 100vh;
+  height: 100%;
 
   margin-left: 2%;
   margin-right: 2%;

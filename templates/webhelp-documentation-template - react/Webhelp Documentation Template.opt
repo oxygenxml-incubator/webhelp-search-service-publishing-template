@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <publishing-template>
-    <name>Webhelp Documentation Template</name>
+    <name>Webhelp Documentation Template - React</name>
     <description>Webhelp Documentation Template for the search service project</description>
     <webhelp>
         <preview-image file="img/template-preview.png"/>

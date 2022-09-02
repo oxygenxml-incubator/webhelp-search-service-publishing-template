@@ -67,5 +67,8 @@
             </xsl:call-template>
         </div>
     </xsl:template>
-    <xsl:template match="whc:webhelp_search_results" mode="copy_template"><div id="search-results"></div></xsl:template>
+    
+    <xsl:template match="whc:webhelp_search_results" mode="copy_template">
+        <div class="wh_search_results col-xs-12 col-sm-12 col-md-12 col-lg-12" id="search-results"></div>
+    </xsl:template>
 </xsl:stylesheet>

@@ -1,27 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 
-import algoliasearch from "algoliasearch/lite";
+import {searchableAttributes, facetFilters} from "./components/filter/FilterContainer.jsx";
+
 import loaderImage from "./img/loader.gif";
 
-import AutocompleteComponent from "./components/autocomplete/AutocompleteComponent.jsx";
-
-// Create an Algolia SearchClient using App key and Search-only API key.
-const searchClient = algoliasearch(
-  "KLFWXPOEHY",
-  "ff20cb14577be8b5eab7ead0857dd573"
-);
-
-// Create a Search Instance with needed index.
-const searchInstance = searchClient.initIndex(
-  //"webhelp-search-service-publishing-template"
-  "mobile-phone"
-  //"mobile-phone-2"
-);
-
-const App = () => {
+const App = ({query, searchInstance}) => {
   // Create preloader state
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+
 
   // Create a state variable that stores the search result.
   const [result, setResult] = useState({
@@ -39,8 +26,7 @@ const App = () => {
     searchableAttributes,
     facetFilters
   ) => {
-    setLoading(true);
-
+    console.log("am ajuns");
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
       let response = await searchInstance.search(searchTerm, {
@@ -55,6 +41,10 @@ const App = () => {
 
     setLoading(false);
   };
+
+  useEffect( () => {
+    search(query, 0);
+  }, []);
 
   return (
     <>
