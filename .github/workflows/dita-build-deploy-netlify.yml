@@ -30,16 +30,16 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-          cache-dependency-path: "./src/main/javascript/package-lock.json"
+          cache-dependency-path: "./src/main/react/package-lock.json"
       - run: |
-          cd src/main/javascript
+          cd src/react/javascript
           npm install
           npm run build
             
       - name: Build WebHelp Responsive
         run: |
             cd oxygen-publishing-engine-3.x/bin
-            sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
+            sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template-react --output=../../doc/project-documentation/out
             
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
