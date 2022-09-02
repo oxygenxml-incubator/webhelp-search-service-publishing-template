@@ -13,6 +13,7 @@
             <parameter name="force-unique" value="true"/>
             <parameter name="webhelp.fragment.footer" value="This site is powered by Netlify"/>
             <parameter name="webhelp.enable.search.autocomplete" value="false"></parameter>
+            <parameter name="webhelp.publication.toc.links" value="all"></parameter>
         </parameters>
         <xslt>
             <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createMainPage"/>
