@@ -47,40 +47,6 @@ const ResultsContainer = ({ result, navigateToPage }) => {
                             }
                         ]
                     },
-                    {
-                        title: "Audience",
-                        options: [
-                            {
-                                id: "filter-audience-basicuser",
-                                description: "Basic User",
-                                isFilter: true,
-                                algoliaId: "audience:BasicUser"
-                            },
-                            {
-                                id: "filter-audience-tehnician",
-                                description: "Tehnician User",
-                                isFilter: true,
-                                algoliaId: "audience:Tehnician"
-                            },
-                        ]
-                    },
-                    {
-                        title: "Product",
-                        options: [
-                            {
-                                id: "filter-product-x1000",
-                                description: "X1000",
-                                isFilter: true,
-                                algoliaId: "product:X1000"
-                            },
-                            {
-                                id: "filter-product-x2000",
-                                description: "X2000",
-                                isFilter: true,
-                                algoliaId: "product:X2000"
-                            },
-                        ]
-                    },
                 ]
             } />}
             <HitsList hits={result.hits} />

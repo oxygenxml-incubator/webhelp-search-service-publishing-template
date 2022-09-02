@@ -64,7 +64,7 @@ body {
   text-decoration: none;
   line-height: 20px;
   letter-spacing: 2px;
-  color: cadetblue;
+  color: #3e34d3;
   font-size: 18px;
 
   display: block;
@@ -80,29 +80,30 @@ body {
   width: 50%;
 
   text-align: center;
-  color: cadetblue;
+  color: #3e34d3;
   font-size: 30px;
 
   margin: 0 auto;
+  margin-top: 30px;
 }
 
 /* Page selection */
 
 .page-selection {
   width: 100%;
-  margin-top: 50px;
+  margin-top: 150px;
 
   display: flex;
   justify-content: center;
 }
 
 .page-selector {
-  background-color: #e1ecf4;
+  background-color: #c4c0ff;
   border-radius: 3px;
-  border: 1px solid #7aa7c7;
+  border: 1px solid #3e34d3;
   box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
   box-sizing: border-box;
-  color: cadetblue;
+  color: white;
   cursor: pointer;
   font-size: 13px;
   line-height: 1.15385;
@@ -114,8 +115,8 @@ body {
 }
 
 .page-selector:hover {
-  background-color: #b3d3ea;
-  color: #2c5777;
+  background-color: #c4c0ff;
+  color: #2f27aa;
 }
 
 .page-selector-disabled {
@@ -124,7 +125,7 @@ body {
 }
 
 .page-selector-disabled:hover {
-  background-color: #e1ecf4;
+  background-color: #c4c0ff;
   color: gray;
 }
 
@@ -133,38 +134,6 @@ body {
 .loader {
   display: flex;
   justify-content: center;
-}
-
-/* Autocomplete */
-.aa-Autocomplete {
-  margin: 0 auto;
-  max-width: 640px;
-  width: 100%;
-
-  margin-top: 10%;
-}
-
-.aa-Input {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.aa-Panel {
-  z-index: 1;
-}
-
-.error-message {
-  display: block;
-  margin: 0 auto;
-
-  width: 100%;
-  max-width: 640px;
-
-  height: 150px;
-
-  text-align: center;
-
-  color: red;
 }
 
 /* Filtering */
@@ -179,7 +148,7 @@ body {
 
   float: left;
 
-  border: 2px solid cadetblue;
+  border: 2px solid #3e34d3;
   border-radius: 10px;
 
   text-align: left;
@@ -192,10 +161,12 @@ body {
 
 .filter-selection {
   text-align: center;
+  margin-left: 5%;
 }
 
 .filter-label {
   text-align: center;
+  word-break: break-word;
 }
 
 .filter-buttons {
@@ -213,15 +184,15 @@ body {
   transition-duration: 0.4s;
 
   background: none;
-  border: 1px solid cadetblue;
+  border: 1px solid #3e34d3;
   border-radius: 5px;
 }
 
 .filter-button:hover {
-  background-color: cadetblue;
+  background-color: #2f27aa;
   color: white;
 }
 
 .filter-button:active {
-  background-color: #2c5777;
+  background-color: #3e34d3;
 }

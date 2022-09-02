@@ -9,137 +9,139 @@ import "./App.css";
 
 // Check if disableWebHelpDefaultSearchEngine() method is present.
 if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
-    WebHelpAPI.disableWebHelpDefaultSearchEngine();
+  WebHelpAPI.disableWebHelpDefaultSearchEngine();
 }
 
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
-    "KLFWXPOEHY",
-    "ff20cb14577be8b5eab7ead0857dd573"
-  );
-  
+  "40V95VH5YU",
+  "8e4e1e3ae2fc1931b0a5f5d3c8f7544d"
+);
+
 const indexName = "webhelp-search-service-publishing-template";
 
 // Create a Search Instance with needed index.
 const searchInstance = searchClient.initIndex(indexName);
 
-// Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
 const algoliaSearch = {
-    // Method that is called when Submit is performed.
-    performSearchOperation(query, successHandler, errorHandler) {
-      // Search for hits for the given query.
-      console.log(query);
-
-      const root = ReactDOM.createRoot(document.getElementById("search-results"));
-      root.render(<App query={query} searchInstance={searchInstance} />);
-    },
-  
-  };
+  // Method that is called when Submit is performed.
+  performSearchOperation(query, successHandler, errorHandler) {
+    const root = ReactDOM.createRoot(document.getElementById("search-results"));
+    root.render(<App query={query} searchInstance={searchInstance} />);
+  },
+};
 
 // Check if setCustomSearchEngine() method is present in order to change it to Algolia engine.
 if (WebHelpAPI.setCustomSearchEngine) {
-    WebHelpAPI.setCustomSearchEngine(algoliaSearch);
+  WebHelpAPI.setCustomSearchEngine(algoliaSearch);
 }
 
 const navigateToSearch = (state) => {
-    const path =
-      document.querySelector('meta[name="wh-path2root"]').content +
-      "search.html?searchQuery=" +
-      state.collections[0].items[state.activeItemId].title;
-  
-    window.location = path;
-  };
-  
-  // If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
-  if (document.getElementById("autocomplete")) {
-    autocomplete({
-      id: "webhelp-algolia-search",
-      container: "#autocomplete",
-      placeholder: "Search",
-  
-      initialState: {
-        query: window.location.href.includes('=') ? decodeURI(window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.length)) : "",
-      },
-  
-      // Actions to perform when user submits the query.
-      onSubmit(state) {
-        // Check if it's not empty
-        if (state.query != "") {
-          if (state.activeItemId == null) {
-            const path =
-              document.querySelector('meta[name="wh-path2root"]').content +
-              "search.html?searchQuery=" +
-              state.state.query;
-  
-            window.location = path;
-          } else {
-            navigateToSearch(state);
-          }
+  const path =
+    document.querySelector('meta[name="wh-path2root"]').content +
+    "search.html?searchQuery=" +
+    state.collections[0].items[state.activeItemId].title;
+
+  window.location = path;
+};
+
+// If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
+if (document.getElementById("autocomplete")) {
+  autocomplete({
+    id: "webhelp-algolia-search",
+    container: "#autocomplete",
+    placeholder: "Search",
+
+    initialState: {
+      query: window.location.href.includes("=")
+        ? decodeURI(
+            window.location.href.substring(
+              window.location.href.indexOf("=") + 1,
+              window.location.href.length
+            )
+          )
+        : "",
+    },
+
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      // Check if it's not empty
+      if (state.query != "") {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+          window.location = path;
+        } else {
+          navigateToSearch(state);
         }
-      },
-  
-      // Actions to perform to get suggestions for user.
-      getSources({ query }) {
-        return [
-          {
-            sourceId: "topics",
-            // Return URL of the selected item.
-            getItemUrl({ item }) {
-              return item.objectID;
-            },
-            // Get suggestions.
-            getItems() {
-              return getAlgoliaResults({
-                searchClient,
-                queries: [
-                  {
-                    indexName: indexName,
-                    query,
-                    params: {
-                      hitsPerPage: 5,
-                      attributesToSnippet: ["title:10", "contents:30"],
-                      snippetEllipsisText: "…",
-                    },
+      }
+    },
+
+    // Actions to perform to get suggestions for user.
+    getSources({ query }) {
+      return [
+        {
+          sourceId: "topics",
+          // Return URL of the selected item.
+          getItemUrl({ item }) {
+            return item.objectID;
+          },
+          // Get suggestions.
+          getItems() {
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    hitsPerPage: 5,
+                    attributesToSnippet: ["title:10", "contents:30"],
+                    snippetEllipsisText: "…",
                   },
-                ],
-              });
-            },
-            // HTML template that is used in order to display suggestions.
-            templates: {
-              item({ item, components, html, state }) {
-                return html`<div
-                  class="aa-ItemWrapper"
-                  onclick="${() => {
-                    navigateToSearch(state);
-                  }}"
-                >
-                  <div class="aa-ItemContent">
-                    <div class="aa-ItemContentBody">
-                      <div class="aa-ItemContentTitle">
-                        ${components.Highlight({
-                          hit: item,
-                          attribute: "title",
-                        })}
-                      </div>
-                      <div class="aa-ItemContentDescription">
-                        ${components.Snippet({
-                          hit: item,
-                          attribute: "contents",
-                        })}
-                      </div>
+                },
+              ],
+            });
+          },
+          // HTML template that is used in order to display suggestions.
+          templates: {
+            item({ item, components, html, state }) {
+              return html`<div
+                class="aa-ItemWrapper"
+                onclick="${() => {
+                  navigateToSearch(state);
+                }}"
+              >
+                <div class="aa-ItemContent">
+                  <div class="aa-ItemContentBody">
+                    <div class="aa-ItemContentTitle">
+                      ${components.Highlight({
+                        hit: item,
+                        attribute: "title",
+                      })}
+                    </div>
+                    <div class="aa-ItemContentDescription">
+                      ${components.Snippet({
+                        hit: item,
+                        attribute: "contents",
+                      })}
                     </div>
                   </div>
-                </div>`;
-              },
+                </div>
+              </div>`;
             },
           },
-        ];
-      },
-      // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
-      navigator: {
-        navigate({ state }) {
-          navigateToSearch(state);
         },
+      ];
+    },
+    // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
+    navigator: {
+      navigate({ state }) {
+        navigateToSearch(state);
       },
-    });
-  }
+    },
+  });
+}

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 
-import {searchableAttributes, facetFilters} from "./components/filter/FilterContainer.jsx";
-
 import loaderImage from "./img/loader.gif";
 
 const App = ({query, searchInstance}) => {
   // Create preloader state
   const [isLoading, setLoading] = useState(true);
-
 
   // Create a state variable that stores the search result.
   const [result, setResult] = useState({
@@ -26,7 +23,6 @@ const App = ({query, searchInstance}) => {
     searchableAttributes,
     facetFilters
   ) => {
-    console.log("am ajuns");
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
       let response = await searchInstance.search(searchTerm, {
