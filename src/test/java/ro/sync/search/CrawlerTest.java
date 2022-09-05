@@ -179,7 +179,7 @@ class CrawlerTest {
 		expected.add("Search");
 		expected.add("Service");
 
-		assertEquals(expected.toString(), crawler.getCrawledPages().get(0).getKeywords().toString());
+		assertEquals(expected.toString().replaceAll("\\s+",""), crawler.getCrawledPages().get(0).getKeywords().toString().replaceAll("\\s+",""));
 	}
 
 	/**
