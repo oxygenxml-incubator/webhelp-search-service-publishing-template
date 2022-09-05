@@ -3,6 +3,14 @@
 <task id="publishing_documentation_on_netlify">
     <title>Publishing documentation on Netlify</title>
     <shortdesc>How to publish documentation build on Netlify using GitHub Actions</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Netlify</keyword>
+                <keyword outputclass="label">Github Actions</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
         </context>

@@ -5,6 +5,13 @@
     <shortdesc>Usually we don't use <b>HTML crawler</b> separately but in case you would like to,
         here are all the possible methods! We created our HTML crawler using <b>JSoup</b>
         library.</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Java</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>How to use Crawler and what's the goal of that class?</p>

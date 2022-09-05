@@ -3,6 +3,13 @@
 <task id="integrate_algolia_autocomplete_into_webhelp_template">
     <title>Integrate Algolia Autocomplete into Webhelp Template</title>
     <shortdesc>We integrated Algolia Autocomplete into Webhelp template by using an XSLT file.</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Algolia</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>How to integrate Algolia Autocomplete into Webhelp template?</p>

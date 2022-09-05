@@ -3,6 +3,13 @@
 <task id="algolia_search">
     <title>Algolia Search</title>
     <shortdesc>For our custom search service in WebHelp we used Algolia and its API.</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Algolia</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>How to connect <b>HTML Crawler</b> with <b>Algolia</b> and use it in

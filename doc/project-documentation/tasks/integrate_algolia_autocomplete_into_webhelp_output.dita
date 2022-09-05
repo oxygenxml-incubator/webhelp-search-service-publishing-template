@@ -4,6 +4,13 @@
     <title>Integrate Algolia Autocomplete into Webhelp output</title>
     <shortdesc>How to replace WebHelp search with Algolia autocomplete by using a WebHelp
         output.</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword outputclass="label">Algolia</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
     <taskbody>
         <context/>
         <steps>
