@@ -205,6 +205,6 @@ class CrawlerTest {
 			}
 		}
 
-		assertEquals(expected.trim(), crawler.getCrawledPages().get(0).getContents().trim());
+		assertEquals(expected.replaceAll("\\s+",""), crawler.getCrawledPages().get(0).getContents().trim().replaceAll("\\s+",""));
 	}
 }
