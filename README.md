@@ -4,7 +4,7 @@
 
 We'll create a publishing template to demonstrates how to integrate a search service with WebHelp transformation. 
 
-The project documentation is available *[here.](https://sweet-beignet-8a9e20.netlify.app/)*
+The project documentation is available *[here.](https://webhelp-search-service-template.netlify.app/)*
 
 Copyright and License
 ---------------------
