@@ -3,7 +3,7 @@ import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 
 import loaderImage from "./img/loader.gif";
 
-const App = ({query, searchInstance}) => {
+const App = ({ query, searchInstance }) => {
   // Create preloader state
   const [isLoading, setLoading] = useState(true);
 
@@ -25,20 +25,30 @@ const App = ({query, searchInstance}) => {
   ) => {
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
-      let response = await searchInstance.search(searchTerm, {
-        hitsPerPage: 10,
-        page: page,
-        restrictSearchableAttributes: searchableAttributes,
-        facetFilters: [facetFilters],
-      });
+      if (searchTerm.includes("_")) {
+        let tag = searchTerm.split("_");
+        tag.shift();
+        let facetFilters = `_tags:${tag.join(" ")}`;
 
-      setResult(response);
+        let response = await searchInstance.search("", { facetFilters: [facetFilters] });
+
+        setResult(response);
+      } else {
+        let response = await searchInstance.search(searchTerm, {
+          hitsPerPage: 10,
+          page: page,
+          restrictSearchableAttributes: searchableAttributes,
+          facetFilters: [facetFilters],
+        });
+
+        setResult(response);
+      }
     }
 
     setLoading(false);
   };
 
-  useEffect( () => {
+  useEffect(() => {
     search(query, 0);
   }, []);
 
