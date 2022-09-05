@@ -404,7 +404,7 @@ Example:
 }
 
 .aa-Panel {
-  z-index: 1000;
+  z-index: 998;
 }
 
 input {
