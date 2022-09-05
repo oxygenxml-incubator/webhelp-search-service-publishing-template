@@ -231,7 +231,10 @@ public class Crawler {
 	private List<String> collectKeywords(final Document page) {
 		Element element = page.select("meta[name=keywords]").first();
 
-		return Arrays.asList(element.attr("content").split("[ ,]+"));
+		if (element != null)
+			return Arrays.asList(element.attr("content").split(","));
+		
+		return new ArrayList<>();
 	}
 
 	/**
