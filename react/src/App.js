@@ -25,13 +25,13 @@ const App = ({ query, searchInstance }) => {
   ) => {
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
-      if (searchTerm.includes("_")) {
+      if (searchTerm.includes("label_")) {
         let tag = searchTerm.split("_");
         tag.shift();
         let facetFilters = `_tags:${tag.join(" ")}`;
 
         let response = await searchInstance.search("", { facetFilters: [facetFilters] });
-
+        console.log(response);
         setResult(response);
       } else {
         let response = await searchInstance.search(searchTerm, {
@@ -41,6 +41,7 @@ const App = ({ query, searchInstance }) => {
           facetFilters: [facetFilters],
         });
 
+        console.log(response);
         setResult(response);
       }
     }
