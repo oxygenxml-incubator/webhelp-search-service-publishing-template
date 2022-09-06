@@ -6,7 +6,7 @@
 
 	<properties>
 		<exec.mainClass>ro.sync.search.AlgoliaClient</exec.mainClass>
-		<exec.args>-indexName=webhelp-search-service-publishing-template -baseUrl=https://sweet-beignet-8a9e20.netlify.app -url=https://sweet-beignet-8a9e20.netlify.app</exec.args>
+		<exec.args>-indexName=webhelp-search-service-publishing-template -baseUrl=https://webhelp-search-service-template.netlify.app -url=https://webhelp-search-service-template.netlify.app</exec.args>
 
 		<sonar.organization>radu-pisoi-github</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
