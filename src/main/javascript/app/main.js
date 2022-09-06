@@ -22,10 +22,9 @@ const algoliaSearch = {
   performSearchOperation(query, successHandler, errorHandler) {
     // Search for hits for the given query.
     let result;
-    if (query.includes("label_")) {
-      let tag = query.split("_");
-      tag.shift();
-      let facetFilters = `_tags:${tag.join(" ")}`;
+    if (query.includes("label:")) {
+      let tag = query.split(":")[query.split(":").length - 1];
+      let facetFilters = `_tags:${tag}`;
 
       console.log(facetFilters);
       result = searchClient
