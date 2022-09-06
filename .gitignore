@@ -32,3 +32,4 @@
 /templates/webhelp-documentation-template/js/
 /templates/webhelp-documentation-template-react/js/
 /doc/project-documentation/project-documentation.xpr
+/templates/**/temp
