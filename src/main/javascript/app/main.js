@@ -140,7 +140,7 @@ if (document.getElementById("autocomplete")) {
     placeholder: "Search",
 
     initialState: {
-      query: window.location.href.includes("=")
+      query: window.location.href.includes("search.html?searchQuery=")
         ? decodeURI(
             window.location.href.substring(
               window.location.href.indexOf("=") + 1,
