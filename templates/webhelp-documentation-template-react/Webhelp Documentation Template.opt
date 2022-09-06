@@ -18,7 +18,7 @@
         <xslt>
             <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createMainPage"/>
             <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.createSearchPage"/>
-            <extension file="xslt/labels-show.xsl" id="com.oxygenxml.webhelp.xsl.dita2webhelp"/>
+            <extension file="xslt/custom.xsl" id="com.oxygenxml.webhelp.xsl.dita2webhelp"/>
         </xslt>
         <resources>
             <css file="style.css"/>
