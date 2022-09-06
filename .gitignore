@@ -29,4 +29,7 @@
 /doc/project-documentation/out/
 /src/main/javascript/node_modules/
 /templates/webhelp-documentation-template/html/temp/webhelp-responsive/wh-template-copy-resources.xml
-/templates/webhelp-documentation-template/js/*.js
+/templates/webhelp-documentation-template/js/
+/templates/webhelp-documentation-template-react/js/
+/doc/project-documentation/project-documentation.xpr
+/templates/**/temp

@@ -3,6 +3,13 @@
 <task id="how_to_use_github_actions_to_run_a_webhelp_responsive_transformation">
     <title>How to use GitHub Actions to run a WebHelp Responsive transformation</title>
     <shortdesc>How to use GitHub Actions workflows in order to build documentation in WebHelp Responsive format</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Github Actions</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
         </context>

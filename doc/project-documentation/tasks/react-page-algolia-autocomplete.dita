@@ -3,6 +3,14 @@
 <task id="react-page-algolia-autocomplete">
     <title>How to integrate Algolia autocomplete with React?</title>
     <shortdesc> How to integrate Algolia autocomplete in a React search page?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Algolia</keyword>
+                <keyword outputclass="label">React</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <steps>
             <step>

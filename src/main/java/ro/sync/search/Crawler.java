@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -154,7 +155,7 @@ public class Crawler {
 			Document page = readHtml(currentUrl);
 			findUrls(page, currentUrl);
 
-			if (!(currentUrl.equals(this.url + "/index.html") || currentUrl.equals(this.url)))
+			if (!(currentUrl.endsWith("index.html") || currentUrl.equals(this.url)))
 				collectData(page);
 		}
 
@@ -175,7 +176,7 @@ public class Crawler {
 	/**
 	 * Finds appropriate urls among all the matches and adds them to queue.
 	 * 
-	 * @param page that stores html code
+	 * @param page that stores HTML code.
 	 * @throws MalformedURLException when a problem with initialization of URL
 	 *                               occurred.
 	 */
@@ -189,7 +190,7 @@ public class Crawler {
 				String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
 
 				if (!visitedUrls.contains(currentUrl) && currentUrl.startsWith(this.baseUrl)
-						&& (currentUrl.equals(this.url + "/index.html") || !currentUrl.equals(this.url))) {
+						&& !(currentUrl.endsWith("index.html") || currentUrl.equals(this.url))) {
 					visitedUrls.add(currentUrl);
 					queue.add(currentUrl);
 				}
@@ -229,12 +230,11 @@ public class Crawler {
 	 */
 	private List<String> collectKeywords(final Document page) {
 		Element element = page.select("meta[name=keywords]").first();
-		List<String> keywords = new ArrayList<>();
 
-		if (page.select("meta[name=keywords]").first() != null)
-			keywords.add(element.attr("content"));
+		if (element != null)
+			return Arrays.asList(element.attr("content").split(","));
 
-		return keywords;
+		return new ArrayList<>();
 	}
 
 	/**

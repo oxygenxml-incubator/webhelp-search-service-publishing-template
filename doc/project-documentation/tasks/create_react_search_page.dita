@@ -3,6 +3,14 @@
 <task id="create_react_search_page">
     <title>How to create a React search page with Algolia?</title>
     <shortdesc>How to use both React and Algolia to create a search page?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword outputclass="label">Algolia</keyword>
+                <keyword outputclass="label">React</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <steps>
             <step>

@@ -8,20 +8,32 @@ if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
 }
 
 // Connect to Algolia App with Search-only API key.
-const algoliasearch = require('algoliasearch');
+const algoliasearch = require("algoliasearch");
 const searchClient = algoliasearch(
   "40V95VH5YU",
   "8e4e1e3ae2fc1931b0a5f5d3c8f7544d"
 );
 
-const indexName = "webhelp-search-service-publishing-template"
+const indexName = "webhelp-search-service-publishing-template";
 
 // Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
 const algoliaSearch = {
   // Method that is called when Submit is performed.
   performSearchOperation(query, successHandler, errorHandler) {
     // Search for hits for the given query.
-    const result = searchClient.initIndex(indexName).search(query);
+    let result;
+    if (query.includes("label:")) {
+      let tag = query.split(":")[query.split(":").length - 1];
+      let facetFilters = `_tags:${tag}`;
+
+      console.log(facetFilters);
+      result = searchClient
+        .initIndex(indexName)
+        .search("", { facetFilters: [facetFilters] });
+    } else {
+      result = searchClient.initIndex(indexName).search(query);
+    }
+
     result
       .then((obj) => {
         // Extract data from Promise and create a SearchMeta object with extracted data.
@@ -39,6 +51,7 @@ const algoliaSearch = {
           false,
           false
         );
+        console.log(result);
 
         // Extract data from Promise and create SearxhDocument object with extracted data.
         const documents = obj.hits.map((it) => {
@@ -127,7 +140,14 @@ if (document.getElementById("autocomplete")) {
     placeholder: "Search",
 
     initialState: {
-      query: window.location.href.includes('=') ? decodeURI(window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.length)) : "",
+      query: window.location.href.includes("=")
+        ? decodeURI(
+            window.location.href.substring(
+              window.location.href.indexOf("=") + 1,
+              window.location.href.length
+            )
+          )
+        : "",
     },
 
     // Actions to perform when user submits the query.

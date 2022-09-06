@@ -3,7 +3,7 @@ import HitsItem from './HitsItem.jsx';
 
 const HitsList = ({ hits }) => {
     if (hits?.length > 0){
-        return (<div className="row"><ul className="hits">{
+        return (<div className="hits-container"><ul className="hits">{
             hits.map((hit) => {
                 return (
                     <HitsItem

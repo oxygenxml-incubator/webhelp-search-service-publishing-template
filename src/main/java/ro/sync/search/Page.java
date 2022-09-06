@@ -28,6 +28,7 @@ public class Page {
 	/**
 	 * Page's collected keywords from metadata.
 	 */
+	@JsonProperty("_tags")
 	private List<String> keywords;
 	/**
 	 * Page's collected contents from body section.

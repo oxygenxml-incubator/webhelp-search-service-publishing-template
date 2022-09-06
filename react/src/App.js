@@ -1,23 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ResultsContainer from "./components/hits/ResultsContainer.jsx";
-import algoliasearch from "algoliasearch/lite";
+
 import loaderImage from "./img/loader.gif";
-import AutocompleteComponent from "./components/autocomplete/AutocompleteComponent.jsx";
 
-// Create an Algolia SearchClient using App key and Search-only API key.
-const searchClient = algoliasearch(
-  "KLFWXPOEHY",
-  "ff20cb14577be8b5eab7ead0857dd573"
-);
-
-// Create a Search Instance with needed index.
-const searchInstance = searchClient.initIndex(
-  "webhelp-search-service-publishing-template"
-);
-
-const App = () => {
+const App = ({ query, searchInstance }) => {
   // Create preloader state
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   // Create a state variable that stores the search result.
   const [result, setResult] = useState({
@@ -29,35 +17,52 @@ const App = () => {
   });
 
   // Fetch the Algolia response based on written search term.
-  const search = async (searchTerm, page) => {
-    setLoading(true);
-
+  const search = async (
+    searchTerm,
+    page,
+    searchableAttributes,
+    facetFilters
+  ) => {
     // If search term is not empty then get the results.
     if (searchTerm.localeCompare("") !== 0) {
-      let response = await searchInstance.search(searchTerm, {
-        hitsPerPage: 10,
-        page: page,
-      });
-      setResult(response);
+      if (searchTerm.includes("label:")) {
+        let tag = searchTerm.split(":")[searchTerm.split(":").length - 1];
+        let facetFilters = `_tags:${tag}`;
+
+        let response = await searchInstance.search("", {
+          facetFilters: [facetFilters],
+        });
+
+        setResult(response);
+      } else {
+        let response = await searchInstance.search(searchTerm, {
+          hitsPerPage: 10,
+          page: page,
+          restrictSearchableAttributes: searchableAttributes,
+          facetFilters: [facetFilters],
+        });
+
+        setResult(response);
+      }
     }
 
     setLoading(false);
-
-    document.getElementsByClassName("aa-Input")[0].blur();
   };
+
+  useEffect(() => {
+    search(query, 0);
+  }, []);
 
   return (
     <>
-      <AutocompleteComponent
-        searchClient={searchClient}
-        performSearch={search}
-      />
       {isLoading ? (
         <div className="loader">
           <img src={loaderImage} />
         </div>
       ) : (
-        <ResultsContainer result={result} navigateToPage={search} />
+        <>
+          <ResultsContainer result={result} navigateToPage={search} />
+        </>
       )}
     </>
   );
