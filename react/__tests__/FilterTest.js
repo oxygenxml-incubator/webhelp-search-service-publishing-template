@@ -72,3 +72,47 @@ test("checks the filter container", async () => {
   expect(screen.getByText("Short Description")).toBeInTheDocument();
   expect(screen.getByText("Contents")).toBeInTheDocument();
 });
+
+test("checks the clear all button", async () => {
+  render(
+    <FilterContainer
+      performSearch={() => {}}
+      query={"something"}
+      sections={[
+        {
+          title: "Find query in",
+          options: [
+            {
+              id: "attribute-title",
+              description: "Title",
+              isFilter: false,
+              algoliaId: "title",
+            },
+            {
+              id: "attribute-shortDescription",
+              description: "Short Description",
+              isFilter: true,
+              algoliaId: "shortDescription",
+            },
+            {
+              id: "attribute-contents",
+              description: "Contents",
+              isFilter: false,
+              algoliaId: "contents",
+            },
+          ],
+        },
+      ]}
+    />
+  );
+
+  await userEvent.click(screen.getByText("Contents"));
+  await userEvent.click(screen.getByText("Short Description"));
+  await userEvent.click(screen.getByText("Clear all filters"));
+  expect(screen.getByText("Find query in")).toBeInTheDocument();
+  expect(screen.getByText("Title")).toBeInTheDocument();
+  expect(screen.getByText("Short Description")).toBeInTheDocument();
+  expect(screen.getByText("Contents")).toBeInTheDocument();
+  expect(searchableAttributes.size).toBe(0);
+  expect(facetFilters.size).toBe(0);
+});
