@@ -30,8 +30,10 @@ const App = ({ query, searchInstance }) => {
         tag.shift();
         let facetFilters = `_tags:${tag.join(" ")}`;
 
-        let response = await searchInstance.search("", { facetFilters: [facetFilters] });
-        console.log(response);
+        let response = await searchInstance.search("", {
+          facetFilters: [facetFilters],
+        });
+
         setResult(response);
       } else {
         let response = await searchInstance.search(searchTerm, {
@@ -41,7 +43,6 @@ const App = ({ query, searchInstance }) => {
           facetFilters: [facetFilters],
         });
 
-        console.log(response);
         setResult(response);
       }
     }
