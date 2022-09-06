@@ -42,13 +42,10 @@ jobs:
             sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
             
       - name: Deploy to Netlify
-        uses: netlify/actions/cli@master
+        run: npx netlify-cli deploy --dir=doc/project-documentation/out --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        with:
-          args: deploy --dir=doc/project-documentation/out --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
           
       - name: Set up JDK 11 and Algolia
         uses: actions/setup-java@v3
