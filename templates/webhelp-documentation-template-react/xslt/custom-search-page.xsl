@@ -10,7 +10,6 @@
     exclude-result-prefixes="xs"
     version="2.0">
     
-    <xsl:import href="labels-show.xsl"/>
     <!-- 
          Generate  <div  id="autocomplete"> for Algolia autocomplete integration. 
     -->
