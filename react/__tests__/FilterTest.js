@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import FilterComponent from "../src/components/filter/FilterComponent.jsx";
 import FilterContainer from "../src/components/filter/FilterContainer.jsx";
-import { searchableAttributes } from "../src/components/filter/FilterContainer.jsx";
+import { searchableAttributes, facetFilters } from "../src/components/filter/FilterContainer.jsx";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import React from "react";
@@ -47,7 +47,7 @@ test("checks the filter container", async () => {
             {
               id: "attribute-shortDescription",
               description: "Short Description",
-              isFilter: false,
+              isFilter: true,
               algoliaId: "shortDescription",
             },
             {
@@ -63,8 +63,10 @@ test("checks the filter container", async () => {
   );
 
   await userEvent.click(screen.getByText("Contents"));
+  await userEvent.click(screen.getByText("Short Description"));
 
   expect(searchableAttributes.size).toBe(1);
+  expect(facetFilters.size).toBe(1);
   expect(screen.getByText("Find query in")).toBeInTheDocument();
   expect(screen.getByText("Title")).toBeInTheDocument();
   expect(screen.getByText("Short Description")).toBeInTheDocument();
