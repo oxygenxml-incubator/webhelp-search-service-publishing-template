@@ -1,0 +1,108 @@
+[outputclass="openapi-parameter-in"] {
+    font-weight: normal;
+    font-style : italic;
+}
+
+*[outputclass^="openapi-"] *[class~='topic/dd']
+{
+   margin-left : 1.5em;
+}
+
+*[class~='topic/dl'][outputclass="openapi-parameter-properties"],
+*[class~='topic/dl'][outputclass="openapi-schema-values"],
+*[class~='topic/dl'][outputclass="openapi-link-fields-list"],
+*[class~='topic/dl'][outputclass="openapi-link-parameters-list"],
+*[class~='topic/dl'][outputclass="openapi-mediaType-fields-list"],
+*[class~='topic/dl'][outputclass="openapi-securityScheme-properties"],
+*[class~='topic/dl'][outputclass="openapi-specification-extensions"]
+{
+    display: table;
+}
+
+*[class~='topic/dl'][outputclass="openapi-parameter-properties"] > *[class~='topic/dlentry'], 
+*[class~='topic/dl'][outputclass="openapi-schema-values"] > *[class~='topic/dlentry'],
+*[class~='topic/dl'][outputclass="openapi-link-fields-list"] > *[class~='topic/dlentry'],
+*[class~='topic/dl'][outputclass="openapi-link-parameters-list"] > *[class~='topic/dlentry'],
+*[class~='topic/dl'][outputclass="openapi-mediaType-fields-list"] > *[class~='topic/dlentry'],
+*[class~='topic/dl'][outputclass="openapi-securityScheme-properties"] > *[class~='topic/dlentry'],
+*[class~='topic/dl'][outputclass="openapi-specification-extensions"] > *[class~='topic/dlentry']
+{
+    display: table-row;
+}
+
+*[class~='topic/dl'][outputclass="openapi-parameter-properties"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-parameter-properties"] > *[class~='topic/dlentry'] > *[class~='topic/dd'], 
+*[class~='topic/dl'][outputclass="openapi-schema-values"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-schema-values"] > *[class~='topic/dlentry'] > *[class~='topic/dd'],
+*[class~='topic/dl'][outputclass="openapi-link-fields-list"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-link-fields-list"] > *[class~='topic/dlentry'] > *[class~='topic/dd'],
+*[class~='topic/dl'][outputclass="openapi-link-parameters-list"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-link-parameters-list"] > *[class~='topic/dlentry'] > *[class~='topic/dd'],
+*[class~='topic/dl'][outputclass="openapi-mediaType-fields-list"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-mediaType-fields-list"] > *[class~='topic/dlentry'] > *[class~='topic/dd'],
+*[class~='topic/dl'][outputclass="openapi-securityScheme-properties"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-securityScheme-properties"] > *[class~='topic/dlentry'] > *[class~='topic/dd'],
+*[class~='topic/dl'][outputclass="openapi-specification-extensions"] > *[class~='topic/dlentry'] > *[class~='topic/dt'],
+*[class~='topic/dl'][outputclass="openapi-specification-extensions"] > *[class~='topic/dlentry'] > *[class~='topic/dd']
+{
+    display: table-cell;
+    padding: 0.2em;
+}
+
+/* *
+ * Set colored borders on operations
+ */
+*[outputclass~='openapi-operation-title'] {
+   border: 1px solid #c5c5c5;
+   border-radius: 7px;
+}
+
+*[outputclass~='openapi-method-post'],
+*[outputclass~='openapi-method-patch']{
+    background-color: #c2f2cb; 
+}
+
+
+*[outputclass~='openapi-method-get'],
+*[outputclass~='openapi-method-options'] {
+    background-color: #ccebff;
+}
+
+*[outputclass~='openapi-method-delete']{
+    background-color: #ffceca;
+}
+
+*[outputclass~='openapi-method-put']{
+    background-color: #ffe7c7;
+}
+
+*[outputclass~='openapi-method-head']{
+    background-color: #f4e6ff;
+}
+
+ @media oxygen-dark-theme, oxygen-high-contrast-black {
+  *[outputclass~='openapi-method-post'],
+  *[outputclass~='openapi-method-patch']{
+      background-color: #66806b !important;
+  }
+  
+  *[outputclass~='openapi-method-get'],
+  *[outputclass~='openapi-method-options']{
+      background-color:  #70818c !important;
+  }
+  
+  *[outputclass~='openapi-method-delete'],
+  *[outputclass~='openapi-operation-title'] *[outputclass~='openapi-operation-method-delete']{
+      background-color: #997c79 !important;
+  }
+  
+  *[outputclass~='openapi-method-put'],
+  *[outputclass~='openapi-operation-title'] *[outputclass~='openapi-operation-method-put']{
+      background-color: #998d77 !important;
+  }
+  
+  *[outputclass~='openapi-method-head'],
+  *[outputclass~='openapi-operation-title'] *[outputclass~='openapi-operation-method-head']{
+      background-color: #624980 !important;
+  }
+}

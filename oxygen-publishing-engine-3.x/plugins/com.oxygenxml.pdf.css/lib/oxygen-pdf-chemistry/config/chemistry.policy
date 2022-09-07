@@ -1,0 +1,184 @@
+//
+// Chemistry Security Policy Sample File
+//
+// This file is an example that can be used as a starting point to
+// create a policy security file. It can be used to impose security 
+// limits to the chemistry process.
+//
+// To use it, add the -security-policy parameter, using the URL syntax:
+//
+// 		chemistry.bat -security-policy file:/path/to/chemistry.policy
+//
+//
+// In addition you can specify the folder where the temporary files and caches 
+// are stored:
+// 
+// 		chemistry.bat \ 
+//			-security-policy file:/path/to/chemistry.policy \
+//			-workspace /path/to/workspace
+//
+//
+// When the -workspace is specified, the user home directory and the system 
+// temp dir are no longer used. 
+// Thus, you can remove the permissions grants marked with [2]
+// 
+// Make sure you add permissions for input and output folders [1], and for network connections [3].
+// Connections to the Google fonts servers are allowed [3].
+//
+// 
+// https://docs.oracle.com/javase/7/docs/technotes/guides/security/PolicyFiles.html
+//
+grant {
+	  
+	  /////////////////////////////////////////////////////////////////
+      // Permissions for the processor input and output. 
+	
+	  permission java.io.FilePermission "${chemistry.input.dir}", "read";
+	  permission java.io.FilePermission "${chemistry.input.dir}/-", "read";
+
+	  permission java.io.FilePermission "${chemistry.output.dir}", "read,write,delete";
+	  permission java.io.FilePermission "${chemistry.output.dir}/-", "read,write,delete";
+
+	  permission java.io.FilePermission "${chemistry.resources.dir1}", "read";
+	  permission java.io.FilePermission "${chemistry.resources.dir1}/-", "read";
+
+	  permission java.io.FilePermission "${chemistry.resources.dir2}", "read";
+	  permission java.io.FilePermission "${chemistry.resources.dir2}/-", "read";
+
+	  permission java.io.FilePermission "${chemistry.resources.dir3}", "read";
+	  permission java.io.FilePermission "${chemistry.resources.dir3}/-", "read";
+	  
+	  permission java.io.FilePermission "${chemistry.resources.dir4}", "read";
+	  permission java.io.FilePermission "${chemistry.resources.dir4}/-", "read";
+
+	  permission java.io.FilePermission "${chemistry.resources.dir5}", "read";
+	  permission java.io.FilePermission "${chemistry.resources.dir5}/-", "read";
+
+      permission java.net.SocketPermission "${chemistry.resources.host}", "connect,resolve";
+      
+	  
+	  /////////////////////////////////////////////////////////////////
+	  // These are needed to read the application code and configuration
+	  
+	  permission java.io.FilePermission "${chemistry.install.dir}", "read";
+	  permission java.io.FilePermission "${chemistry.install.dir}/lib/-", "read";
+	  permission java.io.FilePermission "${chemistry.install.dir}/config/-", "read";
+	  permission java.io.FilePermission "${chemistry.install.dir}/frameworks", "read";
+	  permission java.io.FilePermission "${chemistry.install.dir}/preferences", "read";
+	  
+      // Remove these lines in production.      
+      // This is needed to read the application code when run from an IDE, or from maven-exec plugin.
+	  permission java.io.FilePermission "${chemistry.install.dir}/target/-", "read";
+      permission java.io.FilePermission "${user.home}/.m2/repository/-", "read";
+      
+      
+      //////////////////////////////////////////////////////////////////
+      // This is for the not breaking the code loading the options. 
+      // There is nothing in these folder but the application still 
+      // needs to open them.     
+      
+      // Windows  
+      permission java.io.FilePermission "${user.home}/AppData/Roaming/com.oxygenxml.chemistry", "read";
+      permission java.io.FilePermission "${user.home}/AppData/Roaming/com.oxygenxml.chemistry/-", "read";
+      // Linux
+      permission java.io.FilePermission "${user.home}/.com.oxygenxml.chemistry", "read";
+      permission java.io.FilePermission "${user.home}/.com.oxygenxml.chemistry/-", "read";
+            
+            
+      ///////////////////////////////////////////////////////////////////
+      // Temporary files and fonts cache.
+      //
+      // The workspace is specified by the command line parameter "-workspace".
+
+      permission java.io.FilePermission "${chemistry.workspace}", "read,write";
+      permission java.io.FilePermission "${chemistry.workspace}/-", "read,write,delete";
+      
+      // Remove these if the workspace is specified. [2] 
+      permission java.io.FilePermission "${user.home}/.chemistry\-cache", "read,write,delete";
+      permission java.io.FilePermission "${java.io.tmpdir}/chemistry\-temp", "read,write";
+      permission java.io.FilePermission "${java.io.tmpdir}/chemistry\-temp/-", "read,write,delete";
+      permission java.util.PropertyPermission "java.io.tmpdir", "read"; 
+      
+
+      
+	  ///////////////////////////////////////////////////////////////////
+	  // System fonts.
+      
+      // Windows
+      permission java.io.FilePermission "C:/WINDOWS/FONTS", "read";
+      permission java.io.FilePermission "C:/WINDOWS/FONTS/-", "read";
+      permission java.io.FilePermission "C:/PSFONTS", "read";
+      permission java.io.FilePermission "C:/PSFONTS/-", "read";
+      
+      // Linux
+      // Poppler installs its fonts in /usr/share/fonts as symlinks to /usr/share/poppler
+      permission java.io.FilePermission "/usr/share/poppler/-", "read";
+      
+      permission java.io.FilePermission "${user.home}/.fonts", "read";
+      permission java.io.FilePermission "${user.home}/.fonts/-", "read";
+      permission java.io.FilePermission "/usr/share/fonts", "read";
+      permission java.io.FilePermission "/usr/share/fonts/-", "read";
+      permission java.io.FilePermission "/usr/local/share/fonts", "read";
+      permission java.io.FilePermission "/usr/local/share/fonts/-", "read";
+      permission java.io.FilePermission "/usr/local/fonts", "read";
+      permission java.io.FilePermission "/usr/local/fonts/-", "read";
+      permission java.io.FilePermission "/usr/share/fonts", "read";
+      permission java.io.FilePermission "/usr/share/fonts/-", "read";
+      permission java.io.FilePermission "/usr/X11R6/lib/X11/fonts", "read";
+      permission java.io.FilePermission "/usr/X11R6/lib/X11/fonts/-", "read";
+
+      // Mac
+      permission java.io.FilePermission "${user.home}/Library/Fonts", "read";
+      permission java.io.FilePermission "${user.home}/Library/Fonts/-", "read";
+      permission java.io.FilePermission "/Library/Fonts", "read";
+      permission java.io.FilePermission "/Library/Fonts/-", "read";
+      permission java.io.FilePermission "/System/Library/Fonts", "read";
+      permission java.io.FilePermission "/System/Library/Fonts/-", "read";
+      permission java.io.FilePermission "/Network/Library/Fonts", "read";
+      permission java.io.FilePermission "/Network/Library/Fonts/-", "read";
+      
+     
+      
+      /////////////////////////////////////////////////////////////////
+      // Connections [3]
+      
+      permission java.net.SocketPermission "fonts.googleapis.com:443", "connect,resolve"; 
+      permission java.net.SocketPermission "fonts.gstatic.com:443", "connect,resolve";
+      
+      
+      /////////////////////////////////////////////////////////////////
+      // Other permissions
+      permission java.util.PropertyPermission "com.oxygenxml.force.utf8.xml.encoding" ,"read";
+      permission java.util.PropertyPermission "com.oxygenxml.hidpi.icon.scaling" ,"read";
+      // needed by JEuclid MathML library
+      permission java.util.PropertyPermission "mrj.version", "read";
+      
+      permission java.util.PropertyPermission "user.home", "read";
+      permission java.util.PropertyPermission "user.dir", "read"; 
+      permission java.util.PropertyPermission "user.name", "read"; 
+      
+      permission java.util.PropertyPermission "org.apache.xmlgraphics.image.loader.impl.AbstractImageSessionContext.no-source-reuse", "read";
+      permission java.util.PropertyPermission "org.apache.fop.fo.properties.use-cache", "read";
+      permission java.util.PropertyPermission "xml.catalog.ignoreMissing", "read";
+      permission java.util.PropertyPermission "xml.catalog.files", "read";
+      
+      permission java.util.PropertyPermission "com.oxygenxml.editor.home.url", "read,write";      
+      permission java.util.PropertyPermission "com.oxygenxml.use.late.delegation.for.author.extensions", "read";
+      permission java.util.PropertyPermission "com.oxygenxml.force.utf8.xml.encoding", "read";
+	  					       
+
+      permission java.lang.RuntimePermission "getenv.APPDATA";
+      permission java.lang.RuntimePermission "getenv.com.oxygenxml.dita.ot.process";
+      permission java.lang.RuntimePermission "getenv.windir";
+      
+      permission java.lang.RuntimePermission "getClassLoader";
+      permission java.lang.RuntimePermission "setContextClassLoader";
+      permission java.lang.RuntimePermission "accessDeclaredMembers";
+      permission java.lang.RuntimePermission "createClassLoader";
+      
+      permission java.lang.RuntimePermission "setIO";
+      
+      permission java.lang.RuntimePermission "exitVM.1";
+      permission java.lang.RuntimePermission "exitVM.0";
+};
+

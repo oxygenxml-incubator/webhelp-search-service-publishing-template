@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="com.oxygenxml.dynamic.resources.converter">
+  
+<feature extension="dita.conductor.lib.import" file="lib/*"/>
+<feature extension="dita.conductor.lib.import" file="lib/poi/*"/>
+  
+  <feature extension="dita.parser">
+    <parser format="word-to-dita" class="com.oxygenxml.dynamic.resources.converter.WordConverterReader"/>
+
+    <parser format="openapi-to-dita" class="com.oxygenxml.dynamic.resources.converter.OpenAPIConverterReader"/>
+   
+    <parser format="markdown-to-dita" class="com.oxygenxml.dynamic.resources.converter.MarkdownConverterReader"/>
+     
+    <parser format="html-to-dita" class="com.oxygenxml.dynamic.resources.converter.HtmlConverterReader"/>
+
+    <parser format="excel-to-dita" class="com.oxygenxml.dynamic.resources.converter.ExcelConverterReader"/>
+    
+    <parser format="ms-word-to-dita" class="com.oxygenxml.dynamic.resources.converter.WordConverterReader"/>
+    <parser format="ms-excel-to-dita" class="com.oxygenxml.dynamic.resources.converter.ExcelConverterReader"/>
+  </feature>
+</plugin>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    
+Oxygen WebHelp Plugin
+Copyright (c) 1998-2022 Syncro Soft SRL, Romania.  All rights reserved.
+
+-->
+<extension>
+	<param name="google.structured.data" expression="${google.structured.data}" if:set="google.structured.data" xmlns:if="ant:if"/>
+</extension>
+

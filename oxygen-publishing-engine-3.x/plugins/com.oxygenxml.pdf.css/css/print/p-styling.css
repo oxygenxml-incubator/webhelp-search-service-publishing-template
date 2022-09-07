@@ -1,0 +1,73 @@
+/*
+ * =================================================
+ * 
+ * You can override here the aspect of DITA elements
+ * (for PDF).
+ * 
+ * =================================================
+ */
+
+/**
+ * Remove topic body margins from media print. 
+ * Margins will be controlled by the page margins. 
+ */
+*[class ~= "topic/body"] {
+  margin-left: 0 !important;
+
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-right: 0;
+}
+
+
+/*
+ * ==================================================
+ *	pdf-css-html specific	
+ * ==================================================
+ */
+/* 
+ * The screen element should pre-wrap.
+ */
+*[class ~= "ui-d/screen"] {
+  white-space: pre-wrap;
+}
+/*
+ * The pre and the codeblock elements should do an overflow-wrap.
+ */
+*[class ~= "topic/pre"],
+*[class ~= "pr-d/codeblock"] {
+  overflow-wrap: break-word;
+}
+
+/*
+ * An inline in an element marked with wrap and line feed treatment preserve
+ * is broken in wrong places by the Chemistry (FOP).
+ * We make sure the code element is styled as a block.
+ */
+*[class ~= "pr-d/codeblock"] > code:not([class]) {
+  display: block;
+}
+
+/*
+ * The glossary usage element should not be prefixed by a "Note:" label.
+ */
+*[class ~= "glossentry/glossUsage"] > .note__title {
+  display: none;
+}
+
+/*
+ * The glossgroup label should have the same size as the glossterm.
+ */
+*[class ~= "glossgroup/label"] {
+  font-size: 1.5em;
+}
+
+/* 
+ * Empty elements must not be displayed because they can cause undesired page-breaks. 
+ */
+*[class ~= "topic/p"]:not([id]):not([outputclass]):empty,
+*[class ~= "topic/shortdesc"]:not([id]):not([outputclass]):empty,
+*[class ~= "task/context"]:not([outputclass]):empty,
+*[class ~= "task/context"]:not([outputclass]):has(*:not([id]):not([outputclass]):empty) {
+  display: none;
+}

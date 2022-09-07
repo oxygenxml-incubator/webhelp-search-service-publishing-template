@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    
+Oxygen WebHelp Plugin
+Copyright (c) 1998-2022 Syncro Soft SRL, Romania.  All rights reserved.
+
+-->
+<?xml-model href="dita-ot/plugin.rnc" type="application/relax-ng-compact-syntax"?>
+<plugin id="com.oxygenxml.gsd"> 
+    <require plugin="org.dita.html5"/>
+    
+    <feature extension="dita.xsl.html5" file="xsl/html5-gsd.xsl"/>
+    <feature extension="dita.conductor.html5.param" value="params.xml" type="file" />
+    
+    <transtype name="html5" desc="HTML5">
+	    <param name="google.structured.data"
+	        desc="Specifies if Google Structered Data will be generated in the transformation output."        
+	        type="enum">
+	        <val default="true">no</val>
+	        <val>yes</val>
+	    </param>   
+    </transtype>
+</plugin>

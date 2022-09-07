@@ -1,0 +1,66 @@
+<fop version="1.0">
+
+  <!-- Strict user configuration -->
+  <strict-configuration>true</strict-configuration>
+
+  <!-- No strict FO validation, putting border and padding on the page is allowed.-->
+  <strict-validation>false</strict-validation>
+
+  <!-- Base URL for resolving relative URLs -->
+  <base>./</base>
+
+  <!-- Font Base URL for resolving relative font URLs -->
+  <font-base>./config/fonts</font-base>
+
+  <!-- Source resolution in dpi (dots/pixels per inch) for determining the size of pixels in SVG and bitmap images, default: 96. 
+     If you change it, use just the number, like 72, without the "dpi" units.
+  -->
+  <source-resolution>${PARAM_IMAGE_RESOLUTION_DPI}</source-resolution>
+
+  <!-- Target resolution in dpi (dots/pixels per inch) for specifying the target resolution for generated bitmaps, FOP default: 96.
+       Using a larger value in Chemistry to improve the rastered sections from the SVG.
+       If you change it, use just the number, like 72, without the "dpi" units.
+  -->
+  <target-resolution>600</target-resolution>
+
+  <!-- Turn on basic accessibility. -->
+  <accessibility>true</accessibility>
+  
+  ${PARAM_HYPH_DIR}
+
+  <renderers>
+    <renderer mime="application/pdf">
+      ${PARAM_PDF_VERSION}
+      <!--
+        To score better at the accessibility support, your PDFs should be in the PDF/UA-1 
+        mode. This ensure 508 compliance. See documentation, accessibility section for details.
+      -->
+      ${PARAM_ENABLE_PDF_UA_MODE}
+      
+      <!-- PDF/A mode. See documentation, archiving section for details. -->
+      ${PARAM_PDF_A_MODE}
+      
+      <fonts> 
+        ${PARAM_FONT_TRIPLETS} 
+        
+        <!-- register all the fonts found in a directory and all of its sub directories -->         
+        ${PARAM_FONTS_DIR} 
+        
+        <!-- automatically detect operating system installed fonts, but also solves references between the font files. -->
+        <auto-detect/>
+      </fonts>
+      
+     ${PARAM_ENCRYPTION_PARAMS}
+      
+    </renderer>
+  </renderers>
+
+  <!-- A substitution can map a font family to another. -->
+  <fonts>
+    <substitutions> ${PARAM_FONT_SUBSTITUTIONS} </substitutions>
+  </fonts>
+  
+  <use-cache>true</use-cache>
+  <cache-file>${CACHE_FILE}</cache-file>
+  
+</fop>

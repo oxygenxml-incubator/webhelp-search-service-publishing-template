@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="urn:oasis:names:tc:dita:rng:vocabularyModuleDesc.rng"
+                         schematypens="http://relaxng.org/ns/structure/1.0"?>
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" xmlns:dita="http://dita.oasis-open.org/architecture/2005/"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <moduleDesc xmlns="http://dita.oasis-open.org/architecture/2005/">
+    <moduleTitle>DITA QA Topic</moduleTitle>
+    <headerComment xml:space="preserve"><![CDATA[
+=============================================================
+                   HEADER                                    
+=============================================================
+ MODULE:    DITA Question Answer                                     
+ VERSION:   1.0                                              
+ DATE:      April 2022                                    
+                                                             
+=============================================================
+]]></headerComment>
+    <moduleMetadata>
+      <moduleType>qatopic</moduleType>
+      <moduleShortName>qa</moduleShortName>
+      <modulePublicIds>
+        <rngMod>urn:com:oxygenxml:specialization:qatopicMod.rng<var presep=":" name="ditaver"/></rngMod>
+      </modulePublicIds>
+      <domainsContribution>(topic qatopic)</domainsContribution>
+    </moduleMetadata>
+  </moduleDesc>
+  <div>
+    <a:documentation>TOPIC NESTING OVERRIDES</a:documentation>
+    <define name="qa-info-types">
+      <ref name="info-types"/>
+    </define>
+
+  </div>
+  <div>
+    <a:documentation>ELEMENT TYPE NAME PATTERNS</a:documentation>
+    <define name="qatopic">
+      <ref name="qatopic.element"/>
+    </define>
+    <define name="qabody">
+      <ref name="qabody.element"/>
+    </define>
+    <define name="qagroup">
+      <ref name="qagroup.element"/>
+    </define>
+
+  </div>
+  <div>
+    <a:documentation>ELEMENT TYPE DECLARATIONS</a:documentation>
+
+    <div>
+      <a:documentation> LONG NAME: Concept </a:documentation>
+      <define name="qatopic.content">
+        <ref name="title"/>
+        <!--<optional>
+          <ref name="titlealts"/>
+        </optional>-->
+        <optional>
+          <choice>
+            <!--<ref name="abstract"/>-->
+            <ref name="shortdesc"/>
+          </choice>
+        </optional>
+        <optional>
+          <ref name="prolog"/>
+        </optional>
+        <optional>
+          <ref name="qabody"/>
+        </optional>
+        <!--<optional>
+          <ref name="related-links"/>
+        </optional>-->
+        <!--<zeroOrMore>
+          <ref name="qa-info-types"/>
+        </zeroOrMore>-->
+      </define>
+      <define name="qatopic.attributes">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <ref name="conref-atts"/>
+        <ref name="select-atts"/>
+        <ref name="localization-atts"/>
+        <optional>
+          <attribute name="outputclass"/>
+        </optional>
+      </define>
+      <define name="qatopic.element">
+        <element name="qatopic" dita:longName="QuestionAnswerTopic">
+          <ref name="qatopic.attlist"/>
+          <ref name="qatopic.content"/>
+        </element>
+      </define>
+      <define name="qatopic.attlist" combine="interleave">
+        <ref name="qatopic.attributes"/>
+        <ref name="arch-atts"/>
+        <ref name="domains-att"/>
+      </define>
+      <define name="idElements" combine="choice">
+        <ref name="qatopic.element"/>
+      </define>
+    </div>
+    <div>
+      <define name="qabody.content">
+        <oneOrMore>
+          <choice>
+            <ref name="qagroup"/>
+          </choice>
+        </oneOrMore>
+      </define>
+      <define name="qabody.attributes">
+        <ref name="id-atts"/>
+        <ref name="localization-atts"/>
+        <optional>
+          <attribute name="base"/>
+        </optional>
+        <ref name="base-attribute-extensions"/>
+        <optional>
+          <attribute name="outputclass"/>
+        </optional>
+      </define>
+      <define name="qabody.element">
+        <element name="qabody" dita:longName="QA Body">
+          <ref name="qabody.attlist"/>
+          <ref name="qabody.content"/>
+        </element>
+      </define>
+      <define name="qabody.attlist" combine="interleave">
+        <ref name="qabody.attributes"/>
+      </define>
+    </div>
+    <div>
+      <define name="qagroup.content">
+        <oneOrMore>
+          <ref name="question.element"/>
+        </oneOrMore>
+        <ref name="answer.element"/>
+      </define>
+      <define name="qagroup.attributes">
+        <optional>
+          <attribute name="id">
+            <data type="ID"/>
+          </attribute>
+        </optional>
+        <ref name="conref-atts"/>
+        <ref name="select-atts"/>
+        <ref name="localization-atts"/>
+        <optional>
+          <attribute name="outputclass"/>
+        </optional>
+      </define>
+      <define name="qagroup.element">
+        <element name="qagroup" dita:longName="QA Group">
+          <ref name="qagroup.attlist"/>
+          <ref name="qagroup.content"/>
+        </element>
+      </define>
+      <define name="qagroup.attlist" combine="interleave">
+        <ref name="qagroup.attributes"/>
+      </define>
+      
+      <define name="question.element">
+        <element name="question" dita:longName="Question">
+          <ref name="question.attlist"/>
+          <ref name="title.content"/>
+        </element>
+      </define>
+      <define name="question.attributes">
+        <ref name="univ-atts"/>
+        <optional>
+          <attribute name="outputclass"/>
+        </optional>
+      </define>
+      <define name="question.attlist" combine="interleave">
+        <ref name="question.attributes"/>
+      </define>
+      <define name="answer.content">
+        <ref name="div.content"/>
+      </define>
+      <define name="answer.element">
+        <element name="answer" dita:longName="Answer">
+          <ref name="answer.attlist"/>
+          <ref name="answer.content"/>
+        </element>
+      </define>
+      <define name="answer.attributes">
+        <ref name="univ-atts"/>
+        <optional>
+          <attribute name="outputclass"/>
+        </optional>
+      </define>
+      <define name="answer.attlist" combine="interleave">
+        <ref name="answer.attributes"/>
+      </define>
+    </div>
+  </div>
+  <div>
+    <a:documentation>SPECIALIZATION ATTRIBUTE DECLARATIONS</a:documentation>
+    <define name="qatopic.attlist" combine="interleave">
+      <ref name="global-atts"/>
+      <optional>
+        <attribute name="class" a:defaultValue="- topic/topic qatopic/qatopic "/>
+      </optional>
+    </define>
+    <define name="qabody.attlist" combine="interleave">
+      <ref name="global-atts"/>
+      <optional>
+        <attribute name="class" a:defaultValue="- topic/body  qatopic/qabody "/>
+      </optional>
+    </define>
+    <define name="qagroup.attlist" combine="interleave">
+      <ref name="global-atts"/>
+      <optional>
+        <attribute name="class" a:defaultValue="- topic/section qatopic/qagroup "/>
+      </optional>
+    </define>
+    <define name="question.attlist" combine="interleave">
+      <ref name="global-atts"/>
+      <optional>
+        <attribute name="class" a:defaultValue="- topic/title qatopic/question "/>
+      </optional>
+    </define>
+    <define name="answer.attlist" combine="interleave">
+      <ref name="global-atts"/>
+      <optional>
+        <attribute name="class" a:defaultValue="- topic/div qatopic/answer "/>
+      </optional>
+    </define>
+  </div>
+</grammar>

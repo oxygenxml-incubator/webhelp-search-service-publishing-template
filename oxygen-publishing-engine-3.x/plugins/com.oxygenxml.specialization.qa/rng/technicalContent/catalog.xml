@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <group>
+    <!-- System ID (URL) catalog entries -->
+    <system systemId="urn:com:oxygenxml:specialization:qatopic.rng" uri="rng/qatopic.rng"/>
+    <system systemId="urn:com:oxygenxml:specialization:qatopicMod.rng" uri="rng/qatopicMod.rng"/>
+  </group>
+  <group>
+    <!-- Public ID (URN) catalog entries -->
+    <uri name="urn:com:oxygenxml:specialization:qatopic.rng" uri="rng/qatopic.rng"/>
+    <uri name="urn:com:oxygenxml:specialization:qatopicMod.rng" uri="rng/qatopicMod.rng"/>
+  </group>
+</catalog>

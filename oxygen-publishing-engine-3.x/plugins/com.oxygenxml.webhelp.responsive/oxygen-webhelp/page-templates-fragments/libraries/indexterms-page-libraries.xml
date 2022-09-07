@@ -1,0 +1,17 @@
+<!-- <head> is ignored - only its children are copied in the output -->
+<head xmlns:whc="http://www.oxygenxml.com/webhelp/components" whc:version="22.0">
+
+    <link rel="stylesheet" type="text/css" 
+        href="${oxygen-webhelp-assets-dir}/app/commons.css?buildId=${oxygen-webhelp-build-number}" />
+    <link rel="stylesheet" type="text/css" 
+        href="${oxygen-webhelp-assets-dir}/app/indexterms.css?buildId=${oxygen-webhelp-build-number}" />
+
+    <script>
+        let oxy_webhelp_navlinks = {};
+    </script>
+    <script src="${oxygen-webhelp-assets-dir}/app/options/properties.js?buildId=${oxygen-webhelp-transformation-timestamp}"></script>
+    <script src="${oxygen-webhelp-assets-dir}/app/localization/strings.js?buildId=${oxygen-webhelp-build-number}"></script>
+    <script src="${oxygen-webhelp-assets-dir}/app/search/index/keywords.js?buildId=${oxygen-webhelp-transformation-timestamp}"></script>
+    <script src="${oxygen-webhelp-assets-dir}/app/commons.js?buildId=${oxygen-webhelp-build-number}"></script>
+    <script src="${oxygen-webhelp-assets-dir}/app/indexterms.js?buildId=${oxygen-webhelp-build-number}"></script>
+</head>

@@ -1,0 +1,51 @@
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[audience], 
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[platform], 
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[product],
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[props],
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[otherprops],
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[rev]{
+  border:  1px solid black;
+  padding:  1.5px 1.5px;
+}
+
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[audience]::after(1){
+ content: "Audience [" attr(audience) "]";
+ background-color:#98FB98;
+ color:grey;
+ margin-left:0.3em;
+}
+
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[platform]::after(2){
+ content:"Platform [" attr(platform) "]";
+ background-color:#98FB98;
+ color:grey;
+ margin-left:0.3em;
+}
+
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[product]::after(3){
+ content: "Product [" attr(product) "]";
+ background-color:#98FB98;
+ color:grey;
+ margin-left:0.3em;
+}
+
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[props]::after(4){
+ content:"Props [" attr(props) "]";
+ background-color:#98FB98;
+ color:grey;
+ margin-left:0.3em;
+}
+
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[otherprops]::after(5){
+ content: "Other [" attr(otherprops)"]";
+ background-color:#98FB98;
+ color:grey;
+ margin-left:0.3em;
+}
+
+*[class ~= "map/map"][show-profiling-attributes='yes'] *[rev]::after(6){
+ content:"Rev [" attr(rev) "]";
+ background-color:#98FB98;
+ color:grey;
+ margin-left:0.3em;
+}
