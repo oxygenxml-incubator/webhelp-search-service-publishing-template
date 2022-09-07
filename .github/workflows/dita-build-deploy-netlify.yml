@@ -22,7 +22,7 @@ jobs:
         run: |
             sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
             
-      - name: Build Javascript Bundle
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -36,6 +36,7 @@ jobs:
       - name: Build WebHelp Responsive
         run: |
             cd oxygen-publishing-engine-3.x/bin
+            sudo chmod +x dita
             sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
             
       - name: Deploy to Netlify
