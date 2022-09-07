@@ -5,29 +5,19 @@
 /target/
 
 # dependencies
-/react/node_modules
-/react/.pnp
-/react.pnp.js
+/templates/webhelp-documentation-template-react/react/node_modules
+/templates/webhelp-documentation-template-react/react/.pnp
+/templates/webhelp-documentation-template-react/react/react.pnp.js
 
 # testing
-/react/coverage
+/templates/webhelp-documentation-template-react/react/coverage
 
 # production
-/react/build
-
-# misc
-/react.DS_Store
-/react.env.local
-/react.env.development.local
-/react.env.test.local
-/react.env.production.local
-
-/reactnpm-debug.log*
-/reactyarn-debug.log*
-/reactyarn-error.log*
+/templates/webhelp-documentation-template-react/react/build
 
 /doc/project-documentation/out/
-/src/main/javascript/node_modules/
+/doc/mobile-phone/out/
+/templates/webhelp-documentation-template/javascript/node_modules/
 /templates/webhelp-documentation-template/html/temp/webhelp-responsive/wh-template-copy-resources.xml
 /templates/webhelp-documentation-template/js/
 /templates/webhelp-documentation-template-react/js/

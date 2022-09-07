@@ -30,9 +30,9 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-          cache-dependency-path: "./src/main/javascript/package-lock.json"
+          cache-dependency-path: "./templates/webhelp-documentation-template/javascript/package-lock.json"
       - run: |
-          cd src/main/javascript
+          cd templates/webhelp-documentation-template/javascript
           npm install
           npm run build
             
