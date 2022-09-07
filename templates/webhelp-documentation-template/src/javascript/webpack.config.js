@@ -1,6 +1,6 @@
 const path = require('path');
 // Use for production.
-const distFolder = path.resolve(__dirname, '../js');
+const distFolder = path.resolve(__dirname, '../../js');
 
 module.exports = {
 	entry: { //location of your main js file
