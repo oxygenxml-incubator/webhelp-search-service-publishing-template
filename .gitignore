@@ -5,8 +5,9 @@
 /target/
 
 # dependencies
-/templates/webhelp-documentation-template-react/react/node_modules
 /templates/webhelp-documentation-template-react/react/.pnp
+templates/webhelp-documentation-template-react/src/react/node_modules/
+/templates/webhelp-documentation-template/javascript/node_modules/
 /templates/webhelp-documentation-template-react/react/react.pnp.js
 
 # testing
@@ -17,9 +18,9 @@
 
 /doc/project-documentation/out/
 /doc/mobile-phone/out/
-/templates/webhelp-documentation-template/javascript/node_modules/
 /templates/webhelp-documentation-template/html/temp/webhelp-responsive/wh-template-copy-resources.xml
 /templates/webhelp-documentation-template/js/
 /templates/webhelp-documentation-template-react/js/
 /doc/project-documentation/project-documentation.xpr
 /templates/**/temp
+
