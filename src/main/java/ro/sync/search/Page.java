@@ -34,6 +34,10 @@ public class Page {
 	 * Page's collected contents from body section.
 	 */
 	private String contents;
+	/**
+	 * Page's collected facets from metadata.
+	 */
+	private List<String> facets;
 
 	/**
 	 * Constructor with title, keywords, contents and url parameters.
@@ -41,16 +45,18 @@ public class Page {
 	 * @param title            is the page's title from metadata.
 	 * @param keywords         is the page's keywords from metadata.
 	 * @param contents         is the page's contents from body section.
-	 * @param url              is the HTML document's url
-	 * @param shortDescription is the page's short descrption
+	 * @param url              is the HTML document's url.
+	 * @param shortDescription is the page's short descrption.
+	 * @param facets           is the page's facets from metadata.
 	 */
 	public Page(final String title, final String shortDescription, final List<String> keywords, final String contents,
-			final String url) {
+			final String url, final List<String> facets) {
 		this.title = title;
 		this.shortDescription = shortDescription;
 		this.keywords = keywords;
 		this.contents = contents;
 		this.url = url;
+		this.facets = facets;
 	}
 
 	/**
@@ -86,5 +92,12 @@ public class Page {
 	 */
 	public String getContents() {
 		return this.contents;
+	}
+
+	/**
+	 * @return Page's collected facets from metadata.
+	 */
+	public List<String> getFacets() {
+		return this.facets;
 	}
 }
