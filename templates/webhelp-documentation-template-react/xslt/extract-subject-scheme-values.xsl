@@ -4,6 +4,9 @@
     exclude-result-prefixes="oxygen"     
     
     version="2.0">
+    
+    <xsl:output name="json" omit-xml-declaration="yes" indent="yes"/>
+    
     <xsl:template match="/">
         <xsl:next-match/>
         
@@ -11,12 +14,15 @@
         <xsl:if test="//*[contains(@class, ' subjectScheme/hasInstance ')]">
             <xsl:variable name="subjectScheme" select="
                 oxygen:makeURL(
-                    concat(oxygen:getParameter('dita.map.output.dir'),'/subject-scheme-values.xml'))"/>
-            
-            <xsl:result-document href="{$subjectScheme}">
-                <subjectScheme>
-                    <xsl:apply-templates mode="process-subject"/>
-                </subjectScheme>
+                    concat(oxygen:getParameter('dita.map.output.dir'),'/subject-scheme-values.json'))"/>
+            <xsl:result-document format="json" href="{$subjectScheme}">
+                <xsl:text disable-output-escaping="yes">{</xsl:text>
+                <xsl:text disable-output-escaping="yes">"subjectScheme" : {</xsl:text>
+                <xsl:text disable-output-escaping="yes">"attrValues" : [</xsl:text>
+                <xsl:apply-templates mode="process-subject"/>
+                <xsl:text disable-output-escaping="yes">]</xsl:text>
+                <xsl:text disable-output-escaping="yes">}</xsl:text>
+                <xsl:text disable-output-escaping="yes">}</xsl:text>
             </xsl:result-document>
             
         </xsl:if>
@@ -28,17 +34,20 @@
         <xsl:variable name="subjectDefinition" 
             select="parent::*/*[contains(@class, ' subjectScheme/subjectdef ')]/@keyref"/>
         
-        
         <xsl:if test="exists($subjectDefinition)">
             <xsl:variable name="subjectDefValues" select="
                 //*[contains(@class, ' subjectScheme/hasInstance ')]/*[contains(@class, ' subjectScheme/subjectdef ')][@keys=$subjectDefinition]"/>
             <xsl:if test="exists($subjectDefValues)">
-                <attrValues>
-                    <name><xsl:value-of select="@name"/></name>
-                    <values>
-                        <xsl:apply-templates select="$subjectDefValues/*" mode="process-subject-values"></xsl:apply-templates>
-                    </values>
-                </attrValues>
+                <xsl:text disable-output-escaping="yes">{</xsl:text>
+                <xsl:text disable-output-escaping="yes">"name" : "</xsl:text> <xsl:value-of select="@name"/><xsl:text>",</xsl:text>
+                <xsl:text disable-output-escaping="yes">"values" : [</xsl:text>
+                <xsl:apply-templates select="$subjectDefValues/*" mode="process-subject-values"></xsl:apply-templates>
+                <xsl:text disable-output-escaping="yes">]</xsl:text>
+                <xsl:text disable-output-escaping="yes">}</xsl:text>
+                
+                <xsl:if test="parent::*/following-sibling::*/*[contains(@class, ' subjectScheme/subjectdef ')]/@keyref = //*[contains(@class, ' subjectScheme/hasInstance ')]/*[contains(@class, ' subjectScheme/subjectdef ')]/@keys">
+                    <xsl:text disable-output-escaping="yes">,</xsl:text>
+                </xsl:if>
             </xsl:if>
         </xsl:if>
     </xsl:template>
@@ -49,14 +58,16 @@
     
     <xsl:template match="*[contains(@class, ' subjectScheme/subjectdef ')][@keys]"
         mode="process-subject-values">
-        <value key="{@keys}">
-            <xsl:apply-templates mode="process-subject-values"/>
-        </value>        
+        <xsl:text disable-output-escaping="yes">{</xsl:text>
+        <xsl:text disable-output-escaping="yes">"key" : "</xsl:text> <xsl:value-of select="@keys"/><xsl:text>",</xsl:text>
+        <xsl:apply-templates mode="process-subject-values"/>
+        <xsl:text disable-output-escaping="yes">}</xsl:text>
+        <xsl:if test="following-sibling::*[contains(@class, ' subjectScheme/subjectdef ')][@keys]">,</xsl:if>
     </xsl:template>
     
     <xsl:template match="*[contains(@class, ' topic/navtitle ')]"
         mode="process-subject-values">
-        <navTitle><xsl:value-of select="."/></navTitle>        
+        <xsl:text disable-output-escaping="yes">"navTitle" : "</xsl:text> <xsl:value-of select="."/><xsl:text>"</xsl:text>
     </xsl:template>
     
     <xsl:template match="node() | @*" mode="process-subject-values">
