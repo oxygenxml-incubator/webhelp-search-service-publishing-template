@@ -76,6 +76,10 @@ public class Crawler {
 	 * during the crawling process.
 	 */
 	private final List<String> nodesToIgnore = new ArrayList<>();
+	/**
+	 * Path that leads to the XML file where all profiling values are stored.
+	 */
+	private String facetsPath;
 
 	/**
 	 * Constructor with url and baseUrl parameters.
@@ -85,8 +89,8 @@ public class Crawler {
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl) throws IOException {
-		this(url, baseUrl, false);
+	public Crawler(final String url, final String baseUrl, final String facetsPath) throws IOException {
+		this(url, baseUrl, false, facetsPath);
 	}
 
 	/**
@@ -99,9 +103,25 @@ public class Crawler {
 	 *                     nodesToIgnore.csv file occurred.
 	 */
 	public Crawler(final String url, final String baseUrl, final boolean isFile) throws IOException {
+		this(url, baseUrl, isFile, "");
+	}
+
+	/**
+	 * Constructor with url, baseUrl, isFile and facetsPath parameters.
+	 * 
+	 * @param url        is the page that should be crawled for data.
+	 * @param baseUrl    is the parent that is used to not go out of bounds.
+	 * @param isFile     is the state of URL
+	 * @param facetsPath is the path to the XML file with profiling values.
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
+	 */
+	public Crawler(final String url, final String baseUrl, final boolean isFile, final String facetsPath)
+			throws IOException {
 		this.url = url;
 		this.baseUrl = baseUrl;
 		this.isFile = isFile;
+		this.facetsPath = facetsPath;
 
 		StringTokenizer tokenizer = new StringTokenizer(Files.readString(Path.of(NODES_TO_IGNORE_PATH)), ",");
 		while (tokenizer.hasMoreTokens()) {
@@ -207,8 +227,9 @@ public class Crawler {
 		final List<String> keywords = collectKeywords(page);
 		final String contents = collectContents(page);
 		final String pageUrl = page.baseUri();
+		final List<String> facets = collectFacets(page);
 
-		pages.add(new Page(title, shortDescription, keywords, contents, pageUrl));
+		pages.add(new Page(title, shortDescription, keywords, contents, pageUrl, facets));
 	}
 
 	/**
@@ -247,5 +268,32 @@ public class Crawler {
 
 		// Return remaining text from body.
 		return page.body().text();
+	}
+
+	/**
+	 * @return Page's collected facets from metadata.
+	 */
+	private List<String> collectFacets(final Document page) {
+		List<String> facets = new ArrayList<>();
+
+		ProfilingHandler pHandler = new ProfilingHandler(this.facetsPath);
+
+		// Get every possible facet for this documentation.
+		for (String facet : pHandler.getProflingValues().keySet()) {
+			// Select value of the current facet from DOM.
+			Element value = page.select(String.format("meta[name=\"wh-data-%s\"]", facet)).first();
+
+			if (value != null)
+				// If the value is present in the DOM put it in the facets values.
+				facets.add(value.attr("content"));
+			else {
+				// If the value isn't present then put every possible value for the facet.
+				for (String facetValue : pHandler.getProflingValues().get(facet)) {
+					facets.add(facetValue);
+				}
+			}
+		}
+
+		return facets;
 	}
 }
