@@ -62,13 +62,12 @@ public class AlgoliaClient {
 			client = DefaultSearchClient.create(appId, adminApiKey);
 
 			index = client.initIndex(indexName, Page.class);
-			index.setSettings(new IndexSettings()
-					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "contents"))
-					.setCustomRanking(
-							Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))
-					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
-					.setAttributesToSnippet(Arrays.asList("contents:30"))
-					.setAttributesForFaceting(Arrays.asList("title", "_tags", "shortDescription", "contents")));
+			index.setSettings(
+					new IndexSettings().setSearchableAttributes(Arrays.asList("title", "shortDescription", "contents"))
+							.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))
+							.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
+							.setAttributesToSnippet(Arrays.asList("contents:30"))
+							.setAttributesForFaceting(Arrays.asList("title", "_tags", "shortDescription", "contents", "facets")));
 
 			logger.info("Index {} succesfully created/selected!", indexName);
 		}
@@ -83,8 +82,8 @@ public class AlgoliaClient {
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
-	public void populateIndex(final String url, final String baseUrl) throws IOException {
-		Crawler crawler = new Crawler(url, baseUrl);
+	public void populateIndex(final String url, final String baseUrl, final String facetsPath) throws IOException {
+		Crawler crawler = new Crawler(url, baseUrl, facetsPath);
 		crawler.crawl();
 
 		index.clearObjects();
@@ -106,7 +105,8 @@ public class AlgoliaClient {
 	/**
 	 * Main method that crawls data and stores it into Algolia Index.
 	 * 
-	 * @param args - URL and Base URl to be crawled.
+	 * @param args - URL, Base URl, indexName and optionally facetsPath to be
+	 *             crawled.
 	 */
 	public static void main(String[] args) {
 		try {
@@ -116,7 +116,8 @@ public class AlgoliaClient {
 				String url = "";
 				String baseUrl = "";
 				String indexName = "";
-				
+				String facetsPath = "";
+
 				for (String arg : args) {
 					if (arg.startsWith("-url=")) {
 						url = arg.substring(5, arg.length());
@@ -124,6 +125,8 @@ public class AlgoliaClient {
 						baseUrl = arg.substring(9, arg.length());
 					} else if (arg.startsWith("-indexName=")) {
 						indexName = arg.substring(11, arg.length());
+					} else if (arg.startsWith("-facetsPath=")) {
+						facetsPath = arg.substring(12, arg.length());
 					}
 				}
 
@@ -133,7 +136,7 @@ public class AlgoliaClient {
 				}
 
 				AlgoliaClient client = new AlgoliaClient(indexName);
-				client.populateIndex(url, baseUrl);
+				client.populateIndex(url, baseUrl, facetsPath);
 			}
 		} catch (IOException e) {
 			logger.error(
