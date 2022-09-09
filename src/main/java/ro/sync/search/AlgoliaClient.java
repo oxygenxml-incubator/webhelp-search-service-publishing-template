@@ -68,7 +68,7 @@ public class AlgoliaClient {
 							.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))
 							.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
 							.setAttributesToSnippet(Arrays.asList("contents:30"))
-							.setAttributesForFaceting(Arrays.asList("_tags", "facets")));
+							.setAttributesForFaceting(Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
 
 			logger.info("Index {} succesfully created/selected!", indexName);
 		}
