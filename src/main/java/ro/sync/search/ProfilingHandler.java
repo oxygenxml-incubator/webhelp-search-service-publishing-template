@@ -95,11 +95,4 @@ public class ProfilingHandler {
 			logger.error("The given path could not be parsed, check your contents!", e);
 		}
 	}
-
-	public static void main(String[] args) {
-		ProfilingHandler pHandler = new ProfilingHandler(
-				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
-
-		logger.info(pHandler.getProflingValues().toString());
-	}
 }

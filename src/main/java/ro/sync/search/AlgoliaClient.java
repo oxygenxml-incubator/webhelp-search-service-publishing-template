@@ -63,14 +63,14 @@ public class AlgoliaClient {
 
 			index = client.initIndex(indexName, Page.class);
 
-			index.setSettings(
-					new IndexSettings().setSearchableAttributes(Arrays.asList("title", "shortDescription", "contents"))
-							.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))
-							.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
-							.setAttributesToSnippet(Arrays.asList("contents:30"))
-							.setAttributesForFaceting(Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
+			index.setSettings(new IndexSettings()
+					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "contents"))
+					.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))
+					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
+					.setAttributesToSnippet(Arrays.asList("contents:30")).setAttributesForFaceting(
+							Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
 
-			logger.info("Index {} succesfully created/selected!", indexName);
+			logger.info("Index {} successfully created/selected!", indexName);
 		}
 	}
 
@@ -101,13 +101,14 @@ public class AlgoliaClient {
 		logger.error("There are no enough arguments passed!");
 		logger.info(
 				"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
+		logger.info("Optional parameters are: -profilingValuesPath=PATH");
 	}
 
 	/**
 	 * Main method that crawls data and stores it into Algolia Index.
 	 * 
-	 * @param args - URL, Base URl, indexName and optionally facetsPath to be
-	 *             crawled.
+	 * @param args - URL, Base URl, indexName and optionally profilingValuesPath to
+	 *             be crawled.
 	 */
 	public static void main(String[] args) {
 		try {
@@ -117,7 +118,7 @@ public class AlgoliaClient {
 				String url = "";
 				String baseUrl = "";
 				String indexName = "";
-				String facetsPath = "";
+				String profilingValuesPath = "";
 
 				for (String arg : args) {
 					if (arg.startsWith("-url=")) {
@@ -126,8 +127,8 @@ public class AlgoliaClient {
 						baseUrl = arg.substring(9, arg.length());
 					} else if (arg.startsWith("-indexName=")) {
 						indexName = arg.substring(11, arg.length());
-					} else if (arg.startsWith("-facetsPath=")) {
-						facetsPath = arg.substring(12, arg.length());
+					} else if (arg.startsWith("-profilingValuesPath=")) {
+						profilingValuesPath = arg.substring(21, arg.length());
 					}
 				}
 
@@ -137,7 +138,7 @@ public class AlgoliaClient {
 				}
 
 				AlgoliaClient client = new AlgoliaClient(indexName);
-				client.populateIndex(url, baseUrl, facetsPath);
+				client.populateIndex(url, baseUrl, profilingValuesPath);
 			}
 		} catch (IOException e) {
 			logger.error(

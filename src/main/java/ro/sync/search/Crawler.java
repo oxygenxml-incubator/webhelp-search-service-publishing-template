@@ -282,6 +282,9 @@ public class Crawler {
 	private List<String> collectProfilingCondition(final Document page, final String profilingCondition) {
 		List<String> profilingValues = new ArrayList<>();
 
+		if (this.profilingConditionsPath.isEmpty())
+			return new ArrayList<>();
+
 		ProfilingHandler pHandler = new ProfilingHandler(this.profilingConditionsPath);
 
 		Element value = page.select(String.format("meta[name=\"wh-data-%s\"]", profilingCondition)).first();
