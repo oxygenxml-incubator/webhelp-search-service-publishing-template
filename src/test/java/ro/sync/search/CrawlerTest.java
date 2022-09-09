@@ -179,7 +179,8 @@ class CrawlerTest {
 		expected.add("Search");
 		expected.add("Service");
 
-		assertEquals(expected.toString().replaceAll("\\s+",""), crawler.getCrawledPages().get(0).getKeywords().toString().replaceAll("\\s+",""));
+		assertEquals(expected.toString().replaceAll("\\s+", ""),
+				crawler.getCrawledPages().get(0).getKeywords().toString().replaceAll("\\s+", ""));
 	}
 
 	/**
@@ -205,6 +206,25 @@ class CrawlerTest {
 			}
 		}
 
-		assertEquals(expected.replaceAll("\\s+",""), crawler.getCrawledPages().get(0).getContents().trim().replaceAll("\\s+",""));
+		assertEquals(expected.replaceAll("\\s+", ""),
+				crawler.getCrawledPages().get(0).getContents().trim().replaceAll("\\s+", ""));
+	}
+
+	/**
+	 * Tests if profiling information is extractd correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occur.
+	 */
+	@Test
+	void collectProfilingConditionTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/profiling/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/profiling/").toUri().toURL().toString(), true,
+				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+
+		crawler.crawl();
+
+		String expected = "X2000";
+
+		assertEquals(expected, crawler.getCrawledPages().get(0).getProduct().get(0));
 	}
 }

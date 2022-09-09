@@ -235,7 +235,7 @@ public class Crawler {
 				.setPlatform(collectProfilingCondition(page, "platform"))
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
 				.setProps(collectProfilingCondition(page, "props"))
-				.setOtherProps(collectProfilingCondition(page, "otherprops")));
+				.setOtherprops(collectProfilingCondition(page, "otherprops")));
 	}
 
 	/**
@@ -278,6 +278,8 @@ public class Crawler {
 
 	/**
 	 * @return Page's collected profiling condition of passed argument.
+	 * @param profilingCondition is the profiling condition's name whose values
+	 *                           should to be returned.
 	 */
 	private List<String> collectProfilingCondition(final Document page, final String profilingCondition) {
 		List<String> profilingValues = new ArrayList<>();
