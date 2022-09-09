@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchInformation from './SearchInformation.jsx';
 import HitsList from './HitsList.jsx';
 import FilterContainer from "../filter/FilterContainer.jsx";
+import jsonProfiling from "../../../../../../../doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json";
 
 import { searchableAttributes, facetFilters } from '../filter/FilterContainer.jsx';
 
 const ResultsContainer = ({ result, navigateToPage }) => {
+    const profilingInformation = jsonProfiling.subjectScheme.attrValues;
+
     const isPrevButtonDisabled = () => {
         return result.page === 0;
     }
@@ -22,7 +25,7 @@ const ResultsContainer = ({ result, navigateToPage }) => {
             pages={result.nbPages}
         />
         <div className="hits-and-manipulation">
-            {<FilterContainer performSearch={navigateToPage} query={result.query} sections={
+            <FilterContainer performSearch={navigateToPage} query={result.query} sections={
                 [
                     {
                         title: "Find query in",
@@ -47,8 +50,21 @@ const ResultsContainer = ({ result, navigateToPage }) => {
                             }
                         ]
                     },
+                    ...profilingInformation.map((profilingValue) => {
+                        return {
+                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
+                            options: profilingValue.values.map((option) => {
+                                return {
+                                    id: `attribute-${option.key}`,
+                                    description: option.navTitle,
+                                    isFilter: true,
+                                    algoliaId: `${profilingValue.name}:${option.key}`,
+                                }
+                            })
+                        }
+                    })
                 ]
-            } />}
+            } />
             <HitsList hits={result.hits} />
         </div>
         {result.nbPages !== 0 &&
