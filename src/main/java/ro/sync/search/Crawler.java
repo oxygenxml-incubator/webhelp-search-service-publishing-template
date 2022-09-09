@@ -77,20 +77,24 @@ public class Crawler {
 	 */
 	private final List<String> nodesToIgnore = new ArrayList<>();
 	/**
-	 * Path that leads to the XML file where all profiling values are stored.
+	 * Path that leads to the JSON file where all profiling values and conditions
+	 * are stored.
 	 */
-	private String facetsPath;
+	private String profilingConditionsPath;
 
 	/**
 	 * Constructor with url and baseUrl parameters.
 	 * 
-	 * @param url     is the page that should be crawled for data.
-	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param url                     is the page that should be crawled for data.
+	 * @param baseUrl                 is the parent that is used to not go out of
+	 *                                bounds.
+	 * @param profilingConditionsPath is the path for the JSON file that stores all
+	 *                                the profiling information.
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl, final String facetsPath) throws IOException {
-		this(url, baseUrl, false, facetsPath);
+	public Crawler(final String url, final String baseUrl, final String profilingConditionsPath) throws IOException {
+		this(url, baseUrl, false, profilingConditionsPath);
 	}
 
 	/**
@@ -109,19 +113,21 @@ public class Crawler {
 	/**
 	 * Constructor with url, baseUrl, isFile and facetsPath parameters.
 	 * 
-	 * @param url        is the page that should be crawled for data.
-	 * @param baseUrl    is the parent that is used to not go out of bounds.
-	 * @param isFile     is the state of URL
-	 * @param facetsPath is the path to the XML file with profiling values.
+	 * @param url                     is the page that should be crawled for data.
+	 * @param baseUrl                 is the parent that is used to not go out of
+	 *                                bounds.
+	 * @param isFile                  is the state of URL
+	 * @param profilingConditionsPath is the path to the JSON file with profiling
+	 *                                information.
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	public Crawler(final String url, final String baseUrl, final boolean isFile, final String facetsPath)
+	public Crawler(final String url, final String baseUrl, final boolean isFile, final String profilingConditionsPath)
 			throws IOException {
 		this.url = url;
 		this.baseUrl = baseUrl;
 		this.isFile = isFile;
-		this.facetsPath = facetsPath;
+		this.profilingConditionsPath = profilingConditionsPath;
 
 		StringTokenizer tokenizer = new StringTokenizer(Files.readString(Path.of(NODES_TO_IGNORE_PATH)), ",");
 		while (tokenizer.hasMoreTokens()) {
@@ -219,17 +225,17 @@ public class Crawler {
 	}
 
 	/**
-	 * Collects all the data(titles, keywords and contents) from visited urls.
+	 * Collects all the data(titles, keywords and contents) from visited urls and
+	 * creates a new Page object.
 	 */
 	private void collectData(final Document page) {
-		final String title = collectTitle(page);
-		final String shortDescription = collectShortDescription(page);
-		final List<String> keywords = collectKeywords(page);
-		final String contents = collectContents(page);
-		final String pageUrl = page.baseUri();
-		final List<String> facets = collectFacets(page);
-
-		pages.add(new Page(title, shortDescription, keywords, contents, pageUrl, facets));
+		pages.add(new Page().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
+				.setKeywords(collectKeywords(page)).setContents(collectContents(page)).setUrl(page.baseUri())
+				.setProduct(collectProfilingCondition(page, "product"))
+				.setPlatform(collectProfilingCondition(page, "platform"))
+				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
+				.setProps(collectProfilingCondition(page, "props"))
+				.setOtherProps(collectProfilingCondition(page, "otherprops")));
 	}
 
 	/**
@@ -271,29 +277,26 @@ public class Crawler {
 	}
 
 	/**
-	 * @return Page's collected facets from metadata.
+	 * @return Page's collected profiling condition of passed argument.
 	 */
-	private List<String> collectFacets(final Document page) {
-		List<String> facets = new ArrayList<>();
+	private List<String> collectProfilingCondition(final Document page, final String profilingCondition) {
+		List<String> profilingValues = new ArrayList<>();
 
-		ProfilingHandler pHandler = new ProfilingHandler(this.facetsPath);
+		ProfilingHandler pHandler = new ProfilingHandler(this.profilingConditionsPath);
 
-		// Get every possible facet for this documentation.
-		for (String facet : pHandler.getProflingValues().keySet()) {
-			// Select value of the current facet from DOM.
-			Element value = page.select(String.format("meta[name=\"wh-data-%s\"]", facet)).first();
+		Element value = page.select(String.format("meta[name=\"wh-data-%s\"]", profilingCondition)).first();
 
-			if (value != null)
-				// If the value is present in the DOM put it in the facets values.
-				facets.add(value.attr("content"));
-			else {
-				// If the value isn't present then put every possible value for the facet.
-				for (String facetValue : pHandler.getProflingValues().get(facet)) {
-					facets.add(facetValue);
+		if (value != null)
+			// If the value is present in the DOM put it in the facets values.
+			profilingValues.add(value.attr("content"));
+		else {
+			// If the value isn't present then put every possible value for the facet.
+			if (pHandler.getProflingValues().get(profilingCondition) != null)
+				for (String facetValue : pHandler.getProflingValues().get(profilingCondition)) {
+					profilingValues.add(facetValue);
 				}
-			}
 		}
 
-		return facets;
+		return profilingValues;
 	}
 }

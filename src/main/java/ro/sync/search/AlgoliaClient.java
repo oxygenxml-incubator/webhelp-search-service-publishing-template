@@ -62,6 +62,7 @@ public class AlgoliaClient {
 			client = DefaultSearchClient.create(appId, adminApiKey);
 
 			index = client.initIndex(indexName, Page.class);
+
 			index.setSettings(
 					new IndexSettings().setSearchableAttributes(Arrays.asList("title", "shortDescription", "contents"))
 							.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))

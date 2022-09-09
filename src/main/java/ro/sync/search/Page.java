@@ -35,28 +35,116 @@ public class Page {
 	 */
 	private String contents;
 	/**
-	 * Page's collected facets from metadata.
+	 * Page's collected profiling condition of product.
 	 */
-	private List<String> facets;
+	private List<String> product;
+	/**
+	 * Page's collected profiling condition of platform.
+	 */
+	private List<String> platform;
+	/**
+	 * Page's collected profiling condition of audience.
+	 */
+	private List<String> audience;
+	/**
+	 * Page's collected profiling condition of rev.
+	 */
+	private List<String> rev;
+	/**
+	 * Page's collected profiling condition of props.
+	 */
+	private List<String> props;
+	/**
+	 * Page's collected profiling condition of otherProps.
+	 */
+	private List<String> otherProps;
 
 	/**
-	 * Constructor with title, keywords, contents and url parameters.
-	 * 
-	 * @param title            is the page's title from metadata.
-	 * @param keywords         is the page's keywords from metadata.
-	 * @param contents         is the page's contents from body section.
-	 * @param url              is the HTML document's url.
-	 * @param shortDescription is the page's short descrption.
-	 * @param facets           is the page's facets from metadata.
+	 * @param url is the URL from whom the data should be collected.
 	 */
-	public Page(final String title, final String shortDescription, final List<String> keywords, final String contents,
-			final String url, final List<String> facets) {
-		this.title = title;
-		this.shortDescription = shortDescription;
-		this.keywords = keywords;
-		this.contents = contents;
+	public Page setUrl(final String url) {
 		this.url = url;
-		this.facets = facets;
+		return this;
+	}
+
+	/**
+	 * @param title is the page's title.
+	 */
+	public Page setTitle(final String title) {
+		this.title = title;
+		return this;
+	}
+
+	/**
+	 * @param shortDescription is the page's short description.
+	 */
+	public Page setShortDescription(final String shortDescription) {
+		this.shortDescription = shortDescription;
+		return this;
+	}
+
+	/**
+	 * @param keywords is the page's collected keywords from metadata.
+	 */
+	public Page setKeywords(final List<String> keywords) {
+		this.keywords = keywords;
+		return this;
+	}
+
+	/**
+	 * @param contents is the page's contents that represents the body.
+	 */
+	public Page setContents(final String contents) {
+		this.contents = contents;
+		return this;
+	}
+
+	/**
+	 * @param product is the page's profiling condition of product.
+	 */
+	public Page setProduct(final List<String> product) {
+		this.product = product;
+		return this;
+	}
+
+	/**
+	 * @param platform is the page's profiling condition of platform.
+	 */
+	public Page setPlatform(final List<String> platform) {
+		this.platform = platform;
+		return this;
+	}
+
+	/**
+	 * @param platform is the page's profiling condition of audience.
+	 */
+	public Page setAudience(final List<String> audience) {
+		this.audience = audience;
+		return this;
+	}
+
+	/**
+	 * @param rev is the page's profiling condition of rev.
+	 */
+	public Page setRev(final List<String> rev) {
+		this.rev = rev;
+		return this;
+	}
+
+	/**
+	 * @param platform is the page's profiling condition of props.
+	 */
+	public Page setProps(final List<String> props) {
+		this.props = props;
+		return this;
+	}
+
+	/**
+	 * @param otherProps is the page's profiling condition of otherprops.
+	 */
+	public Page setOtherProps(final List<String> otherProps) {
+		this.otherProps = otherProps;
+		return this;
 	}
 
 	/**
@@ -95,9 +183,44 @@ public class Page {
 	}
 
 	/**
-	 * @return Page's collected facets from metadata.
+	 * @return Page's collected profiling conditions of product.
 	 */
-	public List<String> getFacets() {
-		return this.facets;
+	public List<String> getProduct() {
+		return this.product;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of platform.
+	 */
+	public List<String> getPlatform() {
+		return this.platform;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of audience.
+	 */
+	public List<String> getAudience() {
+		return this.audience;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of rev.
+	 */
+	public List<String> getRev() {
+		return this.rev;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of props.
+	 */
+	public List<String> getProps() {
+		return this.props;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of otherProps.
+	 */
+	public List<String> getOtherProps() {
+		return this.otherProps;
 	}
 }
