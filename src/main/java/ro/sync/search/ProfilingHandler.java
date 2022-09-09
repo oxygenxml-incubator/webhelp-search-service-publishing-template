@@ -1,18 +1,16 @@
 package ro.sync.search;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,15 +31,15 @@ public class ProfilingHandler {
 	 */
 	private String path = "";
 	/**
-	 * Map that stores key as a facet value and list of strings as all the possible
-	 * values for the facet.
+	 * Map that stores key as a profiling condition and list of strings as all the
+	 * possible values for the profiling condition.
 	 */
 	private Map<String, List<String>> profilingValues = new HashMap<>();
 
 	/**
 	 * Public constructor with path parameter.
 	 * 
-	 * @param path is the path to the XML document with profiling information.
+	 * @param path is the path to the JSON document with profiling information.
 	 */
 	public ProfilingHandler(final String path) {
 		this.path = path;
@@ -56,42 +54,40 @@ public class ProfilingHandler {
 	}
 
 	/**
-	 * Extracts profiling values from XML document and stores them into a
-	 * Map<String, List<String>>, where String is the facet, and List<String> is the
-	 * possible values for the facet.
+	 * Extracts profiling values from JSON document and stores them into a
+	 * Map<String, List<String>>, where String is the profiling condition, and
+	 * List<String> is the possible values for the profiling condition.
 	 */
-	public void extractProfilingValues() {
+	private void extractProfilingValues() {
 		try {
-			File file = new File(this.path);
-			FileInputStream fileInputStream = new FileInputStream(file);
+			String contents = new String((Files.readAllBytes(Paths.get(this.path))));
+			JSONObject jsonObject = new JSONObject(contents);
 
-			Document doc = Jsoup.parse(fileInputStream, null, "", Parser.xmlParser());
+			// A list with all profiling conditions names.
+			List<String> profilingConditionsNames = new ArrayList<>();
+			// A list with all possible profiling conditions values.
+			List<List<String>> profilingConditionsValues = new ArrayList<>();
 
-			// A list with all facets names.
-			List<String> facetsNames = new ArrayList<>();
-			// A list with all possible facets values.
-			List<List<String>> possibleFacetsValues = new ArrayList<>();
+			JSONArray profilingConditionsArr = jsonObject.getJSONObject("subjectScheme").getJSONArray("attrValues");
 
-			// Select all facets names.
-			for (Element el : doc.select("name"))
-				facetsNames.add(el.text());
+			// Extract profiling information from JSON.
+			for (int i = 0; i < profilingConditionsArr.length(); i++) {
+				// Get profiling conditions's names.
+				profilingConditionsNames.add(profilingConditionsArr.getJSONObject(i).getString("name"));
 
-			// Select all values nodes.
-			for (Element el : doc.select("values")) {
-				// Create a temporary list for extracted possible facet values.
-				List<String> possibleFacetValues = new ArrayList<>();
+				List<String> profilingConditionValues = new ArrayList<>();
+				// Select array with all the values for profiling condition.
+				for (int j = 0; j < profilingConditionsArr.getJSONObject(i).getJSONArray("values").length(); j++) {
+					profilingConditionValues.add(profilingConditionsArr.getJSONObject(i).getJSONArray("values")
+							.getJSONObject(j).getString("key"));
+				}
 
-				// Extract possbile facet values.
-				for (Element value : el.children())
-					possibleFacetValues.add(value.attr("key"));
-
-				// Store extracted possible values in list with all possible facets values.
-				possibleFacetsValues.add(possibleFacetValues);
+				profilingConditionsValues.add(profilingConditionValues);
 			}
 
-			// Put extracted facets names and values into the map.
-			for (int i = 0; i < facetsNames.size(); i++)
-				this.profilingValues.put(facetsNames.get(i), possibleFacetsValues.get(i));
+			// Put extracted profiling conditions names and values into the map.
+			for (int i = 0; i < profilingConditionsNames.size(); i++)
+				this.profilingValues.put(profilingConditionsNames.get(i), profilingConditionsValues.get(i));
 
 		} catch (FileNotFoundException e) {
 			logger.error("The given path is not valid and hence profiling values cannot be extracted", e);
@@ -102,8 +98,8 @@ public class ProfilingHandler {
 
 	public static void main(String[] args) {
 		ProfilingHandler pHandler = new ProfilingHandler(
-				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.xml");
-		
+				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+
 		logger.info(pHandler.getProflingValues().toString());
 	}
 }
