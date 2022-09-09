@@ -55,9 +55,9 @@ public class Page {
 	 */
 	private List<String> props;
 	/**
-	 * Page's collected profiling condition of otherProps.
+	 * Page's collected profiling condition of otherprops.
 	 */
-	private List<String> otherProps;
+	private List<String> otherprops;
 
 	/**
 	 * @param url is the URL from whom the data should be collected.
@@ -140,10 +140,10 @@ public class Page {
 	}
 
 	/**
-	 * @param otherProps is the page's profiling condition of otherprops.
+	 * @param otherprops is the page's profiling condition of otherprops.
 	 */
-	public Page setOtherProps(final List<String> otherProps) {
-		this.otherProps = otherProps;
+	public Page setOtherprops(final List<String> otherprops) {
+		this.otherprops = otherprops;
 		return this;
 	}
 
@@ -218,9 +218,9 @@ public class Page {
 	}
 
 	/**
-	 * @return Page's collected profiling condition of otherProps.
+	 * @return Page's collected profiling condition of otherprops.
 	 */
-	public List<String> getOtherProps() {
-		return this.otherProps;
+	public List<String> getOtherprops() {
+		return this.otherprops;
 	}
 }
