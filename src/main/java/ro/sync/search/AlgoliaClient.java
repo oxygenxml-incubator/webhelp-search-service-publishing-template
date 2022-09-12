@@ -77,8 +77,10 @@ public class AlgoliaClient {
 	/**
 	 * Adds crawled pages from Crawler object to index.
 	 * 
-	 * @param url     is the URL whose pages should be added to index.
-	 * @param baseUrl is the base URL that is used to not go out of bounds.
+	 * @param url        is the URL whose pages should be added to index.
+	 * @param baseUrl    is the base URL that is used to not go out of bounds.
+	 * @param facetsPath is the path to the file with profiling conditions of the
+	 *                   documentation.
 	 * 
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.

@@ -227,6 +227,8 @@ public class Crawler {
 	/**
 	 * Collects all the data(titles, keywords and contents) from visited urls and
 	 * creates a new Page object.
+	 * 
+	 * @param page is the desired document whose data should be collected.
 	 */
 	private void collectData(final Document page) {
 		pages.add(new Page().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
@@ -239,13 +241,19 @@ public class Crawler {
 	}
 
 	/**
-	 * Page's collected title from metadata.
+	 * Collects the title of the page.
+	 * 
+	 * @param page is the desired document whose data should be collected. Page's
+	 *             collected title from metadata.
 	 */
 	private String collectTitle(final Document page) {
 		return page.title();
 	}
 
 	/**
+	 * Collects the short description of the page.
+	 * 
+	 * @param page is the desired document whose data should be collected.
 	 * @return Short description of the page
 	 */
 	private String collectShortDescription(final Document page) {
@@ -253,6 +261,9 @@ public class Crawler {
 	}
 
 	/**
+	 * Collects the keywords of the page from metadata.
+	 * 
+	 * @param page is the desired document whose data should be collected.
 	 * @return Page's collected keywords from metadata.
 	 */
 	private List<String> collectKeywords(final Document page) {
@@ -265,6 +276,10 @@ public class Crawler {
 	}
 
 	/**
+	 * Collects the contents of Page from body. The contents are texts, titles,
+	 * paragraphs and others.
+	 * 
+	 * @param page is the desired document whose data should be collected.
 	 * @return Page's collected contents from body section.
 	 */
 	private String collectContents(final Document page) {
@@ -277,9 +292,11 @@ public class Crawler {
 	}
 
 	/**
-	 * @return Page's collected profiling condition of passed argument.
+	 * Collects an profiling condition of Page from metadata.
+	 * 
 	 * @param profilingCondition is the profiling condition's name whose values
 	 *                           should to be returned.
+	 * @return Page's collected profiling condition of passed argument.
 	 */
 	private List<String> collectProfilingCondition(final Document page, final String profilingCondition) {
 		List<String> profilingValues = new ArrayList<>();

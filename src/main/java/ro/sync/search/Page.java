@@ -61,6 +61,7 @@ public class Page {
 
 	/**
 	 * @param url is the URL from whom the data should be collected.
+	 * @return reference to the current instance.
 	 */
 	public Page setUrl(final String url) {
 		this.url = url;
@@ -69,6 +70,7 @@ public class Page {
 
 	/**
 	 * @param title is the page's title.
+	 * @return reference to the current instance.
 	 */
 	public Page setTitle(final String title) {
 		this.title = title;
@@ -77,6 +79,7 @@ public class Page {
 
 	/**
 	 * @param shortDescription is the page's short description.
+	 * @return reference to the current instance.
 	 */
 	public Page setShortDescription(final String shortDescription) {
 		this.shortDescription = shortDescription;
@@ -85,6 +88,7 @@ public class Page {
 
 	/**
 	 * @param keywords is the page's collected keywords from metadata.
+	 * @return reference to the current instance.
 	 */
 	public Page setKeywords(final List<String> keywords) {
 		this.keywords = keywords;
@@ -93,6 +97,7 @@ public class Page {
 
 	/**
 	 * @param contents is the page's contents that represents the body.
+	 * @return reference to the current instance.
 	 */
 	public Page setContents(final String contents) {
 		this.contents = contents;
@@ -101,6 +106,7 @@ public class Page {
 
 	/**
 	 * @param product is the page's profiling condition of product.
+	 * @return reference to the current instance.
 	 */
 	public Page setProduct(final List<String> product) {
 		this.product = product;
@@ -109,6 +115,7 @@ public class Page {
 
 	/**
 	 * @param platform is the page's profiling condition of platform.
+	 * @return reference to the current instance.
 	 */
 	public Page setPlatform(final List<String> platform) {
 		this.platform = platform;
@@ -116,7 +123,8 @@ public class Page {
 	}
 
 	/**
-	 * @param platform is the page's profiling condition of audience.
+	 * @param audience is the page's profiling condition of audience.
+	 * @return reference to the current instance.
 	 */
 	public Page setAudience(final List<String> audience) {
 		this.audience = audience;
@@ -125,6 +133,7 @@ public class Page {
 
 	/**
 	 * @param rev is the page's profiling condition of rev.
+	 * @return reference to the current instance.
 	 */
 	public Page setRev(final List<String> rev) {
 		this.rev = rev;
@@ -132,7 +141,8 @@ public class Page {
 	}
 
 	/**
-	 * @param platform is the page's profiling condition of props.
+	 * @param props is the page's profiling condition of props.
+	 * @return reference to the current instance.
 	 */
 	public Page setProps(final List<String> props) {
 		this.props = props;
@@ -141,6 +151,7 @@ public class Page {
 
 	/**
 	 * @param otherprops is the page's profiling condition of otherprops.
+	 * @return reference to the current instance.
 	 */
 	public Page setOtherprops(final List<String> otherprops) {
 		this.otherprops = otherprops;
