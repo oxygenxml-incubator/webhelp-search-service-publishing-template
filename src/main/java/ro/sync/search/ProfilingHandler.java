@@ -62,7 +62,6 @@ public class ProfilingHandler {
 		try {
 			String contents = new String((Files.readAllBytes(Paths.get(this.path))));
 			JSONObject jsonObject = new JSONObject(contents.substring(25, contents.length()));
-
 			// A list with all profiling conditions names.
 			List<String> profilingConditionsNames = new ArrayList<>();
 			// A list with all possible profiling conditions values.

@@ -19,8 +19,7 @@ class ProfilingHandlerTest {
 
 	@Test
 	void extractProfilingValuesTest() {
-		ProfilingHandler pHandler = new ProfilingHandler(
-				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+		ProfilingHandler pHandler = new ProfilingHandler("src/test/resources/json/profiling-values.json");
 
 		Map<String, List<String>> expected = pHandler.getProflingValues();
 
