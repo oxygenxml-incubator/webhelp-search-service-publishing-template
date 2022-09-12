@@ -2,12 +2,26 @@ import React, { useEffect, useState } from 'react';
 import SearchInformation from './SearchInformation.jsx';
 import HitsList from './HitsList.jsx';
 import FilterContainer from "../filter/FilterContainer.jsx";
-import jsonProfiling from "../../../../../../../doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json";
 
 import { searchableAttributes, facetFilters } from '../filter/FilterContainer.jsx';
 
+function loadJS(url, implementationCode) {
+    //url is URL of external file, implementationCode is the code
+    //to be called from the file, location is the location to 
+    //insert the <script> element
+    var scriptTag = document.createElement('script');
+    scriptTag.src = url;
+    scriptTag.onload = implementationCode;
+    scriptTag.onreadystatechange = implementationCode;
+    document.body.appendChild(scriptTag);
+};
+
 const ResultsContainer = ({ result, navigateToPage }) => {
-    const profilingInformation = jsonProfiling.subjectScheme.attrValues;
+    const [profilingInformation, setProfilingInformation] = useState([]);
+
+    useEffect(() => {
+        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
+    }, [])
 
     const isPrevButtonDisabled = () => {
         return result.page === 0;
