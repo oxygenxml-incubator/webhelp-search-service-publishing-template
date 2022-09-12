@@ -16,7 +16,7 @@
                 oxygen:makeURL(
                     concat(oxygen:getParameter('dita.map.output.dir'),'/subject-scheme-values.json'))"/>
             <xsl:result-document format="json" href="{$subjectScheme}">
-                <xsl:text disable-output-escaping="yes">{</xsl:text>
+                <xsl:text disable-output-escaping="yes">let subjectSchemeValues = {</xsl:text>
                 <xsl:text disable-output-escaping="yes">"subjectScheme" : {</xsl:text>
                 <xsl:text disable-output-escaping="yes">"attrValues" : [</xsl:text>
                 <xsl:apply-templates mode="process-subject"/>
