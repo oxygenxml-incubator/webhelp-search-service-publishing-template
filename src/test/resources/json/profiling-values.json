@@ -1,0 +1,32 @@
+let subjectSchemeValues = {
+	"subjectScheme": {
+		"attrValues": [
+			{
+				"name": "product",
+				"values": [
+					{
+						"key": "X2000",
+						"navTitle": "X2000 Phone Guide"
+					},
+					{
+						"key": "X1000",
+						"navTitle": "X1000 Phone Guide"
+					}
+				]
+			},
+			{
+				"name": "audience",
+				"values": [
+					{
+						"key": "Technician",
+						"navTitle": "Technician Level"
+					},
+					{
+						"key": "BasicUser",
+						"navTitle": "Basic User Level"
+					}
+				]
+			}
+		]
+	}
+}
