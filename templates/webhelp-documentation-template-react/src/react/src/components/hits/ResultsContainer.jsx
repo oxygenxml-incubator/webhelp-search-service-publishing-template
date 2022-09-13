@@ -64,6 +64,23 @@ const ResultsContainer = ({ result, navigateToPage }) => {
                             }
                         ]
                     },
+                    {
+                        title: "Documentation",
+                        options: [
+                            {
+                                id: 'attribute-mobilePhone',
+                                description: "Mobile Phone",
+                                isFilter: true,
+                                algoliaId: 'documentation:mobile-phone'
+                            },
+                            {
+                                id: 'attribute-projectDocumentation',
+                                description: "Project Documentation",
+                                isFilter: true,
+                                algoliaId: 'documentation:project-documentation'
+                            },
+                        ]
+                    },
                     ...profilingInformation.map((profilingValue) => {
                         return {
                             title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
