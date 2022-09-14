@@ -57,10 +57,10 @@ const ResultsContainer = ({ result, navigateToPage }) => {
                                 algoliaId: "shortDescription"
                             },
                             {
-                                id: "attribute-contents",
-                                description: "Contents",
+                                id: "attribute-content",
+                                description: "Content",
                                 isFilter: false,
-                                algoliaId: "contents"
+                                algoliaId: "content"
                             }
                         ]
                     },

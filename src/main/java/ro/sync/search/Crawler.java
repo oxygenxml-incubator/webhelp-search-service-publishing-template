@@ -225,14 +225,14 @@ public class Crawler {
 	}
 
 	/**
-	 * Collects all the data(titles, keywords and contents) from visited urls and
+	 * Collects all the data(titles, keywords and content) from visited urls and
 	 * creates a new Page object.
 	 * 
 	 * @param page is the desired document whose data should be collected.
 	 */
 	private void collectData(final Document page) {
 		pages.add(new Page().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
-				.setKeywords(collectKeywords(page)).setContents(collectContents(page)).setUrl(page.baseUri())
+				.setKeywords(collectKeywords(page)).setContent(collectContent(page)).setUrl(page.baseUri())
 				.setProduct(collectProfilingCondition(page, "product"))
 				.setPlatform(collectProfilingCondition(page, "platform"))
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
@@ -276,13 +276,13 @@ public class Crawler {
 	}
 
 	/**
-	 * Collects the contents of Page from body. The contents are texts, titles,
+	 * Collects the content of Page from body. The content are texts, titles,
 	 * paragraphs and others.
 	 * 
 	 * @param page is the desired document whose data should be collected.
-	 * @return Page's collected contents from body section.
+	 * @return Page's collected content from body section.
 	 */
-	private String collectContents(final Document page) {
+	private String collectContent(final Document page) {
 		// Delete from DOM every selector from file "nodesToIgnore.csv".
 		for (String selector : this.nodesToIgnore)
 			page.select(selector).remove();

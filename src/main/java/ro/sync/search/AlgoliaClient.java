@@ -64,10 +64,10 @@ public class AlgoliaClient {
 			index = client.initIndex(indexName, Page.class);
 
 			index.setSettings(new IndexSettings()
-					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "contents"))
-					.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(contents)"))
-					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "contents"))
-					.setAttributesToSnippet(Arrays.asList("contents:30")).setAttributesForFaceting(
+					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+					.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+					.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(
 							Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
 
 			logger.info("Index {} successfully created/selected!", indexName);

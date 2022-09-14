@@ -31,9 +31,9 @@ public class Page {
 	@JsonProperty("_tags")
 	private List<String> keywords;
 	/**
-	 * Page's collected contents from body section.
+	 * Page's collected content from body section.
 	 */
-	private String contents;
+	private String content;
 	/**
 	 * Page's collected profiling condition of product.
 	 */
@@ -96,11 +96,11 @@ public class Page {
 	}
 
 	/**
-	 * @param contents is the page's contents that represents the body.
+	 * @param content is the page's content that represents the body.
 	 * @return reference to the current instance.
 	 */
-	public Page setContents(final String contents) {
-		this.contents = contents;
+	public Page setContent(final String content) {
+		this.content = content;
 		return this;
 	}
 
@@ -187,10 +187,10 @@ public class Page {
 	}
 
 	/**
-	 * @return Page's collected contents from body section.
+	 * @return Page's collected content from body section.
 	 */
-	public String getContents() {
-		return this.contents;
+	public String getContent() {
+		return this.content;
 	}
 
 	/**

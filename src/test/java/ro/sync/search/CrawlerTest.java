@@ -184,13 +184,13 @@ class CrawlerTest {
 	}
 
 	/**
-	 * Tests if contents are extracted correctly.
+	 * Tests if content are extracted correctly.
 	 * 
 	 * @throws IOException when a problem with reading HTML code or output.txt
 	 *                     occurred.
 	 */
 	@Test
-	void getContentsTest() throws IOException {
+	void getContentTest() throws IOException {
 		Crawler crawler = new Crawler(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
@@ -207,7 +207,7 @@ class CrawlerTest {
 		}
 
 		assertEquals(expected.replaceAll("\\s+", ""),
-				crawler.getCrawledPages().get(0).getContents().trim().replaceAll("\\s+", ""));
+				crawler.getCrawledPages().get(0).getContent().trim().replaceAll("\\s+", ""));
 	}
 
 	/**
