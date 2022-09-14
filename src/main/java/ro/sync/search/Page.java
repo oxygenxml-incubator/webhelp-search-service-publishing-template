@@ -58,6 +58,10 @@ public class Page {
 	 * Page's collected profiling condition of otherprops.
 	 */
 	private List<String> otherprops;
+	/**
+	 * Documentation to which the page belongs.
+	 */
+	private String documentation;
 
 	/**
 	 * @param url is the URL from whom the data should be collected.
@@ -159,6 +163,15 @@ public class Page {
 	}
 
 	/**
+	 * @param documentation is the documentation to which the page belongs.
+	 * @return reference to the current instance.
+	 */
+	public Page setDocumentation(final String documentation) {
+		this.documentation = documentation;
+		return this;
+	}
+
+	/**
 	 * @return URL from whom the data was collected.
 	 */
 	public String getUrl() {
@@ -233,5 +246,12 @@ public class Page {
 	 */
 	public List<String> getOtherprops() {
 		return this.otherprops;
+	}
+
+	/**
+	 * @return Page's collected documentation.
+	 */
+	public String getDocumentation() {
+		return this.documentation;
 	}
 }
