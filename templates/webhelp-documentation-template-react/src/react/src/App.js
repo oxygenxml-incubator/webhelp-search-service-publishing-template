@@ -62,7 +62,7 @@ const App = ({ query, searchInstance }) => {
         </div>
       ) : (
         <>
-          <ResultsContainer result={result} navigateToPage={search} />
+          <ResultsContainer result={result} navigateToPage={search} searchInstance={searchInstance} />
         </>
       )}
     </>

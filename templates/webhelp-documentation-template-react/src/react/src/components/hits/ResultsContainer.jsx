@@ -16,11 +16,22 @@ function loadJS(url, implementationCode) {
     document.body.appendChild(scriptTag);
 };
 
-const ResultsContainer = ({ result, navigateToPage }) => {
-    const [profilingInformation, setProfilingInformation] = useState([]);
 
-    useEffect(() => {
+const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
+    const [profilingInformation, setProfilingInformation] = useState([]);
+    const [documentations, setDocumentations] = useState([]);
+
+    async function fetchDocumentations() {
+        let response = await searchInstance.search('', {
+            facets: ['documentation']
+        });
+
+        setDocumentations(Object.keys(response.facets.documentation))
+    }
+
+    useEffect(async () => {
         loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
+        await fetchDocumentations();
     }, [])
 
     const isPrevButtonDisabled = () => {
@@ -64,23 +75,18 @@ const ResultsContainer = ({ result, navigateToPage }) => {
                             }
                         ]
                     },
+                    documentations.length !== 0 ?
                     {
-                        title: "Documentation",
-                        options: [
-                            {
-                                id: 'attribute-mobilePhone',
-                                description: "Mobile Phone",
+                        title: "Documentations",
+                        options: documentations.map((key) => {
+                            return {
+                                id: `documentation-${key}`,
+                                description: key,
                                 isFilter: true,
-                                algoliaId: 'documentation:mobile-phone'
-                            },
-                            {
-                                id: 'attribute-projectDocumentation',
-                                description: "Project Documentation",
-                                isFilter: true,
-                                algoliaId: 'documentation:project-documentation'
-                            },
-                        ]
-                    },
+                                algoliaId: `documentation:${key}` 
+                            }
+                        })
+                    } : null,
                     ...profilingInformation.map((profilingValue) => {
                         return {
                             title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),

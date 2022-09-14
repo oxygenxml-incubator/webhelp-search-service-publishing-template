@@ -48,7 +48,7 @@ const FilterContainer = ({ sections, performSearch, query }) => {
                 <div className="filter-buttons">
                     <button className="filter-button" onClick={e => clearAllFilters(e)}>Clear all filters</button>
                 </div>
-                {sections.map((section) => { return (<FilterComponent key={section.title} title={section.title} options={section.options} setData={setData} isSetData={isSetData} query={query} />) })}
+                {sections.map((section) => { if (section !== null) { return (<FilterComponent key={section.title} title={section.title} options={section.options} setData={setData} isSetData={isSetData} query={query} />) } })}
             </div>
         </form>
     );
