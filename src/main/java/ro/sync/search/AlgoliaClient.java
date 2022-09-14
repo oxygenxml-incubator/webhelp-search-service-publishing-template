@@ -3,9 +3,16 @@ package ro.sync.search;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,8 +74,8 @@ public class AlgoliaClient {
 					.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
 					.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
 					.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
-					.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(
-							Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
+					.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags",
+							"product", "platform", "audience", "rev", "props", "otherProps", "documentation")));
 
 			logger.info("Index {} successfully created/selected!", indexName);
 		}
@@ -77,19 +84,27 @@ public class AlgoliaClient {
 	/**
 	 * Adds crawled pages from Crawler object to index.
 	 * 
-	 * @param url        is the URL whose pages should be added to index.
-	 * @param baseUrl    is the base URL that is used to not go out of bounds.
-	 * @param facetsPath is the path to the file with profiling conditions of the
-	 *                   documentation.
+	 * @param url               is the URL whose pages should be added to index.
+	 * @param baseUrl           is the base URL that is used to not go out of
+	 *                          bounds.
+	 * @param facetsPath        is the path to the file with profiling conditions of
+	 *                          the documentation.
+	 * @param clearIndex        is the flag that indicates if index should be
+	 *                          cleared before populating it or not.
+	 * @param documentationName is the name to be set for documentation, you can
+	 *                          leave it empty.
 	 * 
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
-	public void populateIndex(final String url, final String baseUrl, final String facetsPath) throws IOException {
+	public void populateIndex(final String url, final String baseUrl, final String facetsPath, final boolean clearIndex,
+			final String documentationName) throws IOException {
 		Crawler crawler = new Crawler(url, baseUrl, facetsPath);
-		crawler.crawl();
+		crawler.setDocumentationName(documentationName).crawl();
 
-		index.clearObjects();
+		if (clearIndex)
+			index.clearObjects();
+
 		index.saveObjects(crawler.getCrawledPages());
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
 				index.getUrlEncodedIndexName());
@@ -107,13 +122,38 @@ public class AlgoliaClient {
 	}
 
 	/**
-	 * Main method that crawls data and stores it into Algolia Index.
+	 * Main method that crawls data and stores it into Algolia Index. If there is a
+	 * crawler-config.json, there is no need to specify arguments as the program
+	 * will automatically use the config.
 	 * 
 	 * @param args - URL, Base URl, indexName and optionally profilingValuesPath to
 	 *             be crawled.
 	 */
 	public static void main(String[] args) {
 		try {
+			String contents = new String((Files.readAllBytes(Paths.get("crawler-config.json"))));
+			JSONObject jsonObject = new JSONObject(contents);
+			// Map that stores documentation url and name.
+			Map<String, String> documentations = new HashMap<>();
+
+			// Extract array with documentations.
+			JSONArray documentationsJson = jsonObject.getJSONArray("documentations");
+
+			// Put documentations into the map.
+			for (int i = 0; i < documentationsJson.length(); i++)
+				documentations.put(documentationsJson.getJSONObject(i).getString("name"),
+						documentationsJson.getJSONObject(i).getString("url"));
+
+			// Crawl every single documentation and store it in Algolia index.
+			for (Entry<String, String> documentation : documentations.entrySet()) {
+				AlgoliaClient client = new AlgoliaClient(jsonObject.getString("indexName"));
+				client.populateIndex(documentation.getValue(), documentation.getValue(),
+						jsonObject.getString("profilingValuesPath"), false, documentation.getKey());
+			}
+
+		} catch (IOException e) {
+			logger.error("No crawler-config.json found! Using passed arguments!");
+
 			if (args.length < 3) {
 				informUserAboutArguments();
 			} else {
@@ -139,13 +179,15 @@ public class AlgoliaClient {
 					return;
 				}
 
-				AlgoliaClient client = new AlgoliaClient(indexName);
-				client.populateIndex(url, baseUrl, profilingValuesPath);
+				try {
+					AlgoliaClient client = new AlgoliaClient(indexName);
+					client.populateIndex(url, baseUrl, profilingValuesPath, true, "");
+				} catch (IOException ex) {
+					logger.error(
+							"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
+							e);
+				}
 			}
-		} catch (IOException e) {
-			logger.error(
-					"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
-					e);
 		}
 	}
 }

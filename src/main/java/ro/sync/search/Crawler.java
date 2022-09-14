@@ -30,6 +30,10 @@ public class Crawler {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
 	/**
+	 * Documentation's name.
+	 */
+	private String documentationName = "";
+	/**
 	 * The url to be crawled.
 	 */
 	private String url;
@@ -136,6 +140,15 @@ public class Crawler {
 	}
 
 	/**
+	 * @param documentationName is the name to be set for documentation's name.
+	 * @return current instance of Crawler.
+	 */
+	public Crawler setDocumentationName(final String documentationName) {
+		this.documentationName = documentationName;
+		return this;
+	}
+
+	/**
 	 * @return start url that should be crawled for data.
 	 */
 	public String getUrl() {
@@ -237,7 +250,7 @@ public class Crawler {
 				.setPlatform(collectProfilingCondition(page, "platform"))
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
 				.setProps(collectProfilingCondition(page, "props"))
-				.setOtherprops(collectProfilingCondition(page, "otherprops")));
+				.setOtherprops(collectProfilingCondition(page, "otherprops")).setDocumentation(this.documentationName));
 	}
 
 	/**
