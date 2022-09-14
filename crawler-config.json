@@ -1,0 +1,14 @@
+{
+    "indexName": "Example multiple documentations",
+    "profilingValuesPath": "",
+    "documentations": [
+        {
+            "url": "https://webhelp-search-service-template.netlify.app/",
+            "name": "Project Documentation"
+        },
+        {
+            "url": "https://startling-maamoul-0991f8.netlify.app/",
+            "name": "Syncro Phone User Guide"
+        }
+    ]
+}
