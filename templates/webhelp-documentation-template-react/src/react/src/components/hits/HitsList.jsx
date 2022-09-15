@@ -3,6 +3,7 @@ import HitsItem from './HitsItem.jsx';
 
 const HitsList = ({ hits }) => {
     if (hits?.length > 0){
+        {console.log(hits)}
         return (<div className="hits-container"><ul className="hits">{
             hits.map((hit) => {
                 return (
@@ -11,6 +12,7 @@ const HitsList = ({ hits }) => {
                         title={hit.title}
                         description={hit.shortDescription}
                         url={hit.objectID}
+                        documentation={hit.documentation}
                     />
                 );
             })

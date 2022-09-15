@@ -76,6 +76,14 @@ body {
   display: block;
 }
 
+.documentation {
+  font-size: 12px;
+
+  color: gray;
+
+  display:block;
+}
+
 .no-results {
   width: 50%;
 
