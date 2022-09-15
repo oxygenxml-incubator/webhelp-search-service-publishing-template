@@ -143,21 +143,55 @@ public class AlgoliaClient {
 		Map<String, String> documentations = new HashMap<>();
 
 		// Extract array with documentations.
-		JSONArray documentationsJson = jsonObject.getJSONArray("documentations");
+		JSONArray documentationsJson = jsonObject.getJSONArray("publications");
 
 		// Put documentations into the map.
 		for (int i = 0; i < documentationsJson.length(); i++)
-			documentations.put(documentationsJson.getJSONObject(i).getString("name"),
-					documentationsJson.getJSONObject(i).getString("url"));
+			documentations.put(documentationsJson.getJSONObject(i).getString("Name"),
+					documentationsJson.getJSONObject(i).getString("Publication URL"));
 
 		AlgoliaClient client = new AlgoliaClient(jsonObject.getString("indexName"));
 		client.clearIndex();
 
 		// Crawl every single documentation and store it in Algolia index.
 		for (Entry<String, String> documentation : documentations.entrySet())
-			client.populateIndex(documentation.getValue(), documentation.getValue(),
-					jsonObject.getString("profilingValuesPath"), false, documentation.getKey());
+			client.populateIndex(documentation.getValue(), documentation.getValue(), "", false, documentation.getKey());
 
+	}
+
+	/**
+	 * Use arguments to crawl the documentation and push it to Algolia index.
+	 * 
+	 * @param args is the array with indexName, url, baseUrl and optionally
+	 *             profilingPath.
+	 * @throws IOException if config.properties file is not set, path to the
+	 *                     documents is wrong or profilingPath is invalid.
+	 */
+	public static void useArguments(final String... args) throws IOException {
+		String url = "";
+		String baseUrl = "";
+		String indexName = "";
+		String profilingValuesPath = "";
+
+		for (String arg : args) {
+			if (arg.startsWith("-url=")) {
+				url = arg.substring(5, arg.length());
+			} else if (arg.startsWith("-baseUrl=")) {
+				baseUrl = arg.substring(9, arg.length());
+			} else if (arg.startsWith("-indexName=")) {
+				indexName = arg.substring(11, arg.length());
+			} else if (arg.startsWith("-profilingValuesPath=")) {
+				profilingValuesPath = arg.substring(21, arg.length());
+			}
+		}
+
+		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty()) {
+			informUserAboutArguments();
+			return;
+		}
+
+		AlgoliaClient client = new AlgoliaClient(indexName);
+		client.populateIndex(url, baseUrl, profilingValuesPath, true, "");
 	}
 
 	/**
@@ -181,31 +215,8 @@ public class AlgoliaClient {
 			if (args.length < 3) {
 				informUserAboutArguments();
 			} else {
-				String url = "";
-				String baseUrl = "";
-				String indexName = "";
-				String profilingValuesPath = "";
-
-				for (String arg : args) {
-					if (arg.startsWith("-url=")) {
-						url = arg.substring(5, arg.length());
-					} else if (arg.startsWith("-baseUrl=")) {
-						baseUrl = arg.substring(9, arg.length());
-					} else if (arg.startsWith("-indexName=")) {
-						indexName = arg.substring(11, arg.length());
-					} else if (arg.startsWith("-profilingValuesPath=")) {
-						profilingValuesPath = arg.substring(21, arg.length());
-					}
-				}
-
-				if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty()) {
-					informUserAboutArguments();
-					return;
-				}
-
 				try {
-					AlgoliaClient client = new AlgoliaClient(indexName);
-					client.populateIndex(url, baseUrl, profilingValuesPath, true, "");
+					useArguments(args);
 					logger.info("Crawling went successfully! You're done!");
 				} catch (IOException e) {
 					logger.error(
