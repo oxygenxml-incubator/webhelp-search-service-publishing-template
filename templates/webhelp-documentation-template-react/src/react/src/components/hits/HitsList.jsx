@@ -2,8 +2,7 @@ import React from 'react';
 import HitsItem from './HitsItem.jsx';
 
 const HitsList = ({ hits }) => {
-    if (hits?.length > 0){
-        {console.log(hits)}
+    if (hits?.length > 0) {
         return (<div className="hits-container"><ul className="hits">{
             hits.map((hit) => {
                 return (
