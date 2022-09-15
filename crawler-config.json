@@ -3,12 +3,16 @@
     "profilingValuesPath": "",
     "documentations": [
         {
-            "url": "https://webhelp-search-service-template.netlify.app/",
-            "name": "Project Documentation"
+            "url": "https://garage-documentation.netlify.app/",
+            "name": "Garage Documentation"
         },
         {
-            "url": "https://startling-maamoul-0991f8.netlify.app/",
+            "url": "https://mobile-phone-documentation.netlify.app/",
             "name": "Syncro Phone User Guide"
+        },
+        {
+            "url": "https://flowers-documentation.netlify.app/",
+            "name": "Growing Flowers"
         }
     ]
 }

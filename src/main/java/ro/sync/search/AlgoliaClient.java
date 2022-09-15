@@ -111,6 +111,13 @@ public class AlgoliaClient {
 	}
 
 	/**
+	 * Clears the objects from index.
+	 */
+	private void clearIndex() {
+		index.clearObjects();
+	}
+
+	/**
 	 * Outputs an example of correct usage of class. Is used when user didn't pass
 	 * the arguments correctly.
 	 */
@@ -144,12 +151,13 @@ public class AlgoliaClient {
 				documentations.put(documentationsJson.getJSONObject(i).getString("name"),
 						documentationsJson.getJSONObject(i).getString("url"));
 
+			AlgoliaClient client = new AlgoliaClient(jsonObject.getString("indexName"));
+			client.clearIndex();
+
 			// Crawl every single documentation and store it in Algolia index.
-			for (Entry<String, String> documentation : documentations.entrySet()) {
-				AlgoliaClient client = new AlgoliaClient(jsonObject.getString("indexName"));
+			for (Entry<String, String> documentation : documentations.entrySet())
 				client.populateIndex(documentation.getValue(), documentation.getValue(),
 						jsonObject.getString("profilingValuesPath"), false, documentation.getKey());
-			}
 
 		} catch (IOException e) {
 			logger.error("No crawler-config.json found! Using passed arguments!");
