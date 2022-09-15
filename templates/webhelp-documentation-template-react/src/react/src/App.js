@@ -36,7 +36,7 @@ const App = ({ query, searchInstance }) => {
         setResult(response);
       } else {
         let response = await searchInstance.search(searchTerm, {
-          hitsPerPage: 10,
+          hitsPerPage: 5,
           page: page,
           restrictSearchableAttributes: searchableAttributes,
           facetFilters: facetFilters,

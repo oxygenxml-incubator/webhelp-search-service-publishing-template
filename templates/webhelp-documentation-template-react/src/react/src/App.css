@@ -103,7 +103,7 @@ body {
   border: 1px solid #3e34d3;
   box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
   box-sizing: border-box;
-  color: white;
+  color: #2f27aa;
   cursor: pointer;
   font-size: 13px;
   line-height: 1.15385;
@@ -116,7 +116,7 @@ body {
 
 .page-selector:hover {
   background-color: #c4c0ff;
-  color: #2f27aa;
+  color: #1f1972;
 }
 
 .page-selector-disabled {
