@@ -30,8 +30,8 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
     }
 
     useEffect(async () => {
-        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
         await fetchDocumentations();
+        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues)});
     }, [])
 
     const isPrevButtonDisabled = () => {
@@ -87,7 +87,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                             }
                         })
                     } : null,
-                    ...profilingInformation.map((profilingValue) => {
+                    ...( documentations.length === 0 ? profilingInformation.map((profilingValue) => {
                         return {
                             title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
                             options: profilingValue.values.map((option) => {
@@ -99,7 +99,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                                 }
                             })
                         }
-                    })
+                    }) : [])
                 ]
             } />
             <HitsList hits={result.hits} />
