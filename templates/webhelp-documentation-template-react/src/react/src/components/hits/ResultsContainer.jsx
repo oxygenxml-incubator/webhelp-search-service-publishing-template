@@ -31,7 +31,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
 
     useEffect(async () => {
         await fetchDocumentations();
-        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues)});
+        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
     }, [])
 
     const isPrevButtonDisabled = () => {
@@ -76,18 +76,18 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                         ]
                     },
                     documentations.length !== 0 ?
-                    {
-                        title: "Documentations",
-                        options: documentations.map((key) => {
-                            return {
-                                id: `documentation-${key}`,
-                                description: key,
-                                isFilter: true,
-                                algoliaId: `documentation:${key}` 
-                            }
-                        })
-                    } : null,
-                    ...( documentations.length === 0 ? profilingInformation.map((profilingValue) => {
+                        {
+                            title: "Documentations",
+                            options: documentations.map((key) => {
+                                return {
+                                    id: `documentation-${key}`,
+                                    description: key,
+                                    isFilter: true,
+                                    algoliaId: `documentation:${key}`
+                                }
+                            })
+                        } : null,
+                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
                         return {
                             title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
                             options: profilingValue.values.map((option) => {
