@@ -172,11 +172,10 @@ public class AlgoliaClient {
 			try {
 				String contents = new String((Files.readAllBytes(Paths.get(args[0].substring(12)))));
 				useConfig(contents);
-
+				logger.info("Crawling went successfully! You're done!");
 			} catch (IOException e) {
 				logger.error("No {} found! Check path to the config file or your passed arguments!", args[0]);
 				informUserAboutArguments();
-
 			}
 		} else {
 			if (args.length < 3) {
@@ -207,6 +206,7 @@ public class AlgoliaClient {
 				try {
 					AlgoliaClient client = new AlgoliaClient(indexName);
 					client.populateIndex(url, baseUrl, profilingValuesPath, true, "");
+					logger.info("Crawling went successfully! You're done!");
 				} catch (IOException e) {
 					logger.error(
 							"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
