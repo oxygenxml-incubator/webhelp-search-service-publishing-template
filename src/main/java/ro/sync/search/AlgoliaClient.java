@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,46 +123,62 @@ public class AlgoliaClient {
 	 * the arguments correctly.
 	 */
 	private static void informUserAboutArguments() {
-		logger.error("There are no enough arguments passed!");
+		logger.error("Something went wrong with passed arguments!");
 		logger.info(
 				"To use it correctly you should specify arguments, for example: java AlgoliaClient -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME");
-		logger.info("Optional parameters are: -profilingValuesPath=PATH");
+		logger.info("Optional parameters are: -profilingValuesPath=PATH -configPath=PATH");
+		logger.info("If you pass -configPath then you can't pass any other arguments!");
 	}
 
 	/**
-	 * Main method that crawls data and stores it into Algolia Index. If there is a
-	 * crawler-config.json, there is no need to specify arguments as the program
-	 * will automatically use the config.
+	 * Use config in order to crawl documentations and store them in Algolia index.
+	 * 
+	 * @param configPath is the path to the config.json
+	 * @throws JSONException if JSON couldn't be parsed.
+	 * @throws IOException   if config file is not found.
+	 */
+	private static void useConfig(final String configPath) throws JSONException, IOException {
+		JSONObject jsonObject = new JSONObject(configPath);
+		// Map that stores documentation url and name.
+		Map<String, String> documentations = new HashMap<>();
+
+		// Extract array with documentations.
+		JSONArray documentationsJson = jsonObject.getJSONArray("documentations");
+
+		// Put documentations into the map.
+		for (int i = 0; i < documentationsJson.length(); i++)
+			documentations.put(documentationsJson.getJSONObject(i).getString("name"),
+					documentationsJson.getJSONObject(i).getString("url"));
+
+		AlgoliaClient client = new AlgoliaClient(jsonObject.getString("indexName"));
+		client.clearIndex();
+
+		// Crawl every single documentation and store it in Algolia index.
+		for (Entry<String, String> documentation : documentations.entrySet())
+			client.populateIndex(documentation.getValue(), documentation.getValue(),
+					jsonObject.getString("profilingValuesPath"), false, documentation.getKey());
+
+	}
+
+	/**
+	 * Main method that crawls data and stores it into Algolia Index.
 	 * 
 	 * @param args - URL, Base URl, indexName and optionally profilingValuesPath to
-	 *             be crawled.
+	 *             be crawled. You can pass only configPath if you want to use a
+	 *             JSON config.
 	 */
 	public static void main(String[] args) {
-		try {
-			String contents = new String((Files.readAllBytes(Paths.get("crawler-config.json"))));
-			JSONObject jsonObject = new JSONObject(contents);
-			// Map that stores documentation url and name.
-			Map<String, String> documentations = new HashMap<>();
+		if (args.length == 1) {
+			try {
+				String contents = new String((Files.readAllBytes(Paths.get(args[0].substring(12)))));
+				useConfig(contents);
 
-			// Extract array with documentations.
-			JSONArray documentationsJson = jsonObject.getJSONArray("documentations");
+			} catch (IOException e) {
+				logger.error("No {} found! Check path to the config file or your passed arguments!", args[0]);
+				informUserAboutArguments();
 
-			// Put documentations into the map.
-			for (int i = 0; i < documentationsJson.length(); i++)
-				documentations.put(documentationsJson.getJSONObject(i).getString("name"),
-						documentationsJson.getJSONObject(i).getString("url"));
-
-			AlgoliaClient client = new AlgoliaClient(jsonObject.getString("indexName"));
-			client.clearIndex();
-
-			// Crawl every single documentation and store it in Algolia index.
-			for (Entry<String, String> documentation : documentations.entrySet())
-				client.populateIndex(documentation.getValue(), documentation.getValue(),
-						jsonObject.getString("profilingValuesPath"), false, documentation.getKey());
-
-		} catch (IOException e) {
-			logger.error("No crawler-config.json found! Using passed arguments!");
-
+			}
+		} else {
 			if (args.length < 3) {
 				informUserAboutArguments();
 			} else {
@@ -190,7 +207,7 @@ public class AlgoliaClient {
 				try {
 					AlgoliaClient client = new AlgoliaClient(indexName);
 					client.populateIndex(url, baseUrl, profilingValuesPath, true, "");
-				} catch (IOException ex) {
+				} catch (IOException e) {
 					logger.error(
 							"An error occurred when initializing AlgoliaClient, check your properties file or passed arguments!",
 							e);
