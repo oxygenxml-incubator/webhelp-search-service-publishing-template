@@ -245,7 +245,8 @@ public class Crawler {
 	 */
 	private void collectData(final Document page) {
 		pages.add(new Page().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
-				.setKeywords(collectKeywords(page)).setContent(collectContent(page)).setUrl(page.baseUri())
+				.setKeywords(collectKeywords(page)).setBreadcrumb(collectBreadcrumb(page))
+				.setContent(collectContent(page)).setUrl(page.baseUri())
 				.setProduct(collectProfilingCondition(page, "product"))
 				.setPlatform(collectProfilingCondition(page, "platform"))
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
@@ -333,5 +334,30 @@ public class Crawler {
 		}
 
 		return profilingValues;
+	}
+
+	/**
+	 * Collects page's breadcrumb from the top of the page.
+	 * 
+	 * @param page is the page whose breadcrumb should be collected.
+	 * @return page's breadcrumb that follows the structure "Home > Category".
+	 */
+	private String collectBreadcrumb(final Document page) {
+		StringBuilder breadcrumb = new StringBuilder("");
+
+		// Remove the short description in the breadcrumb that is not visible to the
+		// user.
+		page.select("div.wh-tooltip").remove();
+
+		// Extract every category of the breadcrumb.
+		for (Element el : page.select("div.wh_breadcrumb > ol > li")) {
+			breadcrumb.append(el.text() + " > ");
+		}
+
+		// Delete last putted " > " character.
+		if (!breadcrumb.isEmpty())
+			breadcrumb.delete(breadcrumb.length() - 3, breadcrumb.length());
+
+		return breadcrumb.toString();
 	}
 }
