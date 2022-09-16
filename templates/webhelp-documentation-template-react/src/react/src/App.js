@@ -47,7 +47,6 @@ const App = ({ query, searchInstance }) => {
     }
 
     setLoading(false);
-    console.log(facetFilters);
   };
 
   useEffect(() => {
