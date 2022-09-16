@@ -48,7 +48,7 @@ body {
 }
 
 .hits {
-  position: absolute;
+  position: relative;
 
   list-style: none;
 
@@ -68,6 +68,8 @@ body {
   font-size: 18px;
 
   display: block;
+
+  width: fit-content;
 }
 
 .description {
@@ -81,7 +83,15 @@ body {
 
   color: gray;
 
-  display:block;
+  display: block;
+}
+
+.breadcrumb {
+  width: fit-content;
+}
+
+.breadcrumb-element {
+  padding-left: 5px;
 }
 
 .no-results {
@@ -99,7 +109,7 @@ body {
 
 .page-selection {
   width: 100%;
-  margin-top: 150px;
+  margin-top: 50px;
 
   display: flex;
   justify-content: center;
