@@ -62,6 +62,10 @@ public class Page {
 	 * Documentation to which the page belongs.
 	 */
 	private String documentation;
+	/**
+	 * The page's breadcrumb that follows the structure "Home > Category".
+	 */
+	private String breadcrumb;
 
 	/**
 	 * @param url is the URL from whom the data should be collected.
@@ -172,6 +176,17 @@ public class Page {
 	}
 
 	/**
+	 * 
+	 * @param breadcrumb is the page's breadcrumb that follows the structure "Home >
+	 *                   Category".
+	 * @return reference to the current instance.
+	 */
+	public Page setBreadcrumb(final String breadcrumb) {
+		this.breadcrumb = breadcrumb;
+		return this;
+	}
+
+	/**
 	 * @return URL from whom the data was collected.
 	 */
 	public String getUrl() {
@@ -253,5 +268,12 @@ public class Page {
 	 */
 	public String getDocumentation() {
 		return this.documentation;
+	}
+
+	/**
+	 * @return Page's collected breadcrumb.
+	 */
+	public String getBreadcrumb() {
+		return this.breadcrumb;
 	}
 }
