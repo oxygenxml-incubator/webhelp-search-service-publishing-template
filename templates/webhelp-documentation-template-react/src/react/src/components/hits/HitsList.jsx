@@ -12,6 +12,7 @@ const HitsList = ({ hits }) => {
                         description={hit.shortDescription}
                         url={hit.objectID}
                         documentation={hit.documentation}
+                        breadcrumb={hit.breadcrumb}
                     />
                 );
             })
