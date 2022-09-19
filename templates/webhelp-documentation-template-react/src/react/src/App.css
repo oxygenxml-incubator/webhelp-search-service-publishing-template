@@ -70,6 +70,8 @@ body {
   display: block;
 
   width: fit-content;
+
+  margin-bottom: 10px;
 }
 
 .description {
@@ -84,10 +86,14 @@ body {
   color: gray;
 
   display: block;
+  width: 50%;
+  text-align: right;
+  float: right;
 }
 
 .breadcrumb {
   width: fit-content;
+  padding: 0;
 }
 
 .breadcrumb-element {

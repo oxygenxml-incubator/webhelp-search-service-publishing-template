@@ -3,6 +3,8 @@ import React from 'react';
 const HitsItem = ({ url, title, description, documentation, breadcrumb }) => {
     return (
         <li className="hits-item">
+            <span className="documentation">{documentation}</span>
+            <a href={url} className="title">{title}</a>
             <span class="breadcrumb">
                 {breadcrumb !== undefined ? breadcrumb.map((level) => {
                     if (breadcrumb[breadcrumb.length - 1] === level)
@@ -17,8 +19,6 @@ const HitsItem = ({ url, title, description, documentation, breadcrumb }) => {
                             </a>)
                 }) : null}
             </span>
-            <a href={url} className="title">{title}</a>
-            <span className="documentation">{documentation}</span>
             <span className="description">{description}</span>
         </li>
     );
