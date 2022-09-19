@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
@@ -226,5 +227,26 @@ class CrawlerTest {
 		String expected = "X2000";
 
 		assertEquals(expected, crawler.getCrawledPages().get(0).getProduct().get(0));
+	}
+
+	/**
+	 * Tests if breadcrumb is extracted correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occur.
+	 */
+	@Test
+	void collectBreadcrumbTest() throws IOException {
+		Crawler crawler = new Crawler(Path.of("src/test/resources/breadcrumb/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/breadcrumb/").toUri().toURL().toString(), true,
+				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+
+		crawler.crawl();
+
+		List<Map.Entry<String, String>> expected = new ArrayList<>();
+		expected.add(Map.entry("Home", ""));
+		expected.add(Map.entry("Getting Started", ""));
+		expected.add(Map.entry("Introduction", ""));
+
+		assertEquals(expected, crawler.getCrawledPages().get(0).getBreadcrumb());
 	}
 }
