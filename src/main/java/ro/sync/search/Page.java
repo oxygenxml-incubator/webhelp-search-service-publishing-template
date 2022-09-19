@@ -1,6 +1,7 @@
 package ro.sync.search;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -63,9 +64,10 @@ public class Page {
 	 */
 	private String documentation;
 	/**
-	 * The page's breadcrumb that follows the structure "Home > Category".
+	 * The page's breadcrumb which is a list of entries that contains Title and
+	 * Relative path.
 	 */
-	private String breadcrumb;
+	private List<Map.Entry<String, String>> breadcrumb;
 
 	/**
 	 * @param url is the URL from whom the data should be collected.
@@ -177,11 +179,11 @@ public class Page {
 
 	/**
 	 * 
-	 * @param breadcrumb is the page's breadcrumb that follows the structure "Home >
-	 *                   Category".
+	 * @param breadcrumb is the page's breadcrumb which is a list of entries with
+	 *                   Title and Relative path.
 	 * @return reference to the current instance.
 	 */
-	public Page setBreadcrumb(final String breadcrumb) {
+	public Page setBreadcrumb(final List<Map.Entry<String, String>> breadcrumb) {
 		this.breadcrumb = breadcrumb;
 		return this;
 	}
@@ -273,7 +275,7 @@ public class Page {
 	/**
 	 * @return Page's collected breadcrumb.
 	 */
-	public String getBreadcrumb() {
+	public List<Map.Entry<String, String>> getBreadcrumb() {
 		return this.breadcrumb;
 	}
 }

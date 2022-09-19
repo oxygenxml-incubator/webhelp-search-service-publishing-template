@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.jsoup.Jsoup;
@@ -340,10 +341,11 @@ public class Crawler {
 	 * Collects page's breadcrumb from the top of the page.
 	 * 
 	 * @param page is the page whose breadcrumb should be collected.
-	 * @return page's breadcrumb that follows the structure "Home > Category".
+	 * @return page's breadcrumb that is a list of entries with title and relative
+	 *         path.
 	 */
-	private String collectBreadcrumb(final Document page) {
-		StringBuilder breadcrumb = new StringBuilder("");
+	private List<Map.Entry<String, String>> collectBreadcrumb(final Document page) {
+		List<Map.Entry<String, String>> breadcrumb = new ArrayList<>();
 
 		// Remove the short description in the breadcrumb that is not visible to the
 		// user.
@@ -351,13 +353,12 @@ public class Crawler {
 
 		// Extract every category of the breadcrumb.
 		for (Element el : page.select("div.wh_breadcrumb > ol > li")) {
-			breadcrumb.append(el.text() + " > ");
+			if(el.text().equals("Home"))
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).absUrl("href")));
+			else
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).child(0).absUrl("href")));
 		}
 
-		// Delete last putted " > " character.
-		if (!breadcrumb.isEmpty())
-			breadcrumb.delete(breadcrumb.length() - 3, breadcrumb.length());
-
-		return breadcrumb.toString();
+		return breadcrumb;
 	}
 }
