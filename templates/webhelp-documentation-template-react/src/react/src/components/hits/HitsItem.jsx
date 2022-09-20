@@ -7,7 +7,7 @@ import React from 'react';
  * @param {*} description is the hit's description represented by a String
  * @param {*} documentation is the hit's documentation represented by a String.
  * @param {*} breadcrub is the hit's breadcrumb represented by an object with one single key:value where key is the category's title and key is the url to the category.
- * @returns an item in the list.
+ * @returns an item for the list.
  */
 const HitsItem = ({ url, title, description, documentation, breadcrumb }) => {
     return (

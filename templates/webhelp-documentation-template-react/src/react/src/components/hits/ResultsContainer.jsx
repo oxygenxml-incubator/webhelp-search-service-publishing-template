@@ -55,6 +55,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
         return result.page === 0;
     }
 
+    /** Check if the next button should be disabled or not. */
     const isNextButtonDisabled = () => {
         return result.page === result.nbPages - 1;
     }
