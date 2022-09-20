@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Class that renders a submit button.
+ * @returns HTML strcture to display a submit button.
+ */
 const SubmitButton = () => {
     return (<button className="aa-SubmitButton" type="submit" title="Submit">
         <svg width="20" height="20" viewBox="0 0 20 20">

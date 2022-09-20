@@ -3,6 +3,12 @@ import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 
 import loaderImage from "./img/loader.gif";
 
+/**
+ * Class that renders the whole application.
+ * @param {*} query is the given query by the user.
+ * @param {*} searchInstance is the function to perform search in Algolia index.
+ * @returns React results page.
+ */
 const App = ({ query, searchInstance }) => {
   // Create preloader state
   const [isLoading, setLoading] = useState(true);
