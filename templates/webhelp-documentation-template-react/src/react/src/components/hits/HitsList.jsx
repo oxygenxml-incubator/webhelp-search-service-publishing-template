@@ -1,8 +1,13 @@
 import React from 'react';
 import HitsItem from './HitsItem.jsx';
 
+/**
+ * Class that renders a list of hits.
+ * @param {*} hits is the hits Array returned in Algolia response when performing a search.
+ * @returns a list of items.
+ */
 const HitsList = ({ hits }) => {
-    if (hits?.length > 0){
+    if (hits?.length > 0) {
         return (<div className="hits-container"><ul className="hits">{
             hits.map((hit) => {
                 return (
@@ -11,6 +16,8 @@ const HitsList = ({ hits }) => {
                         title={hit.title}
                         description={hit.shortDescription}
                         url={hit.objectID}
+                        documentation={hit.documentation}
+                        breadcrumb={hit.breadcrumb}
                     />
                 );
             })

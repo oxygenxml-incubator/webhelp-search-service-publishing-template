@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.jsoup.Jsoup;
@@ -29,6 +30,10 @@ public class Crawler {
 	 * Logger to inform user about certain actions like errors and others.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
+	/**
+	 * Documentation's name.
+	 */
+	private String documentationName = "";
 	/**
 	 * The url to be crawled.
 	 */
@@ -136,6 +141,15 @@ public class Crawler {
 	}
 
 	/**
+	 * @param documentationName is the name to be set for documentation's name.
+	 * @return current instance of Crawler.
+	 */
+	public Crawler setDocumentationName(final String documentationName) {
+		this.documentationName = documentationName;
+		return this;
+	}
+
+	/**
 	 * @return start url that should be crawled for data.
 	 */
 	public String getUrl() {
@@ -225,19 +239,20 @@ public class Crawler {
 	}
 
 	/**
-	 * Collects all the data(titles, keywords and contents) from visited urls and
+	 * Collects all the data(titles, keywords and content) from visited urls and
 	 * creates a new Page object.
 	 * 
 	 * @param page is the desired document whose data should be collected.
 	 */
 	private void collectData(final Document page) {
 		pages.add(new Page().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
-				.setKeywords(collectKeywords(page)).setContents(collectContents(page)).setUrl(page.baseUri())
+				.setKeywords(collectKeywords(page)).setBreadcrumb(collectBreadcrumb(page))
+				.setContent(collectContent(page)).setUrl(page.baseUri())
 				.setProduct(collectProfilingCondition(page, "product"))
 				.setPlatform(collectProfilingCondition(page, "platform"))
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
 				.setProps(collectProfilingCondition(page, "props"))
-				.setOtherprops(collectProfilingCondition(page, "otherprops")));
+				.setOtherprops(collectProfilingCondition(page, "otherprops")).setDocumentation(this.documentationName));
 	}
 
 	/**
@@ -276,13 +291,13 @@ public class Crawler {
 	}
 
 	/**
-	 * Collects the contents of Page from body. The contents are texts, titles,
+	 * Collects the content of Page from body. The content are texts, titles,
 	 * paragraphs and others.
 	 * 
 	 * @param page is the desired document whose data should be collected.
-	 * @return Page's collected contents from body section.
+	 * @return Page's collected content from body section.
 	 */
-	private String collectContents(final Document page) {
+	private String collectContent(final Document page) {
 		// Delete from DOM every selector from file "nodesToIgnore.csv".
 		for (String selector : this.nodesToIgnore)
 			page.select(selector).remove();
@@ -320,5 +335,30 @@ public class Crawler {
 		}
 
 		return profilingValues;
+	}
+
+	/**
+	 * Collects page's breadcrumb from the top of the page.
+	 * 
+	 * @param page is the page whose breadcrumb should be collected.
+	 * @return page's breadcrumb that is a list of entries with title and relative
+	 *         path.
+	 */
+	private List<Map.Entry<String, String>> collectBreadcrumb(final Document page) {
+		List<Map.Entry<String, String>> breadcrumb = new ArrayList<>();
+
+		// Remove the short description in the breadcrumb that is not visible to the
+		// user.
+		page.select("div.wh-tooltip").remove();
+
+		// Extract every category of the breadcrumb.
+		for (Element el : page.select("div.wh_breadcrumb > ol > li")) {
+			if(el.text().equals("Home"))
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).absUrl("href")));
+			else
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).child(0).absUrl("href")));
+		}
+
+		return breadcrumb;
 	}
 }

@@ -2,6 +2,8 @@ import { autocomplete, getAlgoliaResults } from "@algolia/autocomplete-js";
 
 import "@algolia/autocomplete-theme-classic";
 
+import algoliaConfig from "./../algolia-config.json";
+
 // Check if disableWebHelpDefaultSearchEngine() method is present.
 if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
   WebHelpAPI.disableWebHelpDefaultSearchEngine();
@@ -10,11 +12,11 @@ if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
 // Connect to Algolia App with Search-only API key.
 const algoliasearch = require("algoliasearch");
 const searchClient = algoliasearch(
-  "40V95VH5YU",
-  "8e4e1e3ae2fc1931b0a5f5d3c8f7544d"
+  algoliaConfig.appId,
+  algoliaConfig.searchOnlyKey
 );
 
-const indexName = "webhelp-search-service-publishing-template";
+const indexName = algoliaConfig.indexName;
 
 // Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
 const algoliaSearch = {
@@ -26,7 +28,6 @@ const algoliaSearch = {
       let tag = query.split(":")[query.split(":").length - 1];
       let facetFilters = `_tags:${tag}`;
 
-      console.log(facetFilters);
       result = searchClient
         .initIndex(indexName)
         .search("", { facetFilters: [facetFilters] });
@@ -51,7 +52,6 @@ const algoliaSearch = {
           false,
           false
         );
-        console.log(result);
 
         // Extract data from Promise and create SearxhDocument object with extracted data.
         const documents = obj.hits.map((it) => {

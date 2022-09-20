@@ -2,19 +2,19 @@
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
 <map>
     <title>Search service's documenation</title>
-    <topicref chunk="to-content" href="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.dita">
+    <topicref href="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.dita">
         <topicref href="tasks/how_to_use_github_actions_to_run_a_webhelp_responsive_transformation.dita"></topicref>
         <topicref href="tasks/publishing_documentation_on_netlify.dita"></topicref>
     </topicref>
-    <topicref chunk="to-content" href="topics/crawling_data_and_use_it_with_algolia.dita">
+    <topicref href="topics/crawling_data_and_use_it_with_algolia.dita">
         <topicref href="tasks/html_crawler.dita"></topicref>
         <topicref href="tasks/algolia_search.dita"></topicref>
     </topicref>
-    <topicref chunk="to-content" href="topics/react_search_page.dita">
+    <topicref href="topics/react_search_page.dita">
         <topicref href="tasks/create_react_search_page.dita"></topicref>
         <topicref href="tasks/react-page-algolia-autocomplete.dita"></topicref>
     </topicref>
-    <topicref chunk="to-content" href="topics/integrate_algolia_autocomplete_into_webhelp.dita">
+    <topicref href="topics/integrate_algolia_autocomplete_into_webhelp.dita">
         <topicref href="tasks/integrate_algolia_autocomplete_into_webhelp_output.dita"></topicref>
         <topicref href="tasks/integrate_algolia_autocomplete_into_webhelp_template.dita"></topicref>
     </topicref>

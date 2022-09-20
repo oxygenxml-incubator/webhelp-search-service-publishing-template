@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Class that renders a clear button.
+ * @returns HTML strcture to display a clear button.
+ */
 const ClearButton = () => {
     return (<button className="aa-ClearButton" title="Clear" type="reset"><svg
         width="20"

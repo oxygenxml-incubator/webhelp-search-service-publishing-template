@@ -1,6 +1,7 @@
 package ro.sync.search;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,9 +32,9 @@ public class Page {
 	@JsonProperty("_tags")
 	private List<String> keywords;
 	/**
-	 * Page's collected contents from body section.
+	 * Page's collected content from body section.
 	 */
-	private String contents;
+	private String content;
 	/**
 	 * Page's collected profiling condition of product.
 	 */
@@ -58,6 +59,15 @@ public class Page {
 	 * Page's collected profiling condition of otherprops.
 	 */
 	private List<String> otherprops;
+	/**
+	 * Documentation to which the page belongs.
+	 */
+	private String documentation;
+	/**
+	 * The page's breadcrumb which is a list of entries that contains Title and
+	 * Relative path.
+	 */
+	private List<Map.Entry<String, String>> breadcrumb;
 
 	/**
 	 * @param url is the URL from whom the data should be collected.
@@ -96,11 +106,11 @@ public class Page {
 	}
 
 	/**
-	 * @param contents is the page's contents that represents the body.
+	 * @param content is the page's content that represents the body.
 	 * @return reference to the current instance.
 	 */
-	public Page setContents(final String contents) {
-		this.contents = contents;
+	public Page setContent(final String content) {
+		this.content = content;
 		return this;
 	}
 
@@ -159,6 +169,26 @@ public class Page {
 	}
 
 	/**
+	 * @param documentation is the documentation to which the page belongs.
+	 * @return reference to the current instance.
+	 */
+	public Page setDocumentation(final String documentation) {
+		this.documentation = documentation;
+		return this;
+	}
+
+	/**
+	 * 
+	 * @param breadcrumb is the page's breadcrumb which is a list of entries with
+	 *                   Title and Relative path.
+	 * @return reference to the current instance.
+	 */
+	public Page setBreadcrumb(final List<Map.Entry<String, String>> breadcrumb) {
+		this.breadcrumb = breadcrumb;
+		return this;
+	}
+
+	/**
 	 * @return URL from whom the data was collected.
 	 */
 	public String getUrl() {
@@ -187,10 +217,10 @@ public class Page {
 	}
 
 	/**
-	 * @return Page's collected contents from body section.
+	 * @return Page's collected content from body section.
 	 */
-	public String getContents() {
-		return this.contents;
+	public String getContent() {
+		return this.content;
 	}
 
 	/**
@@ -233,5 +263,19 @@ public class Page {
 	 */
 	public List<String> getOtherprops() {
 		return this.otherprops;
+	}
+
+	/**
+	 * @return Page's collected documentation.
+	 */
+	public String getDocumentation() {
+		return this.documentation;
+	}
+
+	/**
+	 * @return Page's collected breadcrumb.
+	 */
+	public List<Map.Entry<String, String>> getBreadcrumb() {
+		return this.breadcrumb;
 	}
 }

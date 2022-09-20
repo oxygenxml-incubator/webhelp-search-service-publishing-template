@@ -7,6 +7,8 @@ import algoliasearch from "algoliasearch/lite";
 import "@algolia/autocomplete-theme-classic";
 import "./App.css";
 
+import algoliaConfig from "./../algolia-config.json";
+
 // Check if disableWebHelpDefaultSearchEngine() method is present.
 if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
   WebHelpAPI.disableWebHelpDefaultSearchEngine();
@@ -14,11 +16,11 @@ if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
 
 // Create an Algolia SearchClient using App key and Search-only API key.
 const searchClient = algoliasearch(
-  "40V95VH5YU",
-  "8e4e1e3ae2fc1931b0a5f5d3c8f7544d"
+  algoliaConfig.appId,
+  algoliaConfig.searchOnlyKey
 );
 
-const indexName = "webhelp-search-service-publishing-template";
+const indexName = algoliaConfig.indexName;
 
 // Create a Search Instance with needed index.
 const searchInstance = searchClient.initIndex(indexName);

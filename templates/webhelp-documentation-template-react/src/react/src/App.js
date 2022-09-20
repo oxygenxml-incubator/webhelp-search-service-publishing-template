@@ -3,6 +3,12 @@ import ResultsContainer from "./components/hits/ResultsContainer.jsx";
 
 import loaderImage from "./img/loader.gif";
 
+/**
+ * Class that renders the whole application.
+ * @param {*} query is the given query by the user.
+ * @param {*} searchInstance is the function to perform search in Algolia index.
+ * @returns React results page.
+ */
 const App = ({ query, searchInstance }) => {
   // Create preloader state
   const [isLoading, setLoading] = useState(true);
@@ -36,7 +42,7 @@ const App = ({ query, searchInstance }) => {
         setResult(response);
       } else {
         let response = await searchInstance.search(searchTerm, {
-          hitsPerPage: 10,
+          hitsPerPage: 5,
           page: page,
           restrictSearchableAttributes: searchableAttributes,
           facetFilters: facetFilters,
@@ -61,7 +67,11 @@ const App = ({ query, searchInstance }) => {
         </div>
       ) : (
         <>
-          <ResultsContainer result={result} navigateToPage={search} />
+          <ResultsContainer
+            result={result}
+            navigateToPage={search}
+            searchInstance={searchInstance}
+          />
         </>
       )}
     </>
