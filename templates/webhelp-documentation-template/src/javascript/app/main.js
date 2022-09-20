@@ -28,7 +28,6 @@ const algoliaSearch = {
       let tag = query.split(":")[query.split(":").length - 1];
       let facetFilters = `_tags:${tag}`;
 
-      console.log(facetFilters);
       result = searchClient
         .initIndex(indexName)
         .search("", { facetFilters: [facetFilters] });
@@ -53,7 +52,6 @@ const algoliaSearch = {
           false,
           false
         );
-        console.log(result);
 
         // Extract data from Promise and create SearxhDocument object with extracted data.
         const documents = obj.hits.map((it) => {
