@@ -58,11 +58,11 @@ const algoliaSearch = {
           return new WebHelpAPI.SearchDocument(
             it.objectID,
             it.title,
-            it._snippetResult.contents.value,
+            it._snippetResult.content.value,
             [],
             0,
             [],
-            it._highlightResult.contents.matchedWords
+            it._highlightResult.content.matchedWords
           );
         });
 
@@ -102,11 +102,11 @@ const algoliaSearch = {
           return new WebHelpAPI.SearchDocument(
             it.objectID,
             it.title,
-            it._snippetResult.contents.value,
+            it._snippetResult.content.value,
             [],
             0,
             [],
-            it._highlightResult.contents.matchedWords
+            it._highlightResult.content.matchedWords
           );
         });
 
@@ -186,7 +186,7 @@ if (document.getElementById("autocomplete")) {
                   query,
                   params: {
                     hitsPerPage: 5,
-                    attributesToSnippet: ["title:10", "contents:30"],
+                    attributesToSnippet: ["title:10", "content:30"],
                     snippetEllipsisText: "…",
                   },
                 },
@@ -213,7 +213,7 @@ if (document.getElementById("autocomplete")) {
                     <div class="aa-ItemContentDescription">
                       ${components.Snippet({
                         hit: item,
-                        attribute: "contents",
+                        attribute: "content",
                       })}
                     </div>
                   </div>
