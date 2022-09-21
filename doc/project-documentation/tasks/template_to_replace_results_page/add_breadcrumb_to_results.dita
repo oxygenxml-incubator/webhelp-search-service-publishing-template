@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
-<task id="react_search_page">
-    <title>React Search Page</title>
-    <shortdesc>We created a React search page that uses Algolia for search purposes.</shortdesc>
+<task id="add_breadcrumb_to_results">
+    <title>Add breadcrumb to results </title>
+    <shortdesc></shortdesc>
     <taskbody>
+        <context>
+            <p></p>
+        </context>
         <steps>
             <step>
                 <cmd></cmd>

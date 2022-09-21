@@ -2,20 +2,27 @@
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
 <map>
     <title>Search service's documenation</title>
-    <topicref href="topics/publishing_your_documentation_with_webhelp_responsive_using_github_actions.dita">
-        <topicref href="tasks/how_to_use_github_actions_to_run_a_webhelp_responsive_transformation.dita"></topicref>
-        <topicref href="tasks/publishing_documentation_on_netlify.dita"></topicref>
+    <topicref href="topics/cd_with_github_actions.dita"></topicref>
+    
+    <topicref href="topics/template_to_replace_search_engine.dita">
+        <topicref href="tasks/template_to_replace_search_engine/algolia_index_with_crawling.dita"></topicref>
+        <topicref href="tasks/template_to_replace_search_engine/searchable_attributes_and_ranking.dita"></topicref>
+        <topicref href="tasks/template_to_replace_search_engine/highlighting_matching_words.dita"></topicref>
+        <topicref href="tasks/template_to_replace_search_engine/short_description_snippet.dita"></topicref>
+        <topicref href="tasks/template_to_replace_search_engine/integrate_algolia_autocomplete.dita"></topicref>
     </topicref>
-    <topicref href="topics/crawling_data_and_use_it_with_algolia.dita">
-        <topicref href="tasks/html_crawler.dita"></topicref>
-        <topicref href="tasks/algolia_search.dita"></topicref>
-    </topicref>
-    <topicref href="topics/react_search_page.dita">
-        <topicref href="tasks/create_react_search_page.dita"></topicref>
-        <topicref href="tasks/react-page-algolia-autocomplete.dita"></topicref>
-    </topicref>
-    <topicref href="topics/integrate_algolia_autocomplete_into_webhelp.dita">
-        <topicref href="tasks/integrate_algolia_autocomplete_into_webhelp_output.dita"></topicref>
-        <topicref href="tasks/integrate_algolia_autocomplete_into_webhelp_template.dita"></topicref>
+    
+    <topicref href="topics/template_to_replace_results_page.dita">
+        <topicref href="tasks/template_to_replace_results_page/setup_a_react_application.dita"></topicref>
+        <topicref href="tasks/template_to_replace_results_page/add_filter_component_in_search_page.dita"></topicref>
+        <topicref href="tasks/template_to_replace_results_page/faceting_search_with_profiling.dita"></topicref>
+        
+        <topicref href="tasks/template_to_replace_results_page/template_for_multiple_docs.dita">
+            <topicref href="tasks/template_to_replace_results_page/template_for_multiple_docs/update_algolia_crawler_to_index_multiple_documentations.dita"></topicref>
+            <topicref href="tasks/template_to_replace_results_page/template_for_multiple_docs/update_filter_component_to_present_documentation_filters.dita"></topicref>
+        </topicref>
+        
+        <topicref href="tasks/template_to_replace_results_page/add_support_for_labels.dita"></topicref>
+        <topicref href="tasks/template_to_replace_results_page/add_breadcrumb_to_results.dita"></topicref>
     </topicref>
 </map>
