@@ -25,7 +25,7 @@ const HitsItem = ({ url, title, description, documentation, breadcrumb }) => {
                     else
                         return (
                             <a href={level[Object.keys(level)[0]]}>
-                                <span className="breadcrumb-element">{Object.keys(level)[0] + ' > '}</span>
+                                <span className="breadcrumb-element">{Object.keys(level)[0] + ' >'}&nbsp;</span>
                             </a>)
                 }) : null}
             </span>
