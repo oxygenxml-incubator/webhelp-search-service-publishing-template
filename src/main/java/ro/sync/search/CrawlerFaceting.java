@@ -67,6 +67,7 @@ public class CrawlerFaceting extends CrawlerAbstract<PageFaceting> {
 	/**
 	 * Collects an profiling condition of Page from metadata.
 	 * 
+	 * @param page               is the Document whose data should be collected.
 	 * @param profilingCondition is the profiling condition's name whose values
 	 *                           should to be returned.
 	 * @return Page's collected profiling condition of passed argument.

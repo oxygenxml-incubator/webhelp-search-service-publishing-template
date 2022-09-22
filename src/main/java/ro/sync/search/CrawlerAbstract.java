@@ -20,9 +20,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Abstract class of Crawler that provides basic functional.
+ * 
  * @author Bozieac Artiom
  *
- * @param <T> is the version of page to be used.
+ * @param <T> is the version of page to be used. PageBase, PageFaceting or
+ *            PageMultipleDocumentations.
  */
 public abstract class CrawlerAbstract<T extends PageBase> {
 	/**
@@ -80,6 +82,8 @@ public abstract class CrawlerAbstract<T extends PageBase> {
 	 * 
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param isFile  is the flag that indicates if you passed and URL to the file
+	 *                or a website.
 	 * 
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
@@ -162,7 +166,9 @@ public abstract class CrawlerAbstract<T extends PageBase> {
 	/**
 	 * Finds appropriate urls among all the matches and adds them to queue.
 	 * 
-	 * @param page that stores HTML code.
+	 * @param page    is the Document whose hrefs should be collected.
+	 * @param pageUrl is the current page's url that is used to construct the next
+	 *                URLs.
 	 * @throws MalformedURLException when a problem with initialization of URL
 	 *                               occurred.
 	 */
@@ -197,6 +203,7 @@ public abstract class CrawlerAbstract<T extends PageBase> {
 	 * 
 	 * @param page is the desired document whose data should be collected. Page's
 	 *             collected title from metadata.
+	 * @return page's collected title.
 	 */
 	protected String collectTitle(final Document page) {
 		return page.title();

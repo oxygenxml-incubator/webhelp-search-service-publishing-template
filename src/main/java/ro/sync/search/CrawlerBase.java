@@ -17,6 +17,8 @@ public class CrawlerBase extends CrawlerAbstract<PageBase> {
 	 * 
 	 * @param url     is the page that should be crawled for data.
 	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param isFile  is the flag that indicates if you passed and URL to the file
+	 *                or a website.
 	 * 
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.

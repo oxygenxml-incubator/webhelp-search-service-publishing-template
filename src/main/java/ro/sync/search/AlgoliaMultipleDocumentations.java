@@ -19,7 +19,10 @@ import com.algolia.search.models.settings.IndexSettings;
 
 /**
  * Class that uses multiple documentations given via a config and pushes crawled
- * data to the Algolia index.
+ * data to the Algolia index. It collects title, keywords, short description,
+ * content, breadcrumb and creates a new attribute to specify each topic's
+ * documentation. This class is used for Webhelp template with React results
+ * page.
  * 
  * @author Bozieac Artiom
  *
@@ -35,7 +38,7 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 	protected SearchIndex<PageMultipleDocumentations> index;
 
 	/**
-	 * Constructor with URL to get data from.
+	 * Constructor to set up necessary stuff like properties for Algolia connection.
 	 * 
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
@@ -54,6 +57,11 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
 				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));
 		index.clearObjects();
+	}
+
+	@Override
+	public void useArguments(final String... args) {
+		throw new UnsupportedOperationException();
 	}
 
 	/**

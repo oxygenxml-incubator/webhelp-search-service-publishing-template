@@ -15,7 +15,8 @@ import com.algolia.search.SearchIndex;
 import com.algolia.search.models.settings.IndexSettings;
 
 /**
- * Class that handles Algolia API calls.
+ * Class that handles Algolia API calls for basic use case, when you need to
+ * collect only title, keywords, short description and content.
  * 
  * @author Artiom Bozieac
  */
@@ -42,7 +43,8 @@ public class AlgoliaBase {
 	protected SearchIndex<PageBase> index;
 
 	/**
-	 * Constructor with URL to get data from.
+	 * Constructor to set up all the necessary data like properties for Algolia
+	 * connection.
 	 * 
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 

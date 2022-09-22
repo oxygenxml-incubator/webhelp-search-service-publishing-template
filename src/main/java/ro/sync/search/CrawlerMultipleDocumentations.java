@@ -20,6 +20,17 @@ public class CrawlerMultipleDocumentations extends CrawlerAbstract<PageMultipleD
 	 */
 	private String documentationName = "";
 
+	/**
+	 * Constructor with url and baseUrl parameters.
+	 * 
+	 * @param url     is the page that should be crawled for data.
+	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param isFile  is the flag that indicates if you passed and URL to the file
+	 *                or a website.
+	 * 
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
+	 */
 	protected CrawlerMultipleDocumentations(String url, String baseUrl, boolean isFile) throws IOException {
 		super(url, baseUrl, isFile);
 	}

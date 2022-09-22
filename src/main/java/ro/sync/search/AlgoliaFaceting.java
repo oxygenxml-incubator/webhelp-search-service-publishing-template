@@ -11,7 +11,9 @@ import com.algolia.search.models.settings.IndexSettings;
 
 /**
  * Class that uses DITA Conditional Profiling and pushes crawled data to Algolia
- * index.
+ * index. It collects title, keywords, short description, contents, breadcrumb
+ * and DITA profiling values from metadata. The class is used for Webhelp
+ * template with React results page.
  * 
  * @author Bozieac Artiom
  *
@@ -27,14 +29,13 @@ public class AlgoliaFaceting extends AlgoliaBase {
 	protected SearchIndex<PageFaceting> index;
 
 	/**
-	 * Constructor with URL to get data from.
+	 * Constructor to set up necessary stuff like properties for Algolia connection.
 	 * 
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
 	public AlgoliaFaceting() throws IOException {
 		super();
-
 	}
 
 	/**
