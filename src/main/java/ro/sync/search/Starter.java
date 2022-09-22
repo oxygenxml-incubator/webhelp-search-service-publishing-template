@@ -24,7 +24,7 @@ public class Starter {
 	 * 
 	 * @param args is the passed arguments.
 	 */
-	private static void useBaseCrawler(String... args) {
+	private static void useBasicCrawler(String... args) {
 		try {
 			BasicAlgolia algolia = new BasicAlgolia();
 			algolia.useArguments(args);
@@ -85,7 +85,7 @@ public class Starter {
 		} else if (args.length == 4) {
 			useFacetingCrawler(args);
 		} else if (args.length == 3) {
-			useBaseCrawler(args);
+			useBasicCrawler(args);
 		} else {
 			logger.info("Invalid Arguments!");
 			logger.info("To use base crawler pass -url=PATH -baseURL=PATH -indexName=INDEXNAME");
