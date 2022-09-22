@@ -11,7 +11,7 @@ import org.jsoup.nodes.Document;
  * @author Bozieac Artiom
  *
  */
-public class CrawlerBase extends CrawlerAbstract<PageBase> {
+public class BasicCrawler extends AbstractCrawler<PageBase> {
 	/**
 	 * Constructor with url and baseUrl parameters.
 	 * 
@@ -23,7 +23,7 @@ public class CrawlerBase extends CrawlerAbstract<PageBase> {
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	protected CrawlerBase(String url, String baseUrl, boolean isFile) throws IOException {
+	protected BasicCrawler(String url, String baseUrl, boolean isFile) throws IOException {
 		super(url, baseUrl, isFile);
 	}
 

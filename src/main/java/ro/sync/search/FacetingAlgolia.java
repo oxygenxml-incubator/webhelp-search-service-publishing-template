@@ -18,11 +18,11 @@ import com.algolia.search.models.settings.IndexSettings;
  * @author Bozieac Artiom
  *
  */
-public class AlgoliaFaceting extends AlgoliaBase {
+public class FacetingAlgolia extends BasicAlgolia {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(AlgoliaFaceting.class);
+	private static final Logger logger = LoggerFactory.getLogger(FacetingAlgolia.class);
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
@@ -34,7 +34,7 @@ public class AlgoliaFaceting extends AlgoliaBase {
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
-	public AlgoliaFaceting() throws IOException {
+	public FacetingAlgolia() throws IOException {
 		super();
 	}
 
@@ -53,7 +53,7 @@ public class AlgoliaFaceting extends AlgoliaBase {
 	 */
 	protected void populateIndex(final String url, final String baseUrl, final String profilingConditionsPath)
 			throws IOException {
-		CrawlerFaceting crawler = new CrawlerFaceting(url, baseUrl, false, profilingConditionsPath);
+		FacetingCrawler crawler = new FacetingCrawler(url, baseUrl, false, profilingConditionsPath);
 		crawler.crawl();
 
 		facetsIndex.setSettings(new IndexSettings()

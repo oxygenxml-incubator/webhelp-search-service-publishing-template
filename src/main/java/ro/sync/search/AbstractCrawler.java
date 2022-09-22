@@ -26,11 +26,11 @@ import org.slf4j.LoggerFactory;
  * @param <T> is the version of page to be used. PageBase, PageFaceting or
  *            PageMultipleDocumentations.
  */
-public abstract class CrawlerAbstract<T extends PageBase> {
+public abstract class AbstractCrawler<T extends PageBase> {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
 	 */
-	protected static final Logger logger = LoggerFactory.getLogger(CrawlerAbstract.class);
+	protected static final Logger logger = LoggerFactory.getLogger(AbstractCrawler.class);
 	/**
 	 * The url to be crawled.
 	 */
@@ -88,7 +88,7 @@ public abstract class CrawlerAbstract<T extends PageBase> {
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	protected CrawlerAbstract(final String url, final String baseUrl, final boolean isFile) throws IOException {
+	protected AbstractCrawler(final String url, final String baseUrl, final boolean isFile) throws IOException {
 		this.url = url;
 		this.baseUrl = baseUrl;
 		this.isFile = isFile;

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
  * @author Artiom Bozieac
  *
  */
-class CrawlerMultipleDocumentationsTest {
+class FacetingCrawlerTest {
 	/**
 	 * Tests the case when an HTML page depends on another one. For example
 	 * index.html references to other.html and vice versa.
@@ -30,9 +30,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void recursionTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/recursion/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/recursion/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/recursion/").toUri().toURL().toString(), true, "");
 		crawler.crawl();
 
 		List<String> expected = new ArrayList<>();
@@ -49,9 +49,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void multipleLinesTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true, "");
 		crawler.crawl();
 
 		List<String> expected = new ArrayList<>();
@@ -70,9 +70,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void relativeHrefTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/relativeHref/index/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/relativeHref/index/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/relativeHref/index/").toUri().toURL().toString(), true, "");
 		crawler.crawl();
 
 		assertEquals(new ArrayList<>(), crawler.getVisitedUrls());
@@ -85,9 +85,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void readHtmlTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true, "");
 
 		crawler.readHtml(crawler.getUrl()).toString();
 
@@ -103,9 +103,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void findUrlsTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true, "");
 
 		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
@@ -122,9 +122,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void noHrefTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/noHref/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/noHref/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/noHref/").toUri().toURL().toString(), true, "");
 
 		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
@@ -141,9 +141,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void baseUrlTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/baseUrl/t1/t2/other.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/baseUrl/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/baseUrl/").toUri().toURL().toString(), true, "");
 
 		crawler.findUrls(crawler.readHtml(crawler.getUrl()), crawler.getUrl());
 
@@ -160,9 +160,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void getTitleTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/data/").toUri().toURL().toString(), true, "");
 
 		crawler.crawl();
 
@@ -177,9 +177,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void getKeywordsTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/data/").toUri().toURL().toString(), true, "");
 
 		crawler.crawl();
 
@@ -200,9 +200,9 @@ class CrawlerMultipleDocumentationsTest {
 	 */
 	@Test
 	void getContentTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/data/").toUri().toURL().toString(), true, "");
 
 		crawler.crawl();
 
@@ -221,15 +221,35 @@ class CrawlerMultipleDocumentationsTest {
 	}
 
 	/**
+	 * Tests if profiling information is extractd correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occur.
+	 */
+	@Test
+	void collectProfilingConditionTest() throws IOException {
+		FacetingCrawler crawler = new FacetingCrawler(
+				Path.of("src/test/resources/profiling/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/profiling/").toUri().toURL().toString(), true,
+				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+
+		crawler.crawl();
+
+		String expected = "X2000";
+
+		assertEquals(expected, crawler.getCrawledPages().get(0).getProduct().get(0));
+	}
+
+	/**
 	 * Tests if breadcrumb is extracted correctly.
 	 * 
 	 * @throws IOException when a problem with reading HTML code occur.
 	 */
 	@Test
 	void collectBreadcrumbTest() throws IOException {
-		CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(
+		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/breadcrumb/index.html").toUri().toURL().toString(),
-				Path.of("src/test/resources/breadcrumb/").toUri().toURL().toString(), true);
+				Path.of("src/test/resources/breadcrumb/").toUri().toURL().toString(), true,
+				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
 
 		crawler.crawl();
 

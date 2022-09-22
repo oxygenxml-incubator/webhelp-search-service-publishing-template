@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
  * @author artio
  *
  */
-public class CrawlerFaceting extends CrawlerAbstract<PageFaceting> {
+public class FacetingCrawler extends AbstractCrawler<PageFaceting> {
 	/**
 	 * Path that leads to the JSON file where all profiling values and conditions
 	 * are stored.
@@ -32,7 +32,7 @@ public class CrawlerFaceting extends CrawlerAbstract<PageFaceting> {
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	protected CrawlerFaceting(String url, String baseUrl, boolean isFile, final String profilingConditionsPath)
+	protected FacetingCrawler(String url, String baseUrl, boolean isFile, final String profilingConditionsPath)
 			throws IOException {
 		super(url, baseUrl, isFile);
 

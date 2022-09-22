@@ -26,7 +26,7 @@ public class Starter {
 	 */
 	private static void useBaseCrawler(String... args) {
 		try {
-			AlgoliaBase algolia = new AlgoliaBase();
+			BasicAlgolia algolia = new BasicAlgolia();
 			algolia.useArguments(args);
 		} catch (IllegalArgumentException e) {
 			logger.error("Invalid arguments passed!");
@@ -44,7 +44,7 @@ public class Starter {
 	 */
 	private static void useFacetingCrawler(String... args) {
 		try {
-			AlgoliaFaceting algolia = new AlgoliaFaceting();
+			FacetingAlgolia algolia = new FacetingAlgolia();
 			algolia.useArguments(args);
 		} catch (IllegalArgumentException e) {
 			logger.error("Invalid arguments passed!");
@@ -60,7 +60,7 @@ public class Starter {
 	 */
 	private static void useMultipleDocumentationsCrawler(String... args) {
 		try {
-			AlgoliaMultipleDocumentations algolia = new AlgoliaMultipleDocumentations();
+			MultipleDocumentationsAlgolia algolia = new MultipleDocumentationsAlgolia();
 			algolia.useConfig(args[0].substring(12));
 		} catch (JSONException e) {
 			logger.error("An error while parsing JSON config occured!", e);

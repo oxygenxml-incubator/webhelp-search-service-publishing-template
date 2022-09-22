@@ -20,11 +20,11 @@ import com.algolia.search.models.settings.IndexSettings;
  * 
  * @author Artiom Bozieac
  */
-public class AlgoliaBase {
+public class BasicAlgolia {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(AlgoliaBase.class);
+	private static final Logger logger = LoggerFactory.getLogger(BasicAlgolia.class);
 	/**
 	 * Algolia application's id.
 	 */
@@ -49,7 +49,7 @@ public class AlgoliaBase {
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
-	public AlgoliaBase() throws IOException {
+	public BasicAlgolia() throws IOException {
 		try (InputStream input = new FileInputStream("config.properties")) {
 			Properties properties = new Properties();
 
@@ -73,7 +73,7 @@ public class AlgoliaBase {
 	 *                     couldn't be read.
 	 */
 	protected void populateIndex(final String url, final String baseUrl) throws IOException {
-		CrawlerBase crawler = new CrawlerBase(url, baseUrl, false);
+		BasicCrawler crawler = new BasicCrawler(url, baseUrl, false);
 		crawler.crawl();
 
 		basicIndex.setSettings(new IndexSettings()

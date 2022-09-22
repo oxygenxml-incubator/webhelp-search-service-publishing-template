@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
  * @author Bozieac Artiom
  *
  */
-public class CrawlerMultipleDocumentations extends CrawlerAbstract<PageMultipleDocumentations> {
+public class MultipleDocumentationsCrawler extends AbstractCrawler<PageMultipleDocumentations> {
 	/**
 	 * Documentation's name.
 	 */
@@ -31,7 +31,7 @@ public class CrawlerMultipleDocumentations extends CrawlerAbstract<PageMultipleD
 	 * @throws IOException if problems with initaliztion of URL or accessing the
 	 *                     nodesToIgnore.csv file occurred.
 	 */
-	protected CrawlerMultipleDocumentations(String url, String baseUrl, boolean isFile) throws IOException {
+	protected MultipleDocumentationsCrawler(String url, String baseUrl, boolean isFile) throws IOException {
 		super(url, baseUrl, isFile);
 	}
 
@@ -80,7 +80,7 @@ public class CrawlerMultipleDocumentations extends CrawlerAbstract<PageMultipleD
 	 * @param documentationName is the name to be set for documentation's name.
 	 * @return current instance of Crawler.
 	 */
-	public CrawlerMultipleDocumentations setDocumentationName(final String documentationName) {
+	public MultipleDocumentationsCrawler setDocumentationName(final String documentationName) {
 		this.documentationName = documentationName;
 		return this;
 	}

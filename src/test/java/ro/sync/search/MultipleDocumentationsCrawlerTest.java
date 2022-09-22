@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import org.junit.jupiter.api.Test;
  * @author Artiom Bozieac
  *
  */
-class CrawlerBaseTest {
+class MultipleDocumentationsCrawlerTest {
 	/**
 	 * Tests the case when an HTML page depends on another one. For example
 	 * index.html references to other.html and vice versa.
@@ -29,7 +30,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void recursionTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/recursion/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/recursion/").toUri().toURL().toString(), true);
 		crawler.crawl();
@@ -48,7 +49,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void multipleLinesTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 		crawler.crawl();
@@ -69,7 +70,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void relativeHrefTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/relativeHref/index/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/relativeHref/index/").toUri().toURL().toString(), true);
 		crawler.crawl();
@@ -84,7 +85,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void readHtmlTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 
@@ -102,7 +103,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void findUrlsTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/multipleLines/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/multipleLines/").toUri().toURL().toString(), true);
 
@@ -121,7 +122,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void noHrefTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/noHref/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/noHref/").toUri().toURL().toString(), true);
 
@@ -140,7 +141,7 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void baseUrlTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
 				Path.of("src/test/resources/baseUrl/t1/t2/other.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/baseUrl/").toUri().toURL().toString(), true);
 
@@ -159,7 +160,8 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void getTitleTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
+				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
 		crawler.crawl();
@@ -175,7 +177,8 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void getKeywordsTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
+				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
 		crawler.crawl();
@@ -197,7 +200,8 @@ class CrawlerBaseTest {
 	 */
 	@Test
 	void getContentTest() throws IOException {
-		CrawlerBase crawler = new CrawlerBase(Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
+				Path.of("src/test/resources/data/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/data/").toUri().toURL().toString(), true);
 
 		crawler.crawl();
@@ -214,5 +218,26 @@ class CrawlerBaseTest {
 
 		assertEquals(expected.replaceAll("\\s+", ""),
 				crawler.getCrawledPages().get(0).getContent().trim().replaceAll("\\s+", ""));
+	}
+
+	/**
+	 * Tests if breadcrumb is extracted correctly.
+	 * 
+	 * @throws IOException when a problem with reading HTML code occur.
+	 */
+	@Test
+	void collectBreadcrumbTest() throws IOException {
+		MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
+				Path.of("src/test/resources/breadcrumb/index.html").toUri().toURL().toString(),
+				Path.of("src/test/resources/breadcrumb/").toUri().toURL().toString(), true);
+
+		crawler.crawl();
+
+		List<Map.Entry<String, String>> expected = new ArrayList<>();
+		expected.add(Map.entry("Home", ""));
+		expected.add(Map.entry("Getting Started", ""));
+		expected.add(Map.entry("Introduction", ""));
+
+		assertEquals(expected, crawler.getCrawledPages().get(0).getBreadcrumb());
 	}
 }

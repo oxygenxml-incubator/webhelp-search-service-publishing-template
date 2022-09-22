@@ -27,11 +27,11 @@ import com.algolia.search.models.settings.IndexSettings;
  * @author Bozieac Artiom
  *
  */
-public class AlgoliaMultipleDocumentations extends AlgoliaBase {
+public class MultipleDocumentationsAlgolia extends BasicAlgolia {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(AlgoliaMultipleDocumentations.class);
+	private static final Logger logger = LoggerFactory.getLogger(MultipleDocumentationsAlgolia.class);
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
@@ -43,7 +43,7 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 	 * @throws IOException if a problem with loading config properties occured.
 	 * 
 	 */
-	public AlgoliaMultipleDocumentations() throws IOException {
+	public MultipleDocumentationsAlgolia() throws IOException {
 		super();
 	}
 
@@ -91,7 +91,7 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 
 		// Crawl every single documentation and store it in Algolia index.
 		for (Entry<String, String> documentation : documentations.entrySet()) {
-			CrawlerMultipleDocumentations crawler = new CrawlerMultipleDocumentations(documentation.getValue(),
+			MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(documentation.getValue(),
 					documentation.getValue(), false).setDocumentationName(documentation.getKey());
 			crawler.crawl();
 
