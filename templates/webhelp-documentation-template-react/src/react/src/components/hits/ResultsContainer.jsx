@@ -70,29 +70,6 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
         <div className="hits-and-manipulation">
             <FilterContainer performSearch={navigateToPage} query={result.query} sections={
                 [
-                    {
-                        title: "Find query in",
-                        options: [
-                            {
-                                id: "attribute-title",
-                                description: "Title",
-                                isFilter: false,
-                                algoliaId: "title"
-                            },
-                            {
-                                id: "attribute-shortDescription",
-                                description: "Short Description",
-                                isFilter: false,
-                                algoliaId: "shortDescription"
-                            },
-                            {
-                                id: "attribute-content",
-                                description: "Content",
-                                isFilter: false,
-                                algoliaId: "content"
-                            }
-                        ]
-                    },
                     documentations.length !== 0 ?
                         {
                             title: "Documentations",
@@ -105,6 +82,23 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                                 }
                             })
                         } : null,
+                    {
+                        title: "Search in",
+                        options: [
+                            {
+                                id: "attribute-title",
+                                description: "Title",
+                                isFilter: false,
+                                algoliaId: "title"
+                            },
+                            {
+                                id: "attribute-shortDescription",
+                                description: "Short Description",
+                                isFilter: false,
+                                algoliaId: "shortDescription"
+                            }
+                        ]
+                    },
                     ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
                         return {
                             title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
@@ -128,7 +122,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                     className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
                     onClick={() => navigateToPage(result.query, result.page - 1, [...searchableAttributes], [...facetFilters])} disabled={isPrevButtonDisabled() ? true : false}
                 >
-                    Previous
+                    Back
                 </button>
                 <button
                     className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
