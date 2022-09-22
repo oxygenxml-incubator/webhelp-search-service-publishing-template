@@ -40,7 +40,7 @@ public class AlgoliaBase {
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
-	protected SearchIndex<PageBase> index;
+	protected SearchIndex<PageBase> basicIndex;
 
 	/**
 	 * Constructor to set up all the necessary data like properties for Algolia
@@ -76,15 +76,15 @@ public class AlgoliaBase {
 		CrawlerBase crawler = new CrawlerBase(url, baseUrl, false);
 		crawler.crawl();
 
-		index.setSettings(new IndexSettings()
+		basicIndex.setSettings(new IndexSettings()
 				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
 				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
 				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
 				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));
 
-		index.saveObjects(crawler.getCrawledPages());
+		basicIndex.saveObjects(crawler.getCrawledPages());
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
-				index.getUrlEncodedIndexName());
+				basicIndex.getUrlEncodedIndexName());
 	}
 
 	/**
@@ -113,8 +113,8 @@ public class AlgoliaBase {
 		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty())
 			throw new IllegalArgumentException();
 
-		index = client.initIndex(indexName, PageBase.class);
-		index.clearObjects();
+		basicIndex = client.initIndex(indexName, PageBase.class);
+		basicIndex.clearObjects();
 		populateIndex(url, baseUrl);
 	}
 }

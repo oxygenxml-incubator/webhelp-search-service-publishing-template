@@ -35,7 +35,7 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
-	protected SearchIndex<PageMultipleDocumentations> index;
+	protected SearchIndex<PageMultipleDocumentations> multipleDocumentationsIndex;
 
 	/**
 	 * Constructor to set up necessary stuff like properties for Algolia connection.
@@ -51,13 +51,13 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 	 * Sets settings for the index.
 	 */
 	private void prepareIndex() {
-		index.setSettings(
+		multipleDocumentationsIndex.setSettings(
 				new IndexSettings().setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
 						.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
 						.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
 						.setAttributesToSnippet(Arrays.asList("content:30"))
 						.setAttributesForFaceting(Arrays.asList("_tags", "documentation")));
-		index.clearObjects();
+		multipleDocumentationsIndex.clearObjects();
 	}
 
 	@Override
@@ -85,7 +85,8 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 			documentations.put(documentationsJson.getJSONObject(i).getString("Name"),
 					documentationsJson.getJSONObject(i).getString("Publication URL"));
 
-		index = client.initIndex(jsonObject.getString("indexName"), PageMultipleDocumentations.class);
+		multipleDocumentationsIndex = client.initIndex(jsonObject.getString("indexName"),
+				PageMultipleDocumentations.class);
 		prepareIndex();
 
 		// Crawl every single documentation and store it in Algolia index.
@@ -94,10 +95,11 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 					documentation.getValue(), false).setDocumentationName(documentation.getKey());
 			crawler.crawl();
 
-			index.saveObjects(crawler.getCrawledPages());
+			multipleDocumentationsIndex.saveObjects(crawler.getCrawledPages());
 
 			logger.info("{} Page object(s) from documentation {} successfully added to {} index!",
-					crawler.getCrawledPages().size(), documentation.getKey(), index.getUrlEncodedIndexName());
+					crawler.getCrawledPages().size(), documentation.getKey(),
+					multipleDocumentationsIndex.getUrlEncodedIndexName());
 		}
 	}
 }

@@ -26,7 +26,7 @@ public class AlgoliaFaceting extends AlgoliaBase {
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
-	protected SearchIndex<PageFaceting> index;
+	protected SearchIndex<PageFaceting> facetsIndex;
 
 	/**
 	 * Constructor to set up necessary stuff like properties for Algolia connection.
@@ -56,16 +56,16 @@ public class AlgoliaFaceting extends AlgoliaBase {
 		CrawlerFaceting crawler = new CrawlerFaceting(url, baseUrl, false, profilingConditionsPath);
 		crawler.crawl();
 
-		index.setSettings(new IndexSettings()
+		facetsIndex.setSettings(new IndexSettings()
 				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
 				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
 				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
 				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(
 						Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
 
-		index.saveObjects(crawler.getCrawledPages());
+		facetsIndex.saveObjects(crawler.getCrawledPages());
 		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
-				index.getUrlEncodedIndexName());
+				facetsIndex.getUrlEncodedIndexName());
 	}
 
 	/**
@@ -99,8 +99,8 @@ public class AlgoliaFaceting extends AlgoliaBase {
 		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty() || profilingConditionsPath.isEmpty())
 			throw new IllegalArgumentException();
 
-		index = client.initIndex(indexName, PageFaceting.class);
-		index.clearObjects();
+		facetsIndex = client.initIndex(indexName, PageFaceting.class);
+		facetsIndex.clearObjects();
 		populateIndex(url, baseUrl, profilingConditionsPath);
 	}
 }
