@@ -2,14 +2,64 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="setup_searchable_attributes_and_ranking_criteria">
     <title>Setup searchable attributes and ranking criteria</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to set searchable attributes and ranking criteria?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>Right now our index with records is pretty much usesless because we haven't set any
+                searchable attributes or ranking criteria.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>Modify populateIndex() method of BasicAlgolia</cmd>
+                <info>
+                    <codeblock id="codeblock_ezd_t5g_y5b">		basicIndex.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>It should look like this:</cmd>
+                <info>
+                    <codeblock id="codeblock_rls_t5g_y5b">	/**
+	 * Adds crawled pages from Crawler object to index.
+	 * 
+	 * @param url     is the URL whose pages should be added to index.
+	 * @param baseUrl is the base URL that is used to not go out of bounds.
+	 * 
+	 * @throws IOException if Crawler was failed to initiate or the HTML File
+	 *                     couldn't be read.
+	 */
+	protected void populateIndex(final String url, final String baseUrl) throws IOException {
+		BasicCrawler crawler = new BasicCrawler(url, baseUrl, false);
+		crawler.crawl();
+
+		basicIndex.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));
+
+		basicIndex.saveObjects(crawler.getCrawledPages());
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+				basicIndex.getUrlEncodedIndexName());
+	}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Now our searchable attributes are title, shortDescription and content,</cmd>
+            </step>
+            <step>
+                <cmd>The ranking criteria is based on title, shortDescription and contents. So
+                    basically first of all we will get results where the query is met in title,
+                    shortDescription and only then content.</cmd>
+            </step>
+            <step>
+                <cmd>We also said to the Algolia to return us a snippet of content which will be 30
+                    characters long.</cmd>
+            </step>
+            <step>
+                <cmd>We set _tags as facet because it is used by Webhelp to search by labels.</cmd>
             </step>
         </steps>
     </taskbody>

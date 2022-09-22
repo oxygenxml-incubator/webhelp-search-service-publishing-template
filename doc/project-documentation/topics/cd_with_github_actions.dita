@@ -1,8 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="continous_publishing_with_github_actions_and_netlify">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="continous_publishing_with_github_actions_and_netlify">
     <title>Continous publishing with GitHub Actions and Netlify</title>
-    <body>
-        <p></p>
-    </body>
-</topic>
+    <shortdesc>How to use Github Actions to generate Webhelp output and publish it to Netlify?</shortdesc>
+    <taskbody>
+        <context>
+            <p>In this task we'll learn how to automate the proccess of building and deploying a
+                Webhelp output.</p>
+        </context>
+        <steps>
+            <step>
+                <cmd>Access "Actions" tab in your repository on GitHub</cmd>
+            </step>
+            <step>
+                <cmd>Press "New workflow" button in the left side of the page</cmd>
+            </step>
+            <step>
+                <cmd>Choose "Simple workflow" template and press "Configure" button</cmd>
+            </step>
+            <step>
+                <cmd>Delete the whole content of the file and let's write our workflow</cmd>
+                <info>
+                    <codeblock id="codeblock_vm3_5lg_y5b">name: Build project documentation and publish to Netlify
+on:
+  push:
+    branches:
+      - master
+      - development
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" > licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Put license into engine directory
+        run: |
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
+            
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: "./templates/webhelp-documentation-template/src/javascript/package-lock.json"
+      - run: |
+          cd templates/webhelp-documentation-template/src/javascript
+          npm install
+          npm run build
+            
+      - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin
+            sudo chmod +x dita
+            sudo ./dita --input=../../doc/project-documentation/search-service-doc.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template --output=../../doc/project-documentation/out
+            
+      - name: Deploy to Netlify
+        run: npx netlify-cli deploy --dir=doc/project-documentation/out --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          
+      - name: Setup Algolia
+        run: |
+          echo -e "algolia.appId=$ALGOLIA_APP_ID\nalgolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
+          mvn compile exec:java
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_ADMIN_API: ${{ secrets.ALGOLIA_ADMIN_API }}</codeblock>
+                </info>
+            </step>
+        </steps>
+    </taskbody>
+</task>

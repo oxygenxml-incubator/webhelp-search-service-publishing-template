@@ -2,14 +2,45 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="highlight_matching_words_enhancement">
     <title>Highlight matching words enhancement</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to make words that are met in query be highlighted?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>Right now we don't highlight any words, even if they are met in the query, let's fix
+                it.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>Modify populateIndex() method of BasicAlgolia</cmd>
+                <info>
+                    <codeblock id="codeblock_dhc_nvg_y5b">basicIndex.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>The method should look like this:</cmd>
+                <info>
+                    <codeblock id="codeblock_yr2_pvg_y5b">	protected void populateIndex(final String url, final String baseUrl) throws IOException {
+		BasicCrawler crawler = new BasicCrawler(url, baseUrl, false);
+		crawler.crawl();
+
+		basicIndex.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));
+
+		basicIndex.saveObjects(crawler.getCrawledPages());
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+				basicIndex.getUrlEncodedIndexName());
+	}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>We set title, shortDescription and contents' words to be highlighted whenever
+                    one of them is met in the query.</cmd>
             </step>
         </steps>
     </taskbody>

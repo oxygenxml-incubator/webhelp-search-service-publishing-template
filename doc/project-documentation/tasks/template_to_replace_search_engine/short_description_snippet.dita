@@ -2,14 +2,162 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="replace_short_description_with_a_snippet_of_matching_words_enhancement">
     <title>Replace short description with a snippet of matching words enhancement</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to replace the short decriptions of the search results with a snippet of matching
+        words from its content?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>We will change the short descriptions of the search results by a snippet of matching
+                words from content that we set earlier when creating BasicAlgolia.java<xref
+                    href="algolia_index_with_crawling.dita#create_an_algolia_index_by_crawling_a_webhelp_documentation/codeblock_qgc_b5g_y5b"
+                /> It's really that simple!</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>Modify main.js file:</cmd>
+                <info>
+                    <codeblock id="codeblock_cw2_zxg_y5b">import { autocomplete, getAlgoliaResults } from "@algolia/autocomplete-js";
+
+import "@algolia/autocomplete-theme-classic";
+
+import algoliaConfig from "./../algolia-config.json";
+
+// Check if disableWebHelpDefaultSearchEngine() method is present.
+if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
+  WebHelpAPI.disableWebHelpDefaultSearchEngine();
+}
+
+// Connect to Algolia App with Search-only API key.
+const algoliasearch = require("algoliasearch");
+const searchClient = algoliasearch(
+  algoliaConfig.appId,
+  algoliaConfig.searchOnlyKey
+);
+
+const indexName = algoliaConfig.indexName;
+
+// Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
+const algoliaSearch = {
+  // Method that is called when Submit is performed.
+  performSearchOperation(query, successHandler, errorHandler) {
+    // Search for hits for the given query.
+    let result;
+    if (query.includes("label:")) {
+      let tag = query.split(":")[query.split(":").length - 1];
+      let facetFilters = `_tags:${tag}`;
+
+      result = searchClient
+        .initIndex(indexName)
+        .search("", { facetFilters: [facetFilters] });
+    } else {
+      result = searchClient.initIndex(indexName).search(query);
+    }
+
+    result
+      .then((obj) => {
+        // Extract data from Promise and create a SearchMeta object with extracted data.
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        // Extract data from Promise and create SearxhDocument object with extracted data.
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it._snippetResult.content.value,
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });
+
+        // Pass the extracted data to SearchResult so it can be displayed by WebHelp.
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  // Actions to do when page of results is changed.
+  onPageChangedHandler(pageToShow, query, successHandler, searchFailed) {
+    // Get results on the next page using the given by user query.
+    const result = searchClient.initIndex(indexName).search(query, {
+      page: pageToShow,
+    });
+
+    result
+      .then((obj) => {
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it._snippetResult.content.value,
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });
+
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+};
+
+// Check if setCustomSearchEngine() method is present in order to change it to Algolia engine.
+if (WebHelpAPI.setCustomSearchEngine) {
+  WebHelpAPI.setCustomSearchEngine(algoliaSearch);
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>We just modified the information we send to the WebhelpAPI from Algolia
+                    response, you can see it right here:</cmd>
+                <info>
+                    <codeblock id="codeblock_tml_byg_y5b">const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            <b>it._snippetResult.content.value,</b>
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });</codeblock>
+                </info>
             </step>
         </steps>
     </taskbody>

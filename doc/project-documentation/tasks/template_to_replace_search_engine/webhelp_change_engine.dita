@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="webhelp_change_engine">
+    <title>Change search engine in Webhelp template</title>
+    <shortdesc>How to replace Webhelp search engine with Algolia?</shortdesc>
+    <taskbody>
+        <context>
+            <p>We will replace the default Webhelp search engine with the one that Algolia provides
+                by using Javascript.</p>
+        </context>
+        <steps>
+            <step>
+                <cmd>Create a folder named "html" in the template directory.</cmd>
+                <info>
+                    <codeblock id="codeblock_wnk_fwg_y5b">//search.html
+&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;script src="${oxygen-webhelp-template-dir}/js/algolia.js">&lt;/script>
+  &lt;/head>
+  &lt;body>&lt;/body>
+&lt;/html></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create one more folder named "js" in the template directory. We will save our
+                    builded bundle of Javascript there.</cmd>
+            </step>
+            <step>
+                <cmd>Connect it to the.opt template file.</cmd>
+                <info>
+                    <codeblock id="codeblock_mzr_hwg_y5b">        &lt;resources>
+            &lt;fileset>&lt;include name="js/**"/>&lt;/fileset>
+        &lt;/resources>
+        &lt;html-fragments>
+            &lt;fragment file="html/search.html" placeholder="webhelp.fragment.after.body"/>
+        &lt;/html-fragments></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>In the template folder create "src" directory where we will build our
+                    Javascript project.</cmd>
+            </step>
+            <step>
+                <cmd>Create a .babelrc.js config</cmd>
+                <info>
+                    <codeblock id="codeblock_rdb_vwg_y5b">module.exports = function (api) {
+	api.cache(true);
+
+	const presets = ['@babel/preset-env'];
+	
+	return {
+		presets
+	}
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a package.json file by using "npm init PROJECTNAME" command in
+                    terminal.</cmd>
+                <info>
+                    <codeblock id="codeblock_ncq_ywg_y5b">{
+  "name": "algolia-autocomplete-and-search",
+  "version": "1.0.0",
+  "description": "Will create a bundle js file to be used in the WebHelp Responsive output to run the Algolia search engine",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-dynamic-import-node-babel-7": "^2.0.7",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
+    "css-loader": "^6.7.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "@algolia/autocomplete-js": "^1.7.1",
+    "@algolia/autocomplete-theme-classic": "^1.7.1",
+    "algoliasearch": "^4.14.2",
+    "instantsearch.js": "^4.45.0"
+  }
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a webpack.config.js</cmd>
+                <info>
+                    <codeblock id="codeblock_kxh_bxg_y5b">const path = require('path');
+// Use for production.
+const distFolder = path.resolve(__dirname, '../js');
+
+module.exports = {
+	entry: { //location of your main js file
+		algolia: './app/main.js'
+	},
+    output: {
+        path: distFolder,
+        filename: '[name].js',  // where js files would be bundled to
+    },
+    module: {
+	    rules: [
+	        {
+	            test: /\.js$/, //using regex to tell babel exactly what files to transcompile
+	            exclude: /node_modules/, // files to be ignored
+	            use: {
+	                loader: 'babel-loader' // specify the loader
+	            } 
+	        },
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			}
+		]
+	}
+ } </codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a new file app/main.js</cmd>
+                <info>
+                    <codeblock id="codeblock_ihk_dxg_y5b">import { autocomplete, getAlgoliaResults } from "@algolia/autocomplete-js";
+
+import "@algolia/autocomplete-theme-classic";
+
+import algoliaConfig from "./../algolia-config.json";
+
+// Check if disableWebHelpDefaultSearchEngine() method is present.
+if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
+  WebHelpAPI.disableWebHelpDefaultSearchEngine();
+}
+
+// Connect to Algolia App with Search-only API key.
+const algoliasearch = require("algoliasearch");
+const searchClient = algoliasearch(
+  algoliaConfig.appId,
+  algoliaConfig.searchOnlyKey
+);
+
+const indexName = algoliaConfig.indexName;
+
+// Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
+const algoliaSearch = {
+  // Method that is called when Submit is performed.
+  performSearchOperation(query, successHandler, errorHandler) {
+    // Search for hits for the given query.
+    let result;
+    if (query.includes("label:")) {
+      let tag = query.split(":")[query.split(":").length - 1];
+      let facetFilters = `_tags:${tag}`;
+
+      result = searchClient
+        .initIndex(indexName)
+        .search("", { facetFilters: [facetFilters] });
+    } else {
+      result = searchClient.initIndex(indexName).search(query);
+    }
+
+    result
+      .then((obj) => {
+        // Extract data from Promise and create a SearchMeta object with extracted data.
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        // Extract data from Promise and create SearxhDocument object with extracted data.
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it.shortDescription,
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });
+
+        // Pass the extracted data to SearchResult so it can be displayed by WebHelp.
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  // Actions to do when page of results is changed.
+  onPageChangedHandler(pageToShow, query, successHandler, searchFailed) {
+    // Get results on the next page using the given by user query.
+    const result = searchClient.initIndex(indexName).search(query, {
+      page: pageToShow,
+    });
+
+    result
+      .then((obj) => {
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it.shortDescription,
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });
+
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+};
+
+// Check if setCustomSearchEngine() method is present in order to change it to Algolia engine.
+if (WebHelpAPI.setCustomSearchEngine) {
+  WebHelpAPI.setCustomSearchEngine(algoliaSearch);
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>The last thing we have to do is to create an Algolia config with our
+                    credentials. In root directory of the project create algolia-config.json</cmd>
+                <info>
+                    <codeblock id="codeblock_vqd_gxg_y5b">{
+    "appId": "APP_ID",
+    "searchOnlyKey": "SEARCH_ONLY_KEY",
+    "indexName": "INDEX_NAME"
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Now you can generate an Webhelp output and see the results!</cmd>
+            </step>
+        </steps>
+    </taskbody>
+</task>

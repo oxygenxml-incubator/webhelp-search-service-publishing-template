@@ -8,8 +8,9 @@
         <topicref href="tasks/template_to_replace_search_engine/algolia_index_with_crawling.dita"></topicref>
         <topicref href="tasks/template_to_replace_search_engine/searchable_attributes_and_ranking.dita"></topicref>
         <topicref href="tasks/template_to_replace_search_engine/highlighting_matching_words.dita"></topicref>
+        <topicref href="tasks/template_to_replace_search_engine/webhelp_change_engine.dita"></topicref>
         <topicref href="tasks/template_to_replace_search_engine/short_description_snippet.dita"></topicref>
-        <topicref href="tasks/template_to_replace_search_engine/integrate_algolia_autocomplete.dita"></topicref>
+        <topicref href="tasks/template_to_replace_search_engine/integrate_algolia_autocomplete_widget_in_webhelp_transformation.dita"></topicref>
     </topicref>
     
     <topicref href="topics/template_to_replace_results_page.dita">

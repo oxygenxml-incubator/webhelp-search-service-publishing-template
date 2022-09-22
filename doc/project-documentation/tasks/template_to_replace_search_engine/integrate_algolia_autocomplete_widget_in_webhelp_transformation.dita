@@ -2,14 +2,450 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="integrate_algolia_autocomplete_widget_in_webhelp_transformation">
     <title>Integrate Algolia Autocomplete widget in WebHelp transformation</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to add Algolia autocomplete to the template and put it into Webhelp
+        output?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>We'll replace the search form from WebHelp and put an autocomplete from Algolia.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>In the template root directory create a "xslt" folder</cmd>
+            </step>
+            <step>
+                <cmd>Create custom.xsl file in "xslt" directory</cmd>
+                <info>
+                    <codeblock id="codeblock_qdn_jyg_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    
+    
+    xmlns:whc="http://www.oxygenxml.com/webhelp/components"
+    xmlns="http://www.w3.org/1999/xhtml"
+    
+    
+    exclude-result-prefixes="xs"
+    version="2.0">
+    
+    &lt;xsl:import href="labels-show.xsl"/>
+    &lt;!-- 
+         Generate  &lt;div  id="autocomplete"> for Algolia autocomplete integration. 
+    -->
+    &lt;xsl:template match="whc:webhelp_search_input" mode="copy_template">
+        &lt;!-- EXM-36737 - Context node used for messages localization -->
+        &lt;xsl:param name="i18n_context" tunnel="yes" as="element()*"/>
+        &lt;div>
+            &lt;xsl:call-template name="generateComponentClassAttribute">
+                &lt;xsl:with-param name="compClass">wh_search_input&lt;/xsl:with-param>
+            &lt;/xsl:call-template>
+            &lt;!-- Copy attributes -->
+            &lt;xsl:copy-of select="@* except @class"/>
+            
+            &lt;xsl:variable name="localizedSearch">
+                &lt;xsl:choose>
+                    &lt;xsl:when test="exists($i18n_context)">
+                        &lt;xsl:for-each select="$i18n_context[1]">
+                            &lt;xsl:call-template name="getWebhelpString">
+                                &lt;xsl:with-param name="stringName" select="'webhelp.search'"/>
+                            &lt;/xsl:call-template>
+                        &lt;/xsl:for-each>
+                    &lt;/xsl:when>
+                    &lt;xsl:otherwise>Search&lt;/xsl:otherwise>
+                &lt;/xsl:choose>
+            &lt;/xsl:variable>
+            &lt;xsl:variable name="localizedSearchQuery">
+                &lt;xsl:choose>
+                    &lt;xsl:when test="exists($i18n_context)">
+                        &lt;xsl:for-each select="$i18n_context[1]">
+                            &lt;xsl:call-template name="getWebhelpString">
+                                &lt;xsl:with-param name="stringName" select="'search.query'"/>
+                            &lt;/xsl:call-template>
+                        &lt;/xsl:for-each>
+                    &lt;/xsl:when>
+                    &lt;xsl:otherwise>Search query&lt;/xsl:otherwise>
+                &lt;/xsl:choose>
+            &lt;/xsl:variable>
+            
+            &lt;xsl:variable name="search_comp_output">
+                &lt;form id="searchForm"
+                    method="get"
+                    role="search"                            
+                    action="{concat($PATH2PROJ, 'search', $OUTEXT)}">
+                    &lt;div  id="autocomplete">
+                        &lt;!--&lt;input type="search" placeholder="{$localizedSearch} " class="wh_search_textfield"
+                            id="textToSearch" name="searchQuery" aria-label="{$localizedSearchQuery}" required="required"/>
+                        &lt;button type="submit" class="wh_search_button" aria-label="{$localizedSearch}">&lt;span class="search_input_text">&lt;xsl:value-of select="$localizedSearch"/>&lt;/span>&lt;/button>-->
+                    &lt;/div>
+                &lt;/form>
+            &lt;/xsl:variable>
+            
+            &lt;xsl:call-template name="outputComponentContent">
+                &lt;xsl:with-param name="compContent" select="$search_comp_output"/>
+                &lt;xsl:with-param name="compName" select="local-name()"/>
+            &lt;/xsl:call-template>
+        &lt;/div>
+    &lt;/xsl:template>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>At the end of our main.js file add this:</cmd>
+                <info>
+                    <codeblock id="codeblock_gqy_kyg_y5b">const navigateToSearch = (state) => {
+  const path =
+    document.querySelector('meta[name="wh-path2root"]').content +
+    "search.html?searchQuery=" +
+    state.collections[0].items[state.activeItemId].title;
+
+  window.location = path;
+};
+
+// If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
+if (document.getElementById("autocomplete")) {
+  autocomplete({
+    id: "webhelp-algolia-search",
+    container: "#autocomplete",
+    placeholder: "Search",
+
+    initialState: {
+      query: window.location.href.includes("search.html?searchQuery=")
+        ? decodeURI(
+            window.location.href.substring(
+              window.location.href.indexOf("=") + 1,
+              window.location.href.length
+            )
+          )
+        : "",
+    },
+
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      // Check if it's not empty
+      if (state.query != "") {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+          window.location = path;
+        } else {
+          navigateToSearch(state);
+        }
+      }
+    },
+
+    // Actions to perform to get suggestions for user.
+    getSources({ query }) {
+      return [
+        {
+          sourceId: "topics",
+          // Return URL of the selected item.
+          getItemUrl({ item }) {
+            return item.objectID;
+          },
+          // Get suggestions.
+          getItems() {
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    hitsPerPage: 5,
+                    attributesToSnippet: ["title:10", "content:30"],
+                    snippetEllipsisText: "…",
+                  },
+                },
+              ],
+            });
+          },
+          // HTML template that is used in order to display suggestions.
+          templates: {
+            item({ item, components, html, state }) {
+              return html`&lt;div
+                class="aa-ItemWrapper"
+                onclick="${() => {
+                  navigateToSearch(state);
+                }}"
+              >
+                &lt;div class="aa-ItemContent">
+                  &lt;div class="aa-ItemContentBody">
+                    &lt;div class="aa-ItemContentTitle">
+                      ${components.Highlight({
+                        hit: item,
+                        attribute: "title",
+                      })}
+                    &lt;/div>
+                    &lt;div class="aa-ItemContentDescription">
+                      ${components.Snippet({
+                        hit: item,
+                        attribute: "content",
+                      })}
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>`;
+            },
+          },
+        },
+      ];
+    },
+    // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
+    navigator: {
+      navigate({ state }) {
+        navigateToSearch(state);
+      },
+    },
+  });
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>It should look like this:</cmd>
+                <info>
+                    <codeblock id="codeblock_tv1_myg_y5b">import { autocomplete, getAlgoliaResults } from "@algolia/autocomplete-js";
+
+import "@algolia/autocomplete-theme-classic";
+
+import algoliaConfig from "./../algolia-config.json";
+
+// Check if disableWebHelpDefaultSearchEngine() method is present.
+if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
+  WebHelpAPI.disableWebHelpDefaultSearchEngine();
+}
+
+// Connect to Algolia App with Search-only API key.
+const algoliasearch = require("algoliasearch");
+const searchClient = algoliasearch(
+  algoliaConfig.appId,
+  algoliaConfig.searchOnlyKey
+);
+
+const indexName = algoliaConfig.indexName;
+
+// Create a object that implements performSearchOperation() and onPageChangedHandler() methods so it can be used by WebHelp.
+const algoliaSearch = {
+  // Method that is called when Submit is performed.
+  performSearchOperation(query, successHandler, errorHandler) {
+    // Search for hits for the given query.
+    let result;
+    if (query.includes("label:")) {
+      let tag = query.split(":")[query.split(":").length - 1];
+      let facetFilters = `_tags:${tag}`;
+
+      result = searchClient
+        .initIndex(indexName)
+        .search("", { facetFilters: [facetFilters] });
+    } else {
+      result = searchClient.initIndex(indexName).search(query);
+    }
+
+    result
+      .then((obj) => {
+        // Extract data from Promise and create a SearchMeta object with extracted data.
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        // Extract data from Promise and create SearxhDocument object with extracted data.
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it._snippetResult.content.value,
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });
+
+        // Pass the extracted data to SearchResult so it can be displayed by WebHelp.
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  // Actions to do when page of results is changed.
+  onPageChangedHandler(pageToShow, query, successHandler, searchFailed) {
+    // Get results on the next page using the given by user query.
+    const result = searchClient.initIndex(indexName).search(query, {
+      page: pageToShow,
+    });
+
+    result
+      .then((obj) => {
+        const meta = new WebHelpAPI.SearchMeta(
+          "Algolia",
+          obj.nbHits,
+          obj.page,
+          obj.hitsPerPage,
+          obj.nbPages,
+          query,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        );
+
+        const documents = obj.hits.map((it) => {
+          return new WebHelpAPI.SearchDocument(
+            it.objectID,
+            it.title,
+            it._snippetResult.content.value,
+            [],
+            0,
+            [],
+            it._highlightResult.content.matchedWords
+          );
+        });
+
+        successHandler(new WebHelpAPI.SearchResult(meta, documents));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+};
+
+// Check if setCustomSearchEngine() method is present in order to change it to Algolia engine.
+if (WebHelpAPI.setCustomSearchEngine) {
+  WebHelpAPI.setCustomSearchEngine(algoliaSearch);
+}
+
+const navigateToSearch = (state) => {
+  const path =
+    document.querySelector('meta[name="wh-path2root"]').content +
+    "search.html?searchQuery=" +
+    state.collections[0].items[state.activeItemId].title;
+
+  window.location = path;
+};
+
+// If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
+if (document.getElementById("autocomplete")) {
+  autocomplete({
+    id: "webhelp-algolia-search",
+    container: "#autocomplete",
+    placeholder: "Search",
+
+    initialState: {
+      query: window.location.href.includes("search.html?searchQuery=")
+        ? decodeURI(
+            window.location.href.substring(
+              window.location.href.indexOf("=") + 1,
+              window.location.href.length
+            )
+          )
+        : "",
+    },
+
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      // Check if it's not empty
+      if (state.query != "") {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+          window.location = path;
+        } else {
+          navigateToSearch(state);
+        }
+      }
+    },
+
+    // Actions to perform to get suggestions for user.
+    getSources({ query }) {
+      return [
+        {
+          sourceId: "topics",
+          // Return URL of the selected item.
+          getItemUrl({ item }) {
+            return item.objectID;
+          },
+          // Get suggestions.
+          getItems() {
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    hitsPerPage: 5,
+                    attributesToSnippet: ["title:10", "content:30"],
+                    snippetEllipsisText: "…",
+                  },
+                },
+              ],
+            });
+          },
+          // HTML template that is used in order to display suggestions.
+          templates: {
+            item({ item, components, html, state }) {
+              return html`&lt;div
+                class="aa-ItemWrapper"
+                onclick="${() => {
+                  navigateToSearch(state);
+                }}"
+              >
+                &lt;div class="aa-ItemContent">
+                  &lt;div class="aa-ItemContentBody">
+                    &lt;div class="aa-ItemContentTitle">
+                      ${components.Highlight({
+                        hit: item,
+                        attribute: "title",
+                      })}
+                    &lt;/div>
+                    &lt;div class="aa-ItemContentDescription">
+                      ${components.Snippet({
+                        hit: item,
+                        attribute: "content",
+                      })}
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>`;
+            },
+          },
+        },
+      ];
+    },
+    // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
+    navigator: {
+      navigate({ state }) {
+        navigateToSearch(state);
+      },
+    },
+  });
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>All you have to do now is to generate your documentation and enjoy the
+                    results!</cmd>
             </step>
         </steps>
     </taskbody>
