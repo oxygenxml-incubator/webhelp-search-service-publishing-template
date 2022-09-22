@@ -68,7 +68,7 @@ if (document.getElementById("autocomplete")) {
     // Actions to perform when user submits the query.
     onSubmit(state) {
       // Check if it's not empty
-      if (state.query != "") {
+      if (state.state.query.trim().length !== 0) {
         if (state.activeItemId == null) {
           const path =
             document.querySelector('meta[name="wh-path2root"]').content +
@@ -80,6 +80,8 @@ if (document.getElementById("autocomplete")) {
           navigateToSearch(state);
         }
       }
+
+      return;
     },
 
     // Actions to perform to get suggestions for user.
