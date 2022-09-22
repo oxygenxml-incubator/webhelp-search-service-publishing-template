@@ -62,6 +62,8 @@ public class CrawlerFaceting extends CrawlerAbstract<PageFaceting> {
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
 				.setProps(collectProfilingCondition(page, "props"))
 				.setOtherprops(collectProfilingCondition(page, "otherprops")));
+		
+		logger.info("Page {} was crawled!", page.title());
 	}
 
 	/**

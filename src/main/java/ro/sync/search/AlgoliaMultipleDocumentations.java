@@ -96,8 +96,8 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 
 			index.saveObjects(crawler.getCrawledPages());
 
-			logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
-					index.getUrlEncodedIndexName());
+			logger.info("{} Page object(s) from documentation {} successfully added to {} index!",
+					crawler.getCrawledPages().size(), documentation.getKey(), index.getUrlEncodedIndexName());
 		}
 	}
 }

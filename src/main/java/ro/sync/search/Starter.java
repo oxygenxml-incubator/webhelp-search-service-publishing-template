@@ -26,7 +26,7 @@ public class Starter {
 	 */
 	private static void useBaseCrawler(String... args) {
 		try {
-			AlgoliaFaceting algolia = new AlgoliaFaceting();
+			AlgoliaBase algolia = new AlgoliaBase();
 			algolia.useArguments(args);
 		} catch (IllegalArgumentException e) {
 			logger.error("Invalid arguments passed!");
@@ -44,7 +44,7 @@ public class Starter {
 	 */
 	private static void useFacetingCrawler(String... args) {
 		try {
-			AlgoliaBase algolia = new AlgoliaBase();
+			AlgoliaFaceting algolia = new AlgoliaFaceting();
 			algolia.useArguments(args);
 		} catch (IllegalArgumentException e) {
 			logger.error("Invalid arguments passed!");
@@ -82,9 +82,9 @@ public class Starter {
 	public static void main(String[] args) {
 		if (args.length == 1) {
 			useMultipleDocumentationsCrawler(args);
-		} else if (args.length == 3) {
-			useFacetingCrawler(args);
 		} else if (args.length == 4) {
+			useFacetingCrawler(args);
+		} else if (args.length == 3) {
 			useBaseCrawler(args);
 		} else {
 			logger.info("Invalid Arguments!");

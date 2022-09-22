@@ -47,6 +47,8 @@ public class CrawlerMultipleDocumentations extends CrawlerAbstract<PageMultipleD
 				.setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
 				.setKeywords(collectKeywords(page))).setBreadcrumb(collectBreadcrumb(page))
 				.setContent(collectContent(page)).setUrl(page.baseUri())).setDocumentation(this.documentationName));
+		
+		logger.info("Page {} was crawled!", page.title());
 	}
 
 	/**

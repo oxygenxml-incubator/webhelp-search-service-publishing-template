@@ -44,5 +44,7 @@ public class CrawlerBase extends CrawlerAbstract<PageBase> {
 	protected void collectData(final Document page) {
 		pages.add(new PageBase().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
 				.setKeywords(collectKeywords(page)).setContent(collectContent(page)).setUrl(page.baseUri()));
+		
+		logger.info("Page {} was crawled!", page.title());
 	}
 }
