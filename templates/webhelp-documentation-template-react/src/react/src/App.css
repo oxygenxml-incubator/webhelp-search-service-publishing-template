@@ -88,6 +88,10 @@ body {
   margin-bottom: 0px;
 }
 
+.title:visited {
+  color: #9893df;
+}
+
 .description {
   font-size: 12px;
   font-family: "Roboto", sans-serif;
@@ -127,7 +131,7 @@ body {
   width: 50%;
 
   text-align: center;
-  color: #9893DF;
+  color: #9893df;
   font-size: 26px;
   font-family: "Roboto", sans-serif;
 
@@ -212,11 +216,18 @@ div.page-selection button:nth-last-child(1) {
 .filter-title {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
+
+  color: #707070;
 }
 
 .filter-selection {
-  text-align: center;
-  color: #707070;
+  top: 436px;
+  left: 152px;
+  width: 18px;
+  height: 18px;
+
+  background: #898d94 0% 0% no-repeat padding-box;
+  opacity: 0.54;
 }
 
 .filter-label {
@@ -247,6 +258,7 @@ div.page-selection button:nth-last-child(1) {
   width: 30%;
 
   text-align: center;
+  color: #707070;
 }
 
 .filter-button {
