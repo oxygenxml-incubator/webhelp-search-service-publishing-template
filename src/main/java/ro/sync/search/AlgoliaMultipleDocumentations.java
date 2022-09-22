@@ -51,11 +51,12 @@ public class AlgoliaMultipleDocumentations extends AlgoliaBase {
 	 * Sets settings for the index.
 	 */
 	private void prepareIndex() {
-		index.setSettings(new IndexSettings()
-				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
-				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
-				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
-				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(Arrays.asList("_tags")));
+		index.setSettings(
+				new IndexSettings().setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+						.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+						.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+						.setAttributesToSnippet(Arrays.asList("content:30"))
+						.setAttributesForFaceting(Arrays.asList("_tags", "documentation")));
 		index.clearObjects();
 	}
 
