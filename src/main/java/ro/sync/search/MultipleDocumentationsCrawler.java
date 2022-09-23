@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
  * @author Bozieac Artiom
  *
  */
-public class MultipleDocumentationsCrawler extends AbstractCrawler<PageMultipleDocumentations> {
+public class MultipleDocumentationsCrawler extends AbstractCrawler<MultipleDocumentationsPage> {
 	/**
 	 * Documentation's name.
 	 */
@@ -43,7 +43,7 @@ public class MultipleDocumentationsCrawler extends AbstractCrawler<PageMultipleD
 	 */
 	@Override
 	protected void collectData(final Document page) {
-		pages.add(((PageMultipleDocumentations) ((PageMultipleDocumentations) new PageMultipleDocumentations()
+		pages.add(((MultipleDocumentationsPage) ((MultipleDocumentationsPage) new MultipleDocumentationsPage()
 				.setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
 				.setKeywords(collectKeywords(page))).setBreadcrumb(collectBreadcrumb(page))
 				.setContent(collectContent(page)).setUrl(page.baseUri())).setDocumentation(this.documentationName));
