@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Bozieac Artiom
  *
  */
-public class PageFaceting extends PageBase {
+public class FacetingPage extends BasicPage {
 	/**
 	 * Page's collected profiling condition of product.
 	 */
@@ -43,7 +43,7 @@ public class PageFaceting extends PageBase {
 	 * @param product is the page's profiling condition of product.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setProduct(final List<String> product) {
+	public FacetingPage setProduct(final List<String> product) {
 		this.product = product;
 		return this;
 	}
@@ -52,7 +52,7 @@ public class PageFaceting extends PageBase {
 	 * @param platform is the page's profiling condition of platform.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setPlatform(final List<String> platform) {
+	public FacetingPage setPlatform(final List<String> platform) {
 		this.platform = platform;
 		return this;
 	}
@@ -61,7 +61,7 @@ public class PageFaceting extends PageBase {
 	 * @param audience is the page's profiling condition of audience.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setAudience(final List<String> audience) {
+	public FacetingPage setAudience(final List<String> audience) {
 		this.audience = audience;
 		return this;
 	}
@@ -70,7 +70,7 @@ public class PageFaceting extends PageBase {
 	 * @param rev is the page's profiling condition of rev.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setRev(final List<String> rev) {
+	public FacetingPage setRev(final List<String> rev) {
 		this.rev = rev;
 		return this;
 	}
@@ -79,7 +79,7 @@ public class PageFaceting extends PageBase {
 	 * @param props is the page's profiling condition of props.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setProps(final List<String> props) {
+	public FacetingPage setProps(final List<String> props) {
 		this.props = props;
 		return this;
 	}
@@ -88,7 +88,7 @@ public class PageFaceting extends PageBase {
 	 * @param otherprops is the page's profiling condition of otherprops.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setOtherprops(final List<String> otherprops) {
+	public FacetingPage setOtherprops(final List<String> otherprops) {
 		this.otherprops = otherprops;
 		return this;
 	}
@@ -99,7 +99,7 @@ public class PageFaceting extends PageBase {
 	 *                   Title and Relative path.
 	 * @return reference to the current instance.
 	 */
-	public PageFaceting setBreadcrumb(final List<Map.Entry<String, String>> breadcrumb) {
+	public FacetingPage setBreadcrumb(final List<Map.Entry<String, String>> breadcrumb) {
 		this.breadcrumb = breadcrumb;
 		return this;
 	}

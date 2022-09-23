@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Artiom Bozieac
  *
  */
-public class PageBase {
+public class BasicPage {
 	/**
 	 * URL from whom the data was collected.
 	 */
@@ -39,7 +39,7 @@ public class PageBase {
 	 * @param url is the URL from whom the data should be collected.
 	 * @return reference to the current instance.
 	 */
-	protected PageBase setUrl(final String url) {
+	protected BasicPage setUrl(final String url) {
 		this.url = url;
 		return this;
 	}
@@ -48,7 +48,7 @@ public class PageBase {
 	 * @param title is the page's title.
 	 * @return reference to the current instance.
 	 */
-	protected PageBase setTitle(final String title) {
+	protected BasicPage setTitle(final String title) {
 		this.title = title;
 		return this;
 	}
@@ -57,7 +57,7 @@ public class PageBase {
 	 * @param shortDescription is the page's short description.
 	 * @return reference to the current instance.
 	 */
-	protected PageBase setShortDescription(final String shortDescription) {
+	protected BasicPage setShortDescription(final String shortDescription) {
 		this.shortDescription = shortDescription;
 		return this;
 	}
@@ -66,7 +66,7 @@ public class PageBase {
 	 * @param keywords is the page's collected keywords from metadata.
 	 * @return reference to the current instance.
 	 */
-	protected PageBase setKeywords(final List<String> keywords) {
+	protected BasicPage setKeywords(final List<String> keywords) {
 		this.keywords = keywords;
 		return this;
 	}
@@ -75,7 +75,7 @@ public class PageBase {
 	 * @param content is the page's content that represents the body.
 	 * @return reference to the current instance.
 	 */
-	protected PageBase setContent(final String content) {
+	protected BasicPage setContent(final String content) {
 		this.content = content;
 		return this;
 	}

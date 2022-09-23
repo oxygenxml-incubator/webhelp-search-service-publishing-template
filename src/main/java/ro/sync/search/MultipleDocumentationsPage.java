@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Bozieac Artiom
  *
  */
-public class PageMultipleDocumentations extends PageBase {
+public class MultipleDocumentationsPage extends BasicPage {
 	/**
 	 * The page's breadcrumb which is a list of entries that contains Title and
 	 * Relative path.
@@ -25,7 +25,7 @@ public class PageMultipleDocumentations extends PageBase {
 	 *                   Title and Relative path.
 	 * @return reference to the current instance.
 	 */
-	public PageMultipleDocumentations setBreadcrumb(final List<Map.Entry<String, String>> breadcrumb) {
+	public MultipleDocumentationsPage setBreadcrumb(final List<Map.Entry<String, String>> breadcrumb) {
 		this.breadcrumb = breadcrumb;
 		return this;
 	}
@@ -34,7 +34,7 @@ public class PageMultipleDocumentations extends PageBase {
 	 * @param documentation is the documentation to which the page belongs.
 	 * @return reference to the current instance.
 	 */
-	public PageMultipleDocumentations setDocumentation(final String documentation) {
+	public MultipleDocumentationsPage setDocumentation(final String documentation) {
 		this.documentation = documentation;
 		return this;
 	}
