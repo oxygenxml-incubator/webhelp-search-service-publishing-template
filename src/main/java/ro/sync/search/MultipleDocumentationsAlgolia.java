@@ -35,7 +35,7 @@ public class MultipleDocumentationsAlgolia extends BasicAlgolia {
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
-	protected SearchIndex<PageMultipleDocumentations> multipleDocumentationsIndex;
+	protected SearchIndex<MultipleDocumentationsPage> multipleDocumentationsIndex;
 
 	/**
 	 * Constructor to set up necessary stuff like properties for Algolia connection.
@@ -86,7 +86,7 @@ public class MultipleDocumentationsAlgolia extends BasicAlgolia {
 					documentationsJson.getJSONObject(i).getString("Publication URL"));
 
 		multipleDocumentationsIndex = client.initIndex(jsonObject.getString("indexName"),
-				PageMultipleDocumentations.class);
+				MultipleDocumentationsPage.class);
 		prepareIndex();
 
 		// Crawl every single documentation and store it in Algolia index.

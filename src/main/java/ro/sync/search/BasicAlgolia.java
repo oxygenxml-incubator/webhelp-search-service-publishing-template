@@ -40,7 +40,7 @@ public class BasicAlgolia {
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
-	protected SearchIndex<PageBase> basicIndex;
+	protected SearchIndex<BasicPage> basicIndex;
 
 	/**
 	 * Constructor to set up all the necessary data like properties for Algolia
@@ -113,7 +113,7 @@ public class BasicAlgolia {
 		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty())
 			throw new IllegalArgumentException();
 
-		basicIndex = client.initIndex(indexName, PageBase.class);
+		basicIndex = client.initIndex(indexName, BasicPage.class);
 		basicIndex.clearObjects();
 		populateIndex(url, baseUrl);
 	}

@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
  * @author artio
  *
  */
-public class FacetingCrawler extends AbstractCrawler<PageFaceting> {
+public class FacetingCrawler extends AbstractCrawler<FacetingPage> {
 	/**
 	 * Path that leads to the JSON file where all profiling values and conditions
 	 * are stored.
@@ -43,7 +43,7 @@ public class FacetingCrawler extends AbstractCrawler<PageFaceting> {
 	 * @return list of crawled pages
 	 */
 	@Override
-	public List<PageFaceting> getCrawledPages() {
+	public List<FacetingPage> getCrawledPages() {
 		return this.pages;
 	}
 
@@ -54,7 +54,7 @@ public class FacetingCrawler extends AbstractCrawler<PageFaceting> {
 	 * @param page is the desired document whose data should be collected.
 	 */
 	protected void collectData(final Document page) {
-		pages.add(((PageFaceting) ((PageFaceting) new PageFaceting().setTitle(collectTitle(page))
+		pages.add(((FacetingPage) ((FacetingPage) new FacetingPage().setTitle(collectTitle(page))
 				.setShortDescription(collectShortDescription(page)).setKeywords(collectKeywords(page)))
 				.setBreadcrumb(collectBreadcrumb(page)).setContent(collectContent(page)).setUrl(page.baseUri()))
 				.setProduct(collectProfilingCondition(page, "product"))

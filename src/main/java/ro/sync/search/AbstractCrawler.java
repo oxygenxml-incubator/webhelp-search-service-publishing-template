@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @param <T> is the version of page to be used. PageBase, PageFaceting or
  *            PageMultipleDocumentations.
  */
-public abstract class AbstractCrawler<T extends PageBase> {
+public abstract class AbstractCrawler<T extends BasicPage> {
 	/**
 	 * Logger to inform user about certain actions like errors and others.
 	 */

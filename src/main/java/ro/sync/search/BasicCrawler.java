@@ -11,7 +11,7 @@ import org.jsoup.nodes.Document;
  * @author Bozieac Artiom
  *
  */
-public class BasicCrawler extends AbstractCrawler<PageBase> {
+public class BasicCrawler extends AbstractCrawler<BasicPage> {
 	/**
 	 * Constructor with url and baseUrl parameters.
 	 * 
@@ -31,7 +31,7 @@ public class BasicCrawler extends AbstractCrawler<PageBase> {
 	 * @return list of crawled pages
 	 */
 	@Override
-	public List<PageBase> getCrawledPages() {
+	public List<BasicPage> getCrawledPages() {
 		return this.pages;
 	}
 
@@ -42,7 +42,7 @@ public class BasicCrawler extends AbstractCrawler<PageBase> {
 	 * @param page is the desired document whose data should be collected.
 	 */
 	protected void collectData(final Document page) {
-		pages.add(new PageBase().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
+		pages.add(new BasicPage().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
 				.setKeywords(collectKeywords(page)).setContent(collectContent(page)).setUrl(page.baseUri()));
 		
 		logger.info("Page {} was crawled!", page.title());

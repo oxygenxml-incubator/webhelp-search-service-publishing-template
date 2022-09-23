@@ -26,7 +26,7 @@ public class FacetingAlgolia extends BasicAlgolia {
 	/**
 	 * Index that stores the current index performing actions on;
 	 */
-	protected SearchIndex<PageFaceting> facetsIndex;
+	protected SearchIndex<FacetingPage> facetsIndex;
 
 	/**
 	 * Constructor to set up necessary stuff like properties for Algolia connection.
@@ -99,7 +99,7 @@ public class FacetingAlgolia extends BasicAlgolia {
 		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty() || profilingConditionsPath.isEmpty())
 			throw new IllegalArgumentException();
 
-		facetsIndex = client.initIndex(indexName, PageFaceting.class);
+		facetsIndex = client.initIndex(indexName, FacetingPage.class);
 		facetsIndex.clearObjects();
 		populateIndex(url, baseUrl, profilingConditionsPath);
 	}

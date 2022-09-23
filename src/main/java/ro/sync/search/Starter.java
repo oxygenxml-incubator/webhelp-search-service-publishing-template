@@ -38,7 +38,7 @@ public class Starter {
 	}
 
 	/**
-	 * Use base version of crawler.
+	 * Use basic version of crawler.
 	 * 
 	 * @param args is the passed arguments.
 	 */
