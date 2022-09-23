@@ -7,9 +7,7 @@
     <taskbody>
         <context>
             <p>We will change the short descriptions of the search results by a snippet of matching
-                words from content that we set earlier when creating <xref
-                    href="searchable_attributes_and_ranking.dita" format="xml"
-                    >BasicAlgolia.java</xref> It's really that simple!</p>
+                words from content that we set earlier when creating BasicAlgolia.java. It's really that simple!</p>
         </context>
         <steps>
             <step>

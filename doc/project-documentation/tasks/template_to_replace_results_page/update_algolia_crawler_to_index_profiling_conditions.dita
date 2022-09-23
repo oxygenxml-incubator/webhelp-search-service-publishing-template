@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="update_algolia_crawler_to_index_profiling_conditions">
+    <title>Update Algolia Crawler to index profiling conditions</title>
+    <shortdesc>How to implement profiling conditions in an Algolia index and how to use them as
+        filters?</shortdesc>
+    <taskbody>
+        <context>
+            <p>How to modify a template to make it extracting profiling conditions from DITA to meta
+                in HTML pages and generate a JSON file that will store every single met profiling
+                condition and its possible values?</p>
+        </context>
+        <steps>
+            <step>
+                <cmd>First of all create a new template for this use case where we'll be using React
+                    to add in the future filter component.</cmd>
+            </step>
+            <step>
+                <cmd>Create and "xslt" folder in root directory of the template</cmd>
+            </step>
+            <step>
+                <cmd>in "xslt" directory create these .xsl files:</cmd>
+            </step>
+            <step>
+                <cmd>createMainPage-custom.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_dfq_plm_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+    &lt;xsl:import href="custom-search-page.xsl"/>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>createSearchPage-custom.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_pty_qlm_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+    &lt;xsl:import href="custom-search-page.xsl"/>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>custom-search-page.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_jt5_rlm_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    
+    
+    xmlns:whc="http://www.oxygenxml.com/webhelp/components"
+    xmlns="http://www.w3.org/1999/xhtml"
+    
+    
+    exclude-result-prefixes="xs"
+    version="2.0">
+    
+    &lt;!-- 
+         Generate  &lt;div  id="autocomplete"> for Algolia autocomplete integration. 
+    -->
+    &lt;xsl:template match="whc:webhelp_search_input" mode="copy_template">
+        &lt;!-- EXM-36737 - Context node used for messages localization -->
+        &lt;xsl:param name="i18n_context" tunnel="yes" as="element()*"/>
+        &lt;div>
+            &lt;xsl:call-template name="generateComponentClassAttribute">
+                &lt;xsl:with-param name="compClass">wh_search_input&lt;/xsl:with-param>
+            &lt;/xsl:call-template>
+            &lt;!-- Copy attributes -->
+            &lt;xsl:copy-of select="@* except @class"/>
+            
+            &lt;xsl:variable name="localizedSearch">
+                &lt;xsl:choose>
+                    &lt;xsl:when test="exists($i18n_context)">
+                        &lt;xsl:for-each select="$i18n_context[1]">
+                            &lt;xsl:call-template name="getWebhelpString">
+                                &lt;xsl:with-param name="stringName" select="'webhelp.search'"/>
+                            &lt;/xsl:call-template>
+                        &lt;/xsl:for-each>
+                    &lt;/xsl:when>
+                    &lt;xsl:otherwise>Search&lt;/xsl:otherwise>
+                &lt;/xsl:choose>
+            &lt;/xsl:variable>
+            &lt;xsl:variable name="localizedSearchQuery">
+                &lt;xsl:choose>
+                    &lt;xsl:when test="exists($i18n_context)">
+                        &lt;xsl:for-each select="$i18n_context[1]">
+                            &lt;xsl:call-template name="getWebhelpString">
+                                &lt;xsl:with-param name="stringName" select="'search.query'"/>
+                            &lt;/xsl:call-template>
+                        &lt;/xsl:for-each>
+                    &lt;/xsl:when>
+                    &lt;xsl:otherwise>Search query&lt;/xsl:otherwise>
+                &lt;/xsl:choose>
+            &lt;/xsl:variable>
+            
+            &lt;xsl:variable name="search_comp_output">
+                &lt;form id="searchForm"
+                    method="get"
+                    role="search"                            
+                    action="{concat($PATH2PROJ, 'search', $OUTEXT)}">
+                    &lt;div  id="autocomplete">
+                        &lt;!--&lt;input type="search" placeholder="{$localizedSearch} " class="wh_search_textfield"
+                            id="textToSearch" name="searchQuery" aria-label="{$localizedSearchQuery}" required="required"/>
+                        &lt;button type="submit" class="wh_search_button" aria-label="{$localizedSearch}">&lt;span class="search_input_text">&lt;xsl:value-of select="$localizedSearch"/>&lt;/span>&lt;/button>-->
+                    &lt;/div>
+                &lt;/form>
+            &lt;/xsl:variable>
+            
+            &lt;xsl:call-template name="outputComponentContent">
+                &lt;xsl:with-param name="compContent" select="$search_comp_output"/>
+                &lt;xsl:with-param name="compName" select="local-name()"/>
+            &lt;/xsl:call-template>
+        &lt;/div>
+    &lt;/xsl:template>
+    
+    &lt;xsl:template match="whc:webhelp_search_results" mode="copy_template">
+        &lt;div class="wh_search_results col-xs-12 col-sm-12 col-md-12 col-lg-12" id="search-results">&lt;/div>
+    &lt;/xsl:template>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>dita2webhelp-custom.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_rms_slm_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">    
+    &lt;!--
+        Replace search form with Algolia autocomplete form
+    -->
+    &lt;xsl:import href="custom-search-page.xsl"/>
+    
+    &lt;!--
+        Display topic keywords as labels in topic
+    -->
+    &lt;xsl:import href="labels-show.xsl"/>
+    
+    &lt;!--
+        Push profiling information from toc.xml in topic HTML as meta
+    -->
+    &lt;xsl:import href="push-conditional-profiling.xsl"/>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>extract-subject-scheme-values.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_u34_tlm_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"    
+    xmlns:oxygen="http://www.oxygenxml.com/functions"
+    exclude-result-prefixes="oxygen"     
+    
+    version="2.0">
+    
+    &lt;xsl:output name="json" omit-xml-declaration="yes" indent="yes"/>
+    
+    &lt;xsl:template match="/">
+        &lt;xsl:next-match/>
+        
+        &lt;!-- Test if there is subject scheme map info -->
+        &lt;xsl:if test="//*[contains(@class, ' subjectScheme/hasInstance ')]">
+            &lt;xsl:variable name="subjectScheme" select="
+                oxygen:makeURL(
+                    concat(oxygen:getParameter('dita.map.output.dir'),'/subject-scheme-values.json'))"/>
+            &lt;xsl:result-document format="json" href="{$subjectScheme}">
+                &lt;xsl:text disable-output-escaping="yes">let subjectSchemeValues = {&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">"subjectScheme" : {&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">"attrValues" : [&lt;/xsl:text>
+                &lt;xsl:apply-templates mode="process-subject"/>
+                &lt;xsl:text disable-output-escaping="yes">]&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">}&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">}&lt;/xsl:text>
+            &lt;/xsl:result-document>
+            
+        &lt;/xsl:if>
+    &lt;/xsl:template>
+    
+    &lt;xsl:template match="*[contains(@class, ' subjectScheme/enumerationdef ')]/*[contains(@class, ' subjectScheme/attributedef ')]" 
+        mode="process-subject">
+        
+        &lt;xsl:variable name="subjectDefinition" 
+            select="parent::*/*[contains(@class, ' subjectScheme/subjectdef ')]/@keyref"/>
+        
+        &lt;xsl:if test="exists($subjectDefinition)">
+            &lt;xsl:variable name="subjectDefValues" select="
+                //*[contains(@class, ' subjectScheme/hasInstance ')]/*[contains(@class, ' subjectScheme/subjectdef ')][@keys=$subjectDefinition]"/>
+            &lt;xsl:if test="exists($subjectDefValues)">
+                &lt;xsl:text disable-output-escaping="yes">{&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">"name" : "&lt;/xsl:text> &lt;xsl:value-of select="@name"/>&lt;xsl:text>",&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">"values" : [&lt;/xsl:text>
+                &lt;xsl:apply-templates select="$subjectDefValues/*" mode="process-subject-values">&lt;/xsl:apply-templates>
+                &lt;xsl:text disable-output-escaping="yes">]&lt;/xsl:text>
+                &lt;xsl:text disable-output-escaping="yes">}&lt;/xsl:text>
+                
+                &lt;xsl:if test="parent::*/following-sibling::*/*[contains(@class, ' subjectScheme/subjectdef ')]/@keyref = //*[contains(@class, ' subjectScheme/hasInstance ')]/*[contains(@class, ' subjectScheme/subjectdef ')]/@keys">
+                    &lt;xsl:text disable-output-escaping="yes">,&lt;/xsl:text>
+                &lt;/xsl:if>
+            &lt;/xsl:if>
+        &lt;/xsl:if>
+    &lt;/xsl:template>
+    
+    &lt;xsl:template match="node() | @*" mode="process-subject">
+        &lt;xsl:apply-templates select="node() | @*" mode="process-subject"/>
+    &lt;/xsl:template>
+    
+    &lt;xsl:template match="*[contains(@class, ' subjectScheme/subjectdef ')][@keys]"
+        mode="process-subject-values">
+        &lt;xsl:text disable-output-escaping="yes">{&lt;/xsl:text>
+        &lt;xsl:text disable-output-escaping="yes">"key" : "&lt;/xsl:text> &lt;xsl:value-of select="@keys"/>&lt;xsl:text>",&lt;/xsl:text>
+        &lt;xsl:apply-templates mode="process-subject-values"/>
+        &lt;xsl:text disable-output-escaping="yes">}&lt;/xsl:text>
+        &lt;xsl:if test="following-sibling::*[contains(@class, ' subjectScheme/subjectdef ')][@keys]">,&lt;/xsl:if>
+    &lt;/xsl:template>
+    
+    &lt;xsl:template match="*[contains(@class, ' topic/navtitle ')]"
+        mode="process-subject-values">
+        &lt;xsl:text disable-output-escaping="yes">"navTitle" : "&lt;/xsl:text> &lt;xsl:value-of select="."/>&lt;xsl:text>"&lt;/xsl:text>
+    &lt;/xsl:template>
+    
+    &lt;xsl:template match="node() | @*" mode="process-subject-values">
+        &lt;xsl:apply-templates select="node() | @*" mode="process-subject-values"/>
+    &lt;/xsl:template>
+    
+    
+            
+    
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>labels-show.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_yxb_5lm_y5b">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+    &lt;xsl:template match="*[contains(@class, ' topic/prolog ')]">
+        &lt;!-- create a special div which displays all labels, with a link on each label -->
+        &lt;xsl:if test=".//keyword[@outputclass = 'label']">
+            &lt;div class="label-container" style="width:100%; text-align: right; font-style:italic; color:gray;">Labels:
+                &lt;xsl:apply-templates select=".//keyword[@outputclass = 'label']"/>
+            &lt;/div>
+        &lt;/xsl:if>
+        &lt;xsl:next-match/>
+    &lt;/xsl:template>
+    
+    &lt;!-- Match a label keyword and display it as a span -->
+    &lt;xsl:template match="keyword[@outputclass = 'label']">
+        &lt;a
+            href="{concat('../search.html?searchQuery=label:', normalize-space(translate(text(), ' ', ' ')))}">
+            &lt;span style="background-color:deepskyblue;color:white;border-radius: 6px;margin:0.2em;padding:0.2em;"
+                >&lt;xsl:value-of select="text()"/>&lt;/span>
+        &lt;/a>
+    &lt;/xsl:template>
+    
+    &lt;!-- Add specific HTML meta elements for each label -->
+    &lt;xsl:template match="*" mode="gen-keywords-metadata">
+        &lt;xsl:next-match/>
+        &lt;xsl:variable name="keywords-content">
+            &lt;!-- for each label -->
+            &lt;xsl:for-each select="//keyword[@outputclass = 'label']">
+                &lt;xsl:value-of
+                    select="concat('label_', normalize-space(translate(text(), ' ', '_')))"/>
+                &lt;xsl:if test="position() &amp;lt; last()">
+                    &lt;xsl:text>, &lt;/xsl:text>
+                &lt;/xsl:if>
+            &lt;/xsl:for-each>
+        &lt;/xsl:variable>
+        
+        &lt;xsl:if test="string-length($keywords-content) > 0">
+            &lt;meta name="keywords" content="{$keywords-content}"/>
+        &lt;/xsl:if>
+    &lt;/xsl:template>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>push-conditional-profiling.xsl</cmd>
+                <info>
+                    <codeblock id="codeblock_swt_5lm_y5b">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:toc="http://www.oxygenxml.com/ns/webhelp/toc"
+    
+    exclude-result-prefixes="xs"
+    version="2.0">
+    
+    &lt;!--
+        Generate &lt;meta> element with conditional profiling values associated with this topic.
+    -->
+    &lt;xsl:template match="/|node()|@*" mode="gen-user-head-child-elements">
+        
+        &lt;xsl:variable name="topicIDURL" select="
+            concat($TEMPDIR_URL, '/', $FILEDIR, '/', substring-before($FILENAME, '.'), '.tocid')"/>
+        &lt;xsl:variable name="tocid" select="unparsed-text($topicIDURL)"/>
+        
+        &lt;xsl:variable name="topic" select="$toc//toc:topic[@wh-toc-id=$tocid]"/>
+        
+        &lt;xsl:if test="$topic/@data-product">
+            &lt;!-- Topic with data-product info -->
+            &lt;xsl:element name="meta" namespace="http://www.w3.org/1999/xhtml">
+                &lt;xsl:attribute name="name" select="'wh-data-product'">&lt;/xsl:attribute>
+                &lt;xsl:attribute name="content" select="$topic/@data-product">&lt;/xsl:attribute>
+            &lt;/xsl:element>
+        &lt;/xsl:if>
+        
+        &lt;xsl:if test="$topic/@data-audience">
+            &lt;!-- Topic with data-product info -->
+            &lt;xsl:element name="meta" namespace="http://www.w3.org/1999/xhtml">
+                &lt;xsl:attribute name="name" select="'wh-data-audience'">&lt;/xsl:attribute>
+                &lt;xsl:attribute name="content" select="$topic/@data-audience">&lt;/xsl:attribute>
+            &lt;/xsl:element>
+        &lt;/xsl:if>
+    &lt;/xsl:template>
+    
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Connect these xslt files to your .opt file</cmd>
+                <info>
+                    <codeblock id="codeblock_ulz_3pm_y5b">        &lt;xslt>
+            &lt;extension file="xslt/createMainPage-custom.xsl" id="com.oxygenxml.webhelp.xsl.createMainPage"/>
+            &lt;extension file="xslt/createSearchPage-custom.xsl" id="com.oxygenxml.webhelp.xsl.createSearchPage"/>
+            &lt;extension file="xslt/dita2webhelp-custom.xsl" id="com.oxygenxml.webhelp.xsl.dita2webhelp"/>
+            &lt;extension file="xslt/extract-subject-scheme-values.xsl" id="com.oxygenxml.webhelp.xsl.createTocXML"/>
+        &lt;/xslt>
+        &lt;resources>
+            &lt;css file="style.css"/>
+            &lt;fileset>&lt;include name="js/**"/>&lt;/fileset>
+        &lt;/resources>
+        &lt;html-fragments>
+            &lt;fragment file="html/search.html" placeholder="webhelp.fragment.after.body"/>
+        &lt;/html-fragments></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Also create a /html directory in the root of your template and create there and
+                    searc.html file</cmd>
+                <info>
+                    <codeblock id="codeblock_fjs_lpm_y5b">&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;script src="${oxygen-webhelp-template-dir}/js/bundle.js">&lt;/script>
+  &lt;/head>
+  &lt;body>&lt;/body>
+&lt;/html>
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Now every single generated documentation with this template will have in its
+                    meta the used profiling conditions. Let's switch onto creating a Crawler and
+                    AlgoliaClient that will be using filters.</cmd>
+            </step>
+            <step>
+                <cmd>Create FacetingPage.java</cmd>
+                <info>
+                    <codeblock id="codeblock_v4d_1mm_y5b">package ro.sync.search;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Page class that is used for CrawlerFaceting to store data for Algolia index.
+ * @author Bozieac Artiom
+ *
+ */
+public class FacetingPage extends BasicPage {
+	/**
+	 * Page's collected profiling condition of product.
+	 */
+	private List&lt;String> product;
+	/**
+	 * Page's collected profiling condition of platform.
+	 */
+	private List&lt;String> platform;
+	/**
+	 * Page's collected profiling condition of audience.
+	 */
+	private List&lt;String> audience;
+	/**
+	 * Page's collected profiling condition of rev.
+	 */
+	private List&lt;String> rev;
+	/**
+	 * Page's collected profiling condition of props.
+	 */
+	private List&lt;String> props;
+	/**
+	 * Page's collected profiling condition of otherprops.
+	 */
+	private List&lt;String> otherprops;
+	/**
+	 * The page's breadcrumb which is a list of entries that contains Title and
+	 * Relative path.
+	 */
+	private List&lt;Map.Entry&lt;String, String>> breadcrumb;
+
+	/**
+	 * @param product is the page's profiling condition of product.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setProduct(final List&lt;String> product) {
+		this.product = product;
+		return this;
+	}
+
+	/**
+	 * @param platform is the page's profiling condition of platform.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setPlatform(final List&lt;String> platform) {
+		this.platform = platform;
+		return this;
+	}
+
+	/**
+	 * @param audience is the page's profiling condition of audience.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setAudience(final List&lt;String> audience) {
+		this.audience = audience;
+		return this;
+	}
+
+	/**
+	 * @param rev is the page's profiling condition of rev.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setRev(final List&lt;String> rev) {
+		this.rev = rev;
+		return this;
+	}
+
+	/**
+	 * @param props is the page's profiling condition of props.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setProps(final List&lt;String> props) {
+		this.props = props;
+		return this;
+	}
+
+	/**
+	 * @param otherprops is the page's profiling condition of otherprops.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setOtherprops(final List&lt;String> otherprops) {
+		this.otherprops = otherprops;
+		return this;
+	}
+
+	/**
+	 * 
+	 * @param breadcrumb is the page's breadcrumb which is a list of entries with
+	 *                   Title and Relative path.
+	 * @return reference to the current instance.
+	 */
+	public FacetingPage setBreadcrumb(final List&lt;Map.Entry&lt;String, String>> breadcrumb) {
+		this.breadcrumb = breadcrumb;
+		return this;
+	}
+
+	/**
+	 * @return Page's collected profiling conditions of product.
+	 */
+	public List&lt;String> getProduct() {
+		return this.product;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of platform.
+	 */
+	public List&lt;String> getPlatform() {
+		return this.platform;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of audience.
+	 */
+	public List&lt;String> getAudience() {
+		return this.audience;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of rev.
+	 */
+	public List&lt;String> getRev() {
+		return this.rev;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of props.
+	 */
+	public List&lt;String> getProps() {
+		return this.props;
+	}
+
+	/**
+	 * @return Page's collected profiling condition of otherprops.
+	 */
+	public List&lt;String> getOtherprops() {
+		return this.otherprops;
+	}
+
+	/**
+	 * @return Page's collected breadcrumb.
+	 */
+	public List&lt;Map.Entry&lt;String, String>> getBreadcrumb() {
+		return this.breadcrumb;
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create FacetingCrawler.java</cmd>
+                <info>
+                    <codeblock id="codeblock_byg_fmm_y5b">package ro.sync.search;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+/**
+ * Crawler that crawls an URL for data and uses DITA profiling conditions.
+ * 
+ * @author artio
+ *
+ */
+public class FacetingCrawler extends AbstractCrawler&lt;FacetingPage> {
+	/**
+	 * Path that leads to the JSON file where all profiling values and conditions
+	 * are stored.
+	 */
+	private String profilingConditionsPath;
+
+	/**
+	 * Constructor with url and baseUrl parameters.
+	 * 
+	 * @param url                     is the page that should be crawled for data.
+	 * @param baseUrl                 is the parent that is used to not go out of
+	 *                                bounds.
+	 * @param profilingConditionsPath is the path for the JSON file that stores all
+	 *                                the profiling information.
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
+	 */
+	protected FacetingCrawler(String url, String baseUrl, boolean isFile, final String profilingConditionsPath)
+			throws IOException {
+		super(url, baseUrl, isFile);
+
+		this.profilingConditionsPath = profilingConditionsPath;
+	}
+
+	/**
+	 * @return list of crawled pages
+	 */
+	@Override
+	public List&lt;FacetingPage> getCrawledPages() {
+		return this.pages;
+	}
+
+	/**
+	 * Collects all the data(titles, keywords and content) from visited urls and
+	 * creates a new Page object. It also collects profiling values from DITA.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 */
+	protected void collectData(final Document page) {
+		pages.add(((FacetingPage) ((FacetingPage) new FacetingPage().setTitle(collectTitle(page))
+				.setShortDescription(collectShortDescription(page)).setKeywords(collectKeywords(page)))
+				.setBreadcrumb(collectBreadcrumb(page)).setContent(collectContent(page)).setUrl(page.baseUri()))
+				.setProduct(collectProfilingCondition(page, "product"))
+				.setPlatform(collectProfilingCondition(page, "platform"))
+				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
+				.setProps(collectProfilingCondition(page, "props"))
+				.setOtherprops(collectProfilingCondition(page, "otherprops")));
+		
+		logger.info("Page {} was crawled!", page.title());
+	}
+
+	/**
+	 * Collects an profiling condition of Page from metadata.
+	 * 
+	 * @param page               is the Document whose data should be collected.
+	 * @param profilingCondition is the profiling condition's name whose values
+	 *                           should to be returned.
+	 * @return Page's collected profiling condition of passed argument.
+	 */
+	private List&lt;String> collectProfilingCondition(final Document page, final String profilingCondition) {
+		List&lt;String> profilingValues = new ArrayList&lt;>();
+
+		if (this.profilingConditionsPath.isEmpty())
+			return new ArrayList&lt;>();
+
+		ProfilingHandler pHandler = new ProfilingHandler(this.profilingConditionsPath);
+
+		Element value = page.select(String.format("meta[name=\"wh-data-%s\"]", profilingCondition)).first();
+
+		if (value != null)
+			// If the value is present in the DOM put it in the facets values.
+			profilingValues.add(value.attr("content"));
+		else {
+			// If the value isn't present then put every possible value for the facet.
+			if (pHandler.getProflingValues().get(profilingCondition) != null)
+				for (String facetValue : pHandler.getProflingValues().get(profilingCondition)) {
+					profilingValues.add(facetValue);
+				}
+		}
+
+		return profilingValues;
+	}
+
+	/**
+	 * Collects page's breadcrumb from the top of the page.
+	 * 
+	 * @param page is the page whose breadcrumb should be collected.
+	 * @return page's breadcrumb that is a list of entries with title and relative
+	 *         path.
+	 */
+	private List&lt;Map.Entry&lt;String, String>> collectBreadcrumb(final Document page) {
+		List&lt;Map.Entry&lt;String, String>> breadcrumb = new ArrayList&lt;>();
+
+		// Remove the short description in the breadcrumb that is not visible to the
+		// user.
+		page.select("div.wh-tooltip").remove();
+
+		// Extract every category of the breadcrumb.
+		for (Element el : page.select("div.wh_breadcrumb > ol > li")) {
+			if (el.text().equals("Home"))
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).absUrl("href")));
+			else
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).child(0).absUrl("href")));
+		}
+
+		return breadcrumb;
+	}
+
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create FacetingAlgolia.java</cmd>
+                <info>
+                    <codeblock id="codeblock_hqy_fmm_y5b">package ro.sync.search;
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.algolia.search.SearchIndex;
+import com.algolia.search.models.settings.IndexSettings;
+
+/**
+ * Class that uses DITA Conditional Profiling and pushes crawled data to Algolia
+ * index. It collects title, keywords, short description, contents, breadcrumb
+ * and DITA profiling values from metadata. The class is used for Webhelp
+ * template with React results page.
+ * 
+ * @author Bozieac Artiom
+ *
+ */
+public class FacetingAlgolia extends BasicAlgolia {
+	/**
+	 * Logger to inform user about certain actions like errors and others.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(FacetingAlgolia.class);
+	/**
+	 * Index that stores the current index performing actions on;
+	 */
+	protected SearchIndex&lt;FacetingPage> facetsIndex;
+
+	/**
+	 * Constructor to set up necessary stuff like properties for Algolia connection.
+	 * 
+	 * @throws IOException if a problem with loading config properties occured.
+	 * 
+	 */
+	public FacetingAlgolia() throws IOException {
+		super();
+	}
+
+	/**
+	 * Adds crawled pages from Crawler object to index.
+	 * 
+	 * @param url                     is the URL whose pages should be added to
+	 *                                index.
+	 * @param baseUrl                 is the base URL that is used to not go out of
+	 *                                bounds.
+	 * @param profilingConditionsPath is the path to the subject-scheme-values.json
+	 *                                generated by Webhelp template.
+	 * 
+	 * @throws IOException if Crawler was failed to initiate or the HTML File
+	 *                     couldn't be read.
+	 */
+	protected void populateIndex(final String url, final String baseUrl, final String profilingConditionsPath)
+			throws IOException {
+		FacetingCrawler crawler = new FacetingCrawler(url, baseUrl, false, profilingConditionsPath);
+		crawler.crawl();
+
+		facetsIndex.setSettings(new IndexSettings()
+				.setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+				.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+				.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+				.setAttributesToSnippet(Arrays.asList("content:30")).setAttributesForFaceting(
+						Arrays.asList("_tags", "product", "platform", "audience", "rev", "props", "otherProps")));
+
+		facetsIndex.saveObjects(crawler.getCrawledPages());
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+				facetsIndex.getUrlEncodedIndexName());
+	}
+
+	/**
+	 * Use arguments to crawl the documentation and push it to Algolia index.
+	 * 
+	 * @param args is the array with indexName, url, baseUrl and
+	 *             profilingConditionsPath.
+	 * @throws IOException              if config.properties file is not set, path
+	 *                                  to the documents is wrong or profilingPath
+	 *                                  is invalid.
+	 * @throws IllegalArgumentException if passed arguments are invalid.
+	 */
+	@Override
+	public void useArguments(final String... args) throws IOException, IllegalArgumentException {
+		String url = "";
+		String baseUrl = "";
+		String indexName = "";
+		String profilingConditionsPath = "";
+
+		for (String arg : args) {
+			if (arg.startsWith("-url="))
+				url = arg.substring(5, arg.length());
+			else if (arg.startsWith("-baseUrl="))
+				baseUrl = arg.substring(9, arg.length());
+			else if (arg.startsWith("-indexName="))
+				indexName = arg.substring(11, arg.length());
+			else if (arg.startsWith("-profilingConditionsPath="))
+				profilingConditionsPath = arg.substring(25, arg.length());
+		}
+
+		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty() || profilingConditionsPath.isEmpty())
+			throw new IllegalArgumentException();
+
+		facetsIndex = client.initIndex(indexName, FacetingPage.class);
+		facetsIndex.clearObjects();
+		populateIndex(url, baseUrl, profilingConditionsPath);
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Now we have a Crawler and an AlgoliaClient that collects profiling conditions
+                    from DITA and pushes them to an Algolia index. All we have to do now is to
+                    create a React page that will implement a filter component that will be using
+                    them!</cmd>
+            </step>
+            <step>
+                <cmd>To use new AlgoliaClient that we created, use this:</cmd>
+                <info>
+                    <codeblock id="codeblock_zmk_kmm_y5b">FacetingAlgolia algolia = new FacetingAlgolia();
+algolia.useArguments(args);
+// args = -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME -profilingConditionsPath=PATH_TO_THE_SUJBECT_SCHEME_VALUES.JSON</codeblock>
+                    <note id="note_cck_4mm_y5b">subject-scheme-values.json will be always generated
+                        in the /out directory of the documentation If you use the template we
+                        created earlier.</note>
+                </info>
+            </step>
+        </steps>
+    </taskbody>
+</task>

@@ -2,14 +2,93 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="add_filter_component_in_search_page">
     <title>Add filter component in search page</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to create a filter component that will modify your search results? We'll be using
+        Filter components we created earlier.</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>We'll create a FilterComponent that will allow you to filter your search results.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>After the generation of documentation and crawling with FacetingCrawler.java we
+                    used subject-scheme-values.json file to extract possible filters in
+                    ResultsContainer.jsx.</cmd>
+                <info>
+                    <codeblock id="codeblock_r3t_cqm_y5b">    useEffect(async () => {
+        // Fetch documentations after mounting the component.
+        await fetchDocumentations();
+        // Load JS with profiling information after mounting the component.
+        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
+    }, [])</codeblock>
+                    <codeblock id="codeblock_tbs_2qm_y5b">/**
+ * Function that loads an JS file into DOM and does something on load.
+ * @param {*} url is the url to the JSON file.
+ * @param {*} implementationCode is the function to perform on load of the script into the DOM.
+ */
+function loadJS(url, implementationCode) {
+    // Url is URL of external file, implementationCode is the code
+    // to be called from the file, location is the location to 
+    // insert the &lt;script> element
+    var scriptTag = document.createElement('script');
+    scriptTag.src = url;
+    scriptTag.onload = implementationCode;
+    scriptTag.onreadystatechange = implementationCode;
+    document.body.appendChild(scriptTag);
+};</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>By sending this information to the FilterContainer.jsx we display possible
+                    values to select for this documentation:</cmd>
+                <info>
+                    <codeblock id="codeblock_mlp_3qm_y5b">{
+                        title: "Search in",
+                        options: [
+                            {
+                                id: "attribute-title",
+                                description: "Title",
+                                isFilter: false,
+                                algoliaId: "title"
+                            },
+                            {
+                                id: "attribute-shortDescription",
+                                description: "Short Description",
+                                isFilter: false,
+                                algoliaId: "shortDescription"
+                            }
+                        ]
+                    },
+                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
+                        return {
+                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
+                            options: profilingValue.values.map((option) => {
+                                return {
+                                    id: `attribute-${option.key}`,
+                                    description: option.navTitle,
+                                    isFilter: true,
+                                    algoliaId: `${profilingValue.name}:${option.key}`,
+                                }
+                            })
+                        }
+                    }) : [])
+                ]</codeblock>
+                    <note id="note_qmg_jqm_y5b">id  is the id that React needs to differentiate components<p>
+                            <note id="note_un2_lqm_y5b">description is the text that will display
+                                after the checkbox in the filter section<p>
+                                    <note id="note_fgf_mqm_y5b">isFilter is a flag that says if that
+                                        object is a filter or not<p>
+                                            <note id="note_a5l_nqm_y5b">algoliaId is the syntax of
+                                                the filter/attribute to be used to send to the
+                                                Algolia request. For example
+                                                "audience:BasicUser".</note>
+                                        </p></note>
+                                </p></note>
+                        </p></note>
+                </info>
+            </step>
+            <step>
+                <cmd>"Search in" section is used to be able to select in which attribute do you want
+                    to search for query, for example: Title and shortDescription.</cmd>
             </step>
         </steps>
     </taskbody>

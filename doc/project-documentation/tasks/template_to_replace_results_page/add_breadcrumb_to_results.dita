@@ -2,14 +2,95 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="add_breadcrumb_to_results">
     <title>Add breadcrumb to results </title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to display breadcrumb?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>We already have everying to display the breadcrumb because our FacetingCrawler and
+                MultipleDocumentationsCrawler already crawl for the breadcrumb of each topic and
+                pushes it to the Algolia index as "breadcrumb" attribute.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>Modify HitsItem.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_yhc_ytm_y5b">import React from 'react';
+
+/**
+ * Class that renders an hit in the hits list.
+ * @param {*} url is the hit's url represented by a String.
+ * @param {*} title is the hit's title represented by a String.
+ * @param {*} description is the hit's description represented by a String
+ * @param {*} documentation is the hit's documentation represented by a String.
+ * @param {*} breadcrub is the hit's breadcrumb represented by an object with one single key:value where key is the category's title and key is the url to the category.
+ * @returns an item for the list.
+ */
+const HitsItem = ({ url, title, description, documentation, breadcrumb }) => {
+    return (
+        &lt;li className="hits-item">
+            &lt;span className="documentation">{documentation}&lt;/span>
+            &lt;a href={url} className="title">{title}&lt;/a>
+            &lt;span class="breadcrumb">
+                {breadcrumb !== undefined ? breadcrumb.map((level) => {
+                    // Check if the category is the last in the breadcrumb in order to not render an '>' character.
+                    if (breadcrumb[breadcrumb.length - 1] === level)
+                        return (
+                            &lt;a href={level[Object.keys(level)[0]]}>
+                                &lt;span className="breadcrumb-element">{Object.keys(level)[0]}&lt;/span>
+                            &lt;/a>)
+                    else
+                        return (
+                            &lt;a href={level[Object.keys(level)[0]]}>
+                                &lt;span className="breadcrumb-element">{Object.keys(level)[0] + ' >'}&amp;nbsp;&lt;/span>
+                            &lt;/a>)
+                }) : null}
+            &lt;/span>
+            &lt;span className="description">{description}&lt;/span>
+        &lt;/li>
+    );
+};
+
+export default HitsItem;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Now it uses the breadcrumb attribute to display it. The breadcrumb In our case
+                    is an array of objects where each topic has a key that is the title of the page
+                    and a value which is the url to the page.</cmd>
+            </step>
+            <step>
+                <cmd>Also modify the HitsList.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_itk_c5m_y5b">import React from 'react';
+import HitsItem from './HitsItem.jsx';
+
+/**
+ * Class that renders a list of hits.
+ * @param {*} hits is the hits Array returned in Algolia response when performing a search.
+ * @returns a list of items.
+ */
+const HitsList = ({ hits }) => {
+    if (hits?.length > 0) {
+        return (&lt;div className="hits-container">&lt;ul className="hits">{
+            hits.map((hit) => {
+                return (
+                    &lt;HitsItem
+                        key={"objectID" in hit ? hit.objectID : hit.toString()}
+                        title={hit.title}
+                        description={hit.shortDescription}
+                        url={hit.objectID}
+                        documentation={hit.documentation}
+                        breadcrumb={hit.breadcrumb}
+                    />
+                );
+            })
+        }&lt;/ul>&lt;/div>);
+    }
+    else
+        return (&lt;div className="no-results">&lt;strong>No results found!&lt;/strong>&lt;/div>);
+}
+
+export default HitsList;</codeblock>
+                </info>
             </step>
         </steps>
     </taskbody>

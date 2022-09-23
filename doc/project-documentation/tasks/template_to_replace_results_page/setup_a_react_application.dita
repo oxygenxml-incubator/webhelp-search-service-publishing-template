@@ -2,14 +2,1069 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="setup_a_react_application_to_implement_results_presentation">
     <title>Setup a React application to implement results presentation</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to create a React Results page for Webhelp template?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>
+                So to create a results page in React and put it into Webhelp template we have to
+                create only the part of the page where results are presented. Basically we don't
+                need any search bars.
+            </p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>Create a basic React application with npm in new directory in the root of the
+                    template and install these dependencies:</cmd>
+            </step>
+            <step>
+                <cmd>package.json</cmd>
+                <info>
+                    <codeblock id="codeblock_yyr_j4m_y5b">{
+  "name": "search-page",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "test": "jest --verbose"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@algolia/autocomplete-core": "^1.7.1",
+    "@algolia/autocomplete-js": "^1.7.1",
+    "@algolia/autocomplete-preset-algolia": "^1.7.1",
+    "@algolia/autocomplete-theme-classic": "^1.7.1",
+    "algoliasearch": "^4.14.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-instantsearch-hooks-web": "^6.31.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-react": "^7.18.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "babel-jest": "^29.0.2",
+    "babel-loader": "^8.2.5",
+    "css-loader": "^6.7.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.0.2",
+    "jest-dom": "^4.0.0",
+    "jest-environment-jsdom": "^29.0.2",
+    "react-test-renderer": "^18.2.0",
+    "style-loader": "^3.3.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    }
+  }
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>webpack.config.js</cmd>
+                <info>
+                    <codeblock id="codeblock_dyg_l4m_y5b">const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  output: {
+    path: path.join(__dirname, "../../../../doc/mobile-phone/out/webhelp-responsive/oxygen-webhelp/template/js"), // the bundle output path
+    filename: "bundle.js", // the name of the bundle
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/template.html", // to import index.html file inside index.js
+    }),
+  ],
+  devServer: {
+    port: 3030, // you can change the port
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/, // .js and .jsx files
+        exclude: /node_modules/, // excluding the node_modules folder
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      {
+        test: /\.css$/, // styles files
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: "file-loader",
+        options: {
+          name: "img/[name].[ext]",
+        },
+      },
+    ],
+  },
+};
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>template.html</cmd>
+                <info>
+                    <codeblock id="codeblock_p45_l4m_y5b">&lt;!DOCTYPE html>
+&lt;html lang="en">
+  &lt;head>
+    &lt;meta charset="UTF-8" />
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com" />
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    &lt;link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    &lt;link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&amp;family=Source+Sans+Pro:wght@200;400;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    &lt;title>Search page with React&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;div id="root">&lt;/div>
+
+    &lt;script src="bundle.js">&lt;/script>
+  &lt;/body>
+&lt;/html>
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>.babelrc</cmd>
+                <info>
+                    <codeblock id="codeblock_crb_44m_y5b">{
+    "presets": ["@babel/preset-env", "@babel/preset-react"]
+}</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>App.css</cmd>
+                <info>
+                    <codeblock id="codeblock_szw_44m_y5b">body {
+  margin: 0;
+
+  font-family: "Play", sans-serif;
+}
+
+/* Information Section */
+
+.information-container {
+  display: flex;
+
+  margin-left: 2%;
+  margin-right: 2%;
+
+  width: 95%;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.hits-information {
+  width: 50%;
+}
+
+.page-information {
+  width: 50%;
+
+  text-align: right;
+}
+
+/* Results section */
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.hits-container {
+  position: absolute;
+
+  width: 76%;
+  height: 100%;
+
+  float: left;
+
+  position: relative;
+}
+
+.hits {
+  position: relative;
+
+  list-style: none;
+
+  padding: 0;
+}
+
+.hits-item {
+  padding: 15px;
+  position: relative;
+
+  margin-top: 10px;
+
+  background: #f5f6fa 0% 0% no-repeat padding-box;
+}
+
+.hits-item:first-child {
+  margin-top: 25px;
+}
+
+.hits-item:last-child {
+  margin-bottom: 25px;
+}
+
+.title {
+  font-family: "Roboto", sans-serif;
+
+  text-decoration: none;
+  line-height: 20px;
+  letter-spacing: 2px;
+  color: #9893df;
+  font-size: 16px;
+
+  display: block;
+
+  width: fit-content;
+
+  margin-bottom: 0px;
+}
+
+.title:visited {
+  color: #9893df;
+}
+
+.description {
+  font-size: 12px;
+  font-family: "Roboto", sans-serif;
+
+  color: #939394;
+
+  display: block;
+}
+
+.documentation {
+  font-size: 12px;
+
+  color: gray;
+
+  display: block;
+  width: 50%;
+  text-align: right;
+  float: right;
+}
+
+.breadcrumb {
+  width: fit-content;
+
+  background: none;
+
+  padding: 0;
+}
+
+.breadcrumb-element {
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+
+  color: #b9b9b9;
+}
+
+.no-results {
+  width: 50%;
+
+  text-align: center;
+  color: #9893df;
+  font-size: 26px;
+  font-family: "Roboto", sans-serif;
+
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+/* Page selection */
+
+.page-selection {
+  width: 74%;
+
+  margin-right: 5%;
+  margin-left: auto;
+
+  margin-bottom: 75px;
+}
+
+div.page-selection button:nth-last-child(1) {
+  margin-left: 20px;
+}
+
+.page-selector {
+  cursor: pointer;
+  touch-action: manipulation;
+
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #9893df;
+  border-radius: 4px;
+  opacity: 1;
+
+  text-align: center;
+  color: #9893df;
+
+  font-size: 16px;
+  font-family: "Source Sans Pro", sans-serif;
+  letter-spacing: 0px;
+
+  width: 93.8px;
+  height: 33px;
+}
+
+.page-selector-disabled {
+  cursor: default;
+}
+
+/* Loader */
+
+.loader {
+  display: flex;
+  justify-content: center;
+}
+
+/* Filtering */
+
+.filter-container {
+  width: 17%;
+  height: 100%;
+
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 25px;
+
+  padding-bottom: 15px;
+
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #dcdcdc;
+  opacity: 1;
+
+  float: left;
+
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.filter-section {
+  margin-top: 25px;
+  margin-left: 7%;
+}
+
+.filter-title {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+
+  color: #707070;
+}
+
+.filter-selection {
+  top: 436px;
+  left: 152px;
+  width: 18px;
+  height: 18px;
+
+  background: #898d94 0% 0% no-repeat padding-box;
+  opacity: 0.54;
+}
+
+.filter-label {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+
+  text-align: center;
+  word-break: break-word;
+  color: #707070;
+
+  margin-left: 5%;
+}
+
+.filter-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #dcdcdc;
+
+  text-align: left;
+}
+
+.filter-text {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+
+  width: 30%;
+
+  text-align: center;
+  color: #707070;
+}
+
+.filter-button {
+  width: 35%;
+
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+
+  letter-spacing: 0px;
+  color: #9893df;
+  opacity: 1;
+
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.filter-button:focus {
+  border: none;
+  outline: none;
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Now create a directory src/components/filter and src/components/hits</cmd>
+            </step>
+            <step>
+                <cmd>In src/components/hits create HitsItem.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_bxj_54m_y5b">import React from 'react';
+
+/**
+ * Class that renders an hit in the hits list.
+ * @param {*} url is the hit's url represented by a String.
+ * @param {*} title is the hit's title represented by a String.
+ * @param {*} description is the hit's description represented by a String
+ * @param {*} documentation is the hit's documentation represented by a String.
+ * @param {*} breadcrub is the hit's breadcrumb represented by an object with one single key:value where key is the category's title and key is the url to the category.
+ * @returns an item for the list.
+ */
+const HitsItem = ({ url, title, description, documentation, breadcrumb }) => {
+    return (
+        &lt;li className="hits-item">
+            &lt;span className="documentation">{documentation}&lt;/span>
+            &lt;a href={url} className="title">{title}&lt;/a>
+            &lt;span class="breadcrumb">
+                {breadcrumb !== undefined ? breadcrumb.map((level) => {
+                    // Check if the category is the last in the breadcrumb in order to not render an '>' character.
+                    if (breadcrumb[breadcrumb.length - 1] === level)
+                        return (
+                            &lt;a href={level[Object.keys(level)[0]]}>
+                                &lt;span className="breadcrumb-element">{Object.keys(level)[0]}&lt;/span>
+                            &lt;/a>)
+                    else
+                        return (
+                            &lt;a href={level[Object.keys(level)[0]]}>
+                                &lt;span className="breadcrumb-element">{Object.keys(level)[0] + ' >'}&amp;nbsp;&lt;/span>
+                            &lt;/a>)
+                }) : null}
+            &lt;/span>
+            &lt;span className="description">{description}&lt;/span>
+        &lt;/li>
+    );
+};
+
+export default HitsItem;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>HitsList.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_zsx_54m_y5b">import React from 'react';
+import HitsItem from './HitsItem.jsx';
+
+/**
+ * Class that renders a list of hits.
+ * @param {*} hits is the hits Array returned in Algolia response when performing a search.
+ * @returns a list of items.
+ */
+const HitsList = ({ hits }) => {
+    if (hits?.length > 0) {
+        return (&lt;div className="hits-container">&lt;ul className="hits">{
+            hits.map((hit) => {
+                return (
+                    &lt;HitsItem
+                        key={"objectID" in hit ? hit.objectID : hit.toString()}
+                        title={hit.title}
+                        description={hit.shortDescription}
+                        url={hit.objectID}
+                        documentation={hit.documentation}
+                        breadcrumb={hit.breadcrumb}
+                    />
+                );
+            })
+        }&lt;/ul>&lt;/div>);
+    }
+    else
+        return (&lt;div className="no-results">&lt;strong>No results found!&lt;/strong>&lt;/div>);
+}
+
+export default HitsList;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>SearchInformation.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_pns_v4m_y5b">import React from 'react';
+
+/**
+ * Class that renders information about the search request.
+ * @param {*} nHits is the number of hits by the given query. 
+ * @param {*} query is the current query.
+ * @param {*} page is the current selected page.
+ * @param {*} pages is the number of total pages.
+ * @returns a container with information about the search request.
+ */
+const SearchInformation = ({nHits, query, page, pages}) => {
+    return (
+        &lt;div className="information-container">
+            &lt;span className="hits-information">{nHits + " document(s) found for "}&lt;strong>{query + "."}&lt;/strong>&lt;/span>
+            &lt;span className="page-information">{"Page " + page + "/" + pages}&lt;/span>
+        &lt;/div>
+    );
+}
+
+export default SearchInformation;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>ResultsContainer.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_lt4_w4m_y5b">import React, { useEffect, useState } from 'react';
+import SearchInformation from './SearchInformation.jsx';
+import HitsList from './HitsList.jsx';
+import FilterContainer from "../filter/FilterContainer.jsx";
+
+import { searchableAttributes, facetFilters } from '../filter/FilterContainer.jsx';
+
+/**
+ * Function that loads an JS file into DOM and does something on load.
+ * @param {*} url is the url to the JSON file.
+ * @param {*} implementationCode is the function to perform on load of the script into the DOM.
+ */
+function loadJS(url, implementationCode) {
+    // Url is URL of external file, implementationCode is the code
+    // to be called from the file, location is the location to 
+    // insert the &lt;script> element
+    var scriptTag = document.createElement('script');
+    scriptTag.src = url;
+    scriptTag.onload = implementationCode;
+    scriptTag.onreadystatechange = implementationCode;
+    document.body.appendChild(scriptTag);
+};
+
+/**
+ * Class that renders a container with search results.
+ * @param {*} result is the response from Algolia.
+ * @param {*} navigateToPage is the function to perform a search in Algolia index.
+ * @param {*} searchInstancelt is an initialized index of Algolia.
+ * @returns a container with all the results from Algolia.
+ */
+const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
+    /** Array that holds information about profiling facets. */
+    const [profilingInformation, setProfilingInformation] = useState([]);
+    /** An array of preset documentations in index to display them in filters section. */
+    const [documentations, setDocumentations] = useState([]);
+
+    /** Function that fetches available documentations from Algolia index. */
+    async function fetchDocumentations() {
+        let response = await searchInstance.search('', {
+            facets: ['documentation']
+        });
+
+        setDocumentations(Object.keys(response.facets.documentation))
+    }
+
+    useEffect(async () => {
+        // Fetch documentations after mounting the component.
+        await fetchDocumentations();
+        // Load JS with profiling information after mounting the component.
+        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
+    }, [])
+
+    /** Check if the previous button should be disabled or not. */
+    const isPrevButtonDisabled = () => {
+        return result.page === 0;
+    }
+
+    /** Check if the next button should be disabled or not. */
+    const isNextButtonDisabled = () => {
+        return result.page === result.nbPages - 1;
+    }
+
+    return (&lt;div className="results-container">
+        &lt;SearchInformation
+            nHits={result.nbHits}
+            query={result.query}
+            page={result.nbPages >= 1 ? result.page + 1 : result.page}
+            pages={result.nbPages}
+        />
+        &lt;div className="hits-and-manipulation">
+            &lt;FilterContainer performSearch={navigateToPage} query={result.query} sections={
+                [
+                    documentations.length !== 0 ?
+                        {
+                            title: "Documentations",
+                            options: documentations.map((key) => {
+                                return {
+                                    id: `documentation-${key}`,
+                                    description: key,
+                                    isFilter: true,
+                                    algoliaId: `documentation:${key}`
+                                }
+                            })
+                        } : null,
+                    {
+                        title: "Search in",
+                        options: [
+                            {
+                                id: "attribute-title",
+                                description: "Title",
+                                isFilter: false,
+                                algoliaId: "title"
+                            },
+                            {
+                                id: "attribute-shortDescription",
+                                description: "Short Description",
+                                isFilter: false,
+                                algoliaId: "shortDescription"
+                            }
+                        ]
+                    },
+                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
+                        return {
+                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
+                            options: profilingValue.values.map((option) => {
+                                return {
+                                    id: `attribute-${option.key}`,
+                                    description: option.navTitle,
+                                    isFilter: true,
+                                    algoliaId: `${profilingValue.name}:${option.key}`,
+                                }
+                            })
+                        }
+                    }) : [])
+                ]
+            } />
+            &lt;HitsList hits={result.hits} />
+        &lt;/div>
+        {result.nbPages !== 0 &amp;&amp;
+            (&lt;div className="page-selection">
+                &lt;button
+                    className={`${isPrevButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
+                    onClick={() => navigateToPage(result.query, result.page - 1, [...searchableAttributes], [...facetFilters])} disabled={isPrevButtonDisabled() ? true : false}
+                >
+                    Back
+                &lt;/button>
+                &lt;button
+                    className={`${isNextButtonDisabled() ? "page-selector page-selector-disabled" : "page-selector"}`}
+                    onClick={() => navigateToPage(result.query, result.page + 1, [...searchableAttributes], [...facetFilters])} disabled={isNextButtonDisabled() ? true : false}
+                >
+                    Next
+                &lt;/button>
+            &lt;/div>)}
+    &lt;/div>);
+
+}
+
+export default ResultsContainer;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>In src/components/filter create FilterComponent.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_b3p_x4m_y5b">import React from 'react';
+
+/**
+ * Class that renders an filter component that holds checkboxes to activate certain filters.
+ * @param {*} title is a String that represents section's title, for example: "Price:" 
+ * @param {*} options is an Array of objects that holds Strings for its id(unique ID for React), algoliaId(name of the facet and value in Algolia), description(checkbox description, for example "under 200 dollars") and isFilter boolean.
+ * @param {*} setData function to set searchableAttributes or facetFilters.
+ * @param {*} isSetData functiont that verifies if a filters/attribute is selected.
+ * @param {*} query is the current query.
+ * @returns a filter component.
+ */
+const FilterComponent = ({ title, options, setData, isSetData, query }) => {
+    return (
+        &lt;div className="filter-section">
+            &lt;h4 className="filter-title">{title}&lt;/h4>
+            {options.map((option) => {
+                return (
+                    &lt;React.Fragment key={option.id}>
+                        &lt;input className="filter-selection" type="checkbox" defaultChecked={isSetData(option.algoliaId)} onClick={() => setData(option.algoliaId, option.isFilter, query)} id={option.id}>&lt;/input>
+                        &lt;label className="filter-label" htmlFor={option.id}>{option.description}&lt;/label>&lt;br />
+                    &lt;/React.Fragment>
+                )
+            })}
+        &lt;/div>
+    );
+}
+
+export default FilterComponent;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>FilterContainer.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_qjd_y4m_y5b">import React from 'react';
+
+import FilterComponent from './FilterComponent.jsx';
+
+/** Collection that holds all the selected attributes. */
+export let searchableAttributes = new Set([]);
+/** Collection that holds all the facet filters. */
+export let facetFilters = new Set([]);
+
+/**
+ * Class that renders an filter container that holds filter components to activate certain filters.
+ * @param {*} sections is an Array of objects that holds a title for the Filter component and an Array of options.
+ * @param {*} performSearch is the function used to perform search in Algolia index.
+ * @param {*} query is the current query.
+ * @returns a filter container with filter components.
+ */
+const FilterContainer = ({ sections, performSearch, query }) => {
+    /** Function that clears all the checkboxes and collections when clicked. */
+    const clearAllFilters = (e) => {
+        e.preventDefault();
+        // Select all the checkboxes in the page.
+        let checkboxes = document.querySelectorAll(['.filter-container input[type="checkbox"'])
+
+        // Uncheck all the checkboxes.
+        for (let i = 0; i &lt; checkboxes.length; i++)
+            checkboxes[i].checked = false;
+
+        // Clear all the collections.
+        searchableAttributes.clear();
+        facetFilters.clear();
+
+        performSearch(query, 0);
+    }
+
+    /** Function that adds filters/attributes to collections. */
+    const setData = (item, isFilter, query) => {
+        if (isFilter) {
+            if (facetFilters.has(item)) {
+                facetFilters.delete(item)
+                performSearch(query, 0, [...searchableAttributes], [...facetFilters])
+            } else {
+                facetFilters.add(item)
+                performSearch(query, 0, [...searchableAttributes], [...facetFilters])
+            };
+        }
+        else {
+            if (searchableAttributes.has(item)) {
+                searchableAttributes.delete(item)
+                performSearch(query, 0, [...searchableAttributes], [...facetFilters])
+            } else {
+                searchableAttributes.add(item)
+                performSearch(query, 0, [...searchableAttributes], [...facetFilters])
+            };
+        }
+    }
+
+    /** Function that verifies if an filter/attribute is added in collection. It is used in order to know which checboxes to check upon rendering component. */
+    const isSetData = (item) => { return (searchableAttributes.has(item) || facetFilters.has(item)) }
+
+    return (
+        &lt;form onChange={null}>
+            &lt;div className="filter-container">
+                &lt;div className="filter-buttons">
+                    &lt;span className="filter-text">Filters&lt;/span>
+                    &lt;button className="filter-button" onClick={e => clearAllFilters(e)}>Clear all&lt;/button>
+                &lt;/div>
+                {sections.map((section) => { if (section !== null) { return (&lt;FilterComponent key={section.title} title={section.title} options={section.options} setData={setData} isSetData={isSetData} query={query} />) } })}
+            &lt;/div>
+        &lt;/form>
+    );
+}
+
+export default FilterContainer;</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>In the root directory of the React application create App.js</cmd>
+                <info>
+                    <codeblock id="codeblock_ndr_z4m_y5b">import React, { useEffect, useState } from "react";
+import ResultsContainer from "./components/hits/ResultsContainer.jsx";
+
+import loaderImage from "./img/loader.gif";
+
+/**
+ * Class that renders the whole application.
+ * @param {*} query is the given query by the user.
+ * @param {*} searchInstance is the function to perform search in Algolia index.
+ * @returns React results page.
+ */
+const App = ({ query, searchInstance }) => {
+  // Create preloader state
+  const [isLoading, setLoading] = useState(true);
+
+  // Create a state variable that stores the search result.
+  const [result, setResult] = useState({
+    hits: [],
+    nbHits: 0,
+    nbPages: 0,
+    page: 0,
+    query: "",
+  });
+
+  // Fetch the Algolia response based on written search term.
+  const search = async (
+    searchTerm,
+    page,
+    searchableAttributes,
+    facetFilters
+  ) => {
+    // If search term is not empty then get the results.
+    if (searchTerm.localeCompare("") !== 0) {
+      if (searchTerm.includes("label:")) {
+        let tag = searchTerm.split(":")[searchTerm.split(":").length - 1];
+        let facetFilters = `_tags:${tag}`;
+
+        let response = await searchInstance.search("", {
+          facetFilters: [facetFilters],
+          hitsPerPage: 10,
+          page: page,
+        });
+
+        setResult(response);
+      } else {
+        let response = await searchInstance.search(searchTerm, {
+          hitsPerPage: 10,
+          page: page,
+          restrictSearchableAttributes: searchableAttributes,
+          facetFilters: facetFilters,
+        });
+
+        setResult(response);
+      }
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    search(query, 0);
+  }, []);
+
+  return (
+    &lt;>
+      {isLoading ? (
+        &lt;div className="loader">
+          &lt;img src={loaderImage} />
+        &lt;/div>
+      ) : (
+        &lt;>
+          &lt;ResultsContainer
+            result={result}
+            navigateToPage={search}
+            searchInstance={searchInstance}
+          />
+        &lt;/>
+      )}
+    &lt;/>
+  );
+};
+
+export default App;
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>index.js</cmd>
+                <info>
+                    <codeblock id="codeblock_htf_1pm_y5b">import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { autocomplete, getAlgoliaResults } from "@algolia/autocomplete-js";
+import algoliasearch from "algoliasearch/lite";
+
+import "@algolia/autocomplete-theme-classic";
+import "./App.css";
+
+import algoliaConfig from "./../algolia-config.json";
+
+// Check if disableWebHelpDefaultSearchEngine() method is present.
+if (WebHelpAPI.disableWebHelpDefaultSearchEngine) {
+  WebHelpAPI.disableWebHelpDefaultSearchEngine();
+}
+
+// Create an Algolia SearchClient using App key and Search-only API key.
+const searchClient = algoliasearch(
+  algoliaConfig.appId,
+  algoliaConfig.searchOnlyKey
+);
+
+const indexName = algoliaConfig.indexName;
+
+// Create a Search Instance with needed index.
+const searchInstance = searchClient.initIndex(indexName);
+
+const algoliaSearch = {
+  // Method that is called when Submit is performed.
+  performSearchOperation(query, successHandler, errorHandler) {
+    const root = ReactDOM.createRoot(document.getElementById("search-results"));
+    root.render(&lt;App query={query} searchInstance={searchInstance} />);
+  },
+};
+
+// Check if setCustomSearchEngine() method is present in order to change it to Algolia engine.
+if (WebHelpAPI.setCustomSearchEngine) {
+  WebHelpAPI.setCustomSearchEngine(algoliaSearch);
+}
+
+const navigateToSearch = (state) => {
+  const path =
+    document.querySelector('meta[name="wh-path2root"]').content +
+    "search.html?searchQuery=" +
+    state.collections[0].items[state.activeItemId].title;
+
+  window.location = path;
+};
+
+// If container with id autocomplete is present in the DOM then replace it with Algolia autocomplete.
+if (document.getElementById("autocomplete")) {
+  autocomplete({
+    id: "webhelp-algolia-search",
+    container: "#autocomplete",
+    placeholder: "Search",
+
+    initialState: {
+      query: window.location.href.includes("=")
+        ? decodeURI(
+            window.location.href.substring(
+              window.location.href.indexOf("=") + 1,
+              window.location.href.length
+            )
+          )
+        : "",
+    },
+
+    // Actions to perform when user submits the query.
+    onSubmit(state) {
+      // Check if it's not empty
+      if (state.state.query.trim().length !== 0) {
+        if (state.activeItemId == null) {
+          const path =
+            document.querySelector('meta[name="wh-path2root"]').content +
+            "search.html?searchQuery=" +
+            state.state.query;
+
+          window.location = path;
+        } else {
+          navigateToSearch(state);
+        }
+      }
+
+      return;
+    },
+
+    // Actions to perform to get suggestions for user.
+    getSources({ query }) {
+      return [
+        {
+          sourceId: "topics",
+          // Return URL of the selected item.
+          getItemUrl({ item }) {
+            return item.objectID;
+          },
+          // Get suggestions.
+          getItems() {
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    hitsPerPage: 5,
+                    attributesToSnippet: ["title:10", "contents:30"],
+                    snippetEllipsisText: "…",
+                  },
+                },
+              ],
+            });
+          },
+          // HTML template that is used in order to display suggestions.
+          templates: {
+            item({ item, components, html, state }) {
+              return html`&lt;div
+                class="aa-ItemWrapper"
+                onclick="${() => {
+                  navigateToSearch(state);
+                }}"
+              >
+                &lt;div class="aa-ItemContent">
+                  &lt;div class="aa-ItemContentBody">
+                    &lt;div class="aa-ItemContentTitle">
+                      ${components.Highlight({
+                        hit: item,
+                        attribute: "title",
+                      })}
+                    &lt;/div>
+                    &lt;div class="aa-ItemContentDescription">
+                      ${components.Snippet({
+                        hit: item,
+                        attribute: "contents",
+                      })}
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>`;
+            },
+          },
+        },
+      ];
+    },
+    // Navigator that handles user redirections when only keyboard(arrows and enter button) is used.
+    navigator: {
+      navigate({ state }) {
+        navigateToSearch(state);
+      },
+    },
+  });
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>You're all done, now you have an React application that renders a completely
+                    new results page. But now create in the root of the React application don't
+                    forget to create an algolia-config.json</cmd>
+                <info>
+                    <codeblock id="codeblock_vcg_dpm_y5b">{
+    "appId": "APP_ID",
+    "searchOnlyKey": "SEARCH_ONLY_KEY",
+    "indexName": "INDEX_NAME"
+}</codeblock>
+                </info>
             </step>
         </steps>
     </taskbody>

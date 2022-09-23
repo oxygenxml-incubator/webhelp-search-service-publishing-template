@@ -2,14 +2,128 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="add_support_for_labels_tags_in_webhelp_pages">
     <title>Add support for labels/tags in WebHelp pages</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to add labels to topics in your documentation?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>We'll add tags to each topic and display them in the output. Also we'll be able to
+                click on them to search only by tags.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>Add to each topic keywords</cmd>
+                <info>
+                    <codeblock id="codeblock_jmp_gtm_y5b">&lt;prolog>
+        &lt;metadata>
+            &lt;keywords>
+                &lt;keyword outputclass="label">Algolia&lt;/keyword>
+                &lt;keyword outputclass="label">React&lt;/keyword>
+            &lt;/keywords>
+        &lt;/metadata>
+    &lt;/prolog></codeblock>
+                    <note id="note_v5g_jtm_y5b">It should be added after title and short
+                        description!</note>
+                </info>
+            </step>
+            <step>
+                <cmd>in /xslt directory of your template add this file. labels-show.xml</cmd>
+                <info>
+                    <codeblock id="codeblock_enx_ktm_y5b">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0">
+    &lt;xsl:template match="*[contains(@class, ' topic/prolog ')]">
+        &lt;!-- create a special div which displays all labels, with a link on each label -->
+        &lt;xsl:if test=".//keyword[@outputclass = 'label']">
+            &lt;div class="label-container" style="width:100%; text-align: right; font-style:italic; color:gray;">Labels:
+                &lt;xsl:apply-templates select=".//keyword[@outputclass = 'label']"/>
+            &lt;/div>
+        &lt;/xsl:if>
+        &lt;xsl:next-match/>
+    &lt;/xsl:template>
+    
+    &lt;!-- Match a label keyword and display it as a span -->
+    &lt;xsl:template match="keyword[@outputclass = 'label']">
+        &lt;a
+            href="{concat('../search.html?searchQuery=label:', normalize-space(translate(text(), ' ', ' ')))}">
+            &lt;span style="background-color:deepskyblue;color:white;border-radius: 6px;margin:0.2em;padding:0.2em;"
+                >&lt;xsl:value-of select="text()"/>&lt;/span>
+        &lt;/a>
+    &lt;/xsl:template>
+    
+    &lt;!-- Add specific HTML meta elements for each label -->
+    &lt;xsl:template match="*" mode="gen-keywords-metadata">
+        &lt;xsl:next-match/>
+        &lt;xsl:variable name="keywords-content">
+            &lt;!-- for each label -->
+            &lt;xsl:for-each select="//keyword[@outputclass = 'label']">
+                &lt;xsl:value-of
+                    select="concat('label_', normalize-space(translate(text(), ' ', '_')))"/>
+                &lt;xsl:if test="position() &amp;lt; last()">
+                    &lt;xsl:text>, &lt;/xsl:text>
+                &lt;/xsl:if>
+            &lt;/xsl:for-each>
+        &lt;/xsl:variable>
+        
+        &lt;xsl:if test="string-length($keywords-content) > 0">
+            &lt;meta name="keywords" content="{$keywords-content}"/>
+        &lt;/xsl:if>
+    &lt;/xsl:template>
+&lt;/xsl:stylesheet></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>In your JavaScript file modify the search request to check if there is this
+                    syntax present: "label:label</cmd>
+                <info>
+                    <codeblock id="codeblock_w4q_4tm_y5b">    if (query.includes("label:")) {
+      let tag = query.split(":")[query.split(":").length - 1];
+      let facetFilters = `_tags:${tag}`;
+
+      result = searchClient
+        .initIndex(indexName)
+        .search("", { facetFilters: [facetFilters] });
+    } else {
+      result = searchClient.initIndex(indexName).search(query);
+    }</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>For React results page:</cmd>
+                <info>
+                    <codeblock id="codeblock_bct_stm_y5b">  const search = async (
+    searchTerm,
+    page,
+    searchableAttributes,
+    facetFilters
+  ) => {
+    // If search term is not empty then get the results.
+    if (searchTerm.localeCompare("") !== 0) {
+      if (searchTerm.includes("label:")) {
+        let tag = searchTerm.split(":")[searchTerm.split(":").length - 1];
+        let facetFilters = `_tags:${tag}`;
+
+        let response = await searchInstance.search("", {
+          facetFilters: [facetFilters],
+          hitsPerPage: 10,
+          page: page,
+        });
+
+        setResult(response);
+      } else {
+        let response = await searchInstance.search(searchTerm, {
+          hitsPerPage: 10,
+          page: page,
+          restrictSearchableAttributes: searchableAttributes,
+          facetFilters: facetFilters,
+        });
+
+        setResult(response);
+      }
+    }
+
+    setLoading(false);
+  };</codeblock>
+                </info>
             </step>
         </steps>
     </taskbody>

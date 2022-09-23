@@ -2,14 +2,72 @@
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
 <task id="update_filter_component_to_present_documentation_filters">
     <title>Update filter component to present documentation filters</title>
-    <shortdesc></shortdesc>
+    <shortdesc>How to present documentation filters in the results page?</shortdesc>
     <taskbody>
         <context>
-            <p></p>
+            <p>We'll display the possible documentation filters in the results page.</p>
         </context>
         <steps>
             <step>
-                <cmd></cmd>
+                <cmd>We have to fetch documentations pushed by our AlgoliaClient</cmd>
+                <info>
+                    <codeblock id="codeblock_e35_ysm_y5b">     /** Array that holds information about profiling facets. */
+    const [profilingInformation, setProfilingInformation] = useState([]);
+    /** An array of present documentations in index to display them in filters section. */
+    const [documentations, setDocumentations] = useState([]);  
+
+ /** Function that fetches available documentations from Algolia index. */
+    async function fetchDocumentations() {
+        let response = await searchInstance.search('', {
+            facets: ['documentation']
+        });
+
+        setDocumentations(Object.keys(response.facets.documentation))
+    }</codeblock>
+                    <codeblock id="codeblock_crk_zsm_y5b">useEffect(async () => {
+        // Fetch documentations after mounting the component.
+        await fetchDocumentations();
+        // Load JS with profiling information after mounting the component.
+        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
+    }, [])</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Display them in the FilterComponent.jsx</cmd>
+                <info>
+                    <codeblock id="codeblock_hc3_btm_y5b">                    documentations.length !== 0 ?
+                        {
+                            title: "Documentations",
+                            options: documentations.map((key) => {
+                                return {
+                                    id: `documentation-${key}`,
+                                    description: key,
+                                    isFilter: true,
+                                    algoliaId: `documentation:${key}`
+                                }
+                            })
+                        } : null,</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>It should look like this:</cmd>
+                <info>
+                    <codeblock id="codeblock_wpk_ctm_y5b"> &lt;FilterContainer performSearch={navigateToPage} query={result.query} sections={
+                [
+                    documentations.length !== 0 ?
+                        {
+                            title: "Documentations",
+                            options: documentations.map((key) => {
+                                return {
+                                    id: `documentation-${key}`,
+                                    description: key,
+                                    isFilter: true,
+                                    algoliaId: `documentation:${key}`
+                                }
+                            })
+                        } : null,
+                ]</codeblock>
+                </info>
             </step>
         </steps>
     </taskbody>

@@ -14,9 +14,9 @@
     </topicref>
     
     <topicref href="topics/template_to_replace_results_page.dita">
+        <topicref href="tasks/template_to_replace_results_page/update_algolia_crawler_to_index_profiling_conditions.dita"></topicref>
         <topicref href="tasks/template_to_replace_results_page/setup_a_react_application.dita"></topicref>
         <topicref href="tasks/template_to_replace_results_page/add_filter_component_in_search_page.dita"></topicref>
-        <topicref href="tasks/template_to_replace_results_page/faceting_search_with_profiling.dita"></topicref>
         
         <topicref href="tasks/template_to_replace_results_page/template_for_multiple_docs.dita">
             <topicref href="tasks/template_to_replace_results_page/template_for_multiple_docs/update_algolia_crawler_to_index_multiple_documentations.dita"></topicref>
