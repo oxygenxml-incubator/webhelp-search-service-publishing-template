@@ -40,7 +40,7 @@ jobs:
         run: |
             cd oxygen-publishing-engine-3.x/bin
             sudo chmod +x dita
-            sudo ./dita --input=../../doc/mobile-phone/mobilePhone.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template-react --output=../../doc/mobile-phone/out
+            sudo ./dita --input=../../doc/mobile-phone/mobilePhone.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template-react --output=../../doc/mobile-phone/out --filter=../../doc/mobile-phone/ditaval/profiling.ditaval
             
       - name: Deploy to Netlify
         run: npx netlify-cli deploy --dir=doc/mobile-phone/out --prod
@@ -58,7 +58,7 @@ jobs:
       - name: Setup Algolia
         run: |
           echo -e "algolia.appId=$ALGOLIA_APP_ID\nalgolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
-          mvn compile exec:java
+          mvn compile exec:java Dexec.args="-indexName=profiling-example -baseUrl=https://syncro-phone.netlify.app/ -url=https://syncro-phone.netlify.app/ -profilingConditionsPath=doc/mobile-phone/out/subject-scheme-values.json"
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_ADMIN_API: ${{ secrets.ALGOLIA_ADMIN_API }}
