@@ -6,7 +6,7 @@
 
 	<properties>
 		<exec.mainClass>ro.sync.search.Starter</exec.mainClass>
-		<exec.args>-indexName=profiling-example -baseUrl=https://syncro-phone.netlify.app -url=https://syncro-phone.netlify.app -profilingConditionsPath=doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json</exec.args>
+		<exec.args>-indexName=profiling-example -baseUrl=https://syncro-phone.netlify.app -url=https://syncro-phone.netlify.app -profilingConditionsPath=/doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json</exec.args>
 		<sonar.organization>radu-pisoi-github</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.exclusions>
