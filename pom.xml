@@ -127,11 +127,11 @@
 
 	</dependencies>
 
-	<repositories>
-		<repository>
+	<pluginRepositories>
+		<pluginRepository>
 			<id>mvnrepository</id>
 			<url>http://mvnrepository.com/artifact/</url>
-		</repository>
-	</repositories>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>
