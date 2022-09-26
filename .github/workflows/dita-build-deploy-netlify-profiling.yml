@@ -1,0 +1,65 @@
+name: Build project documentation and publish to Netlify
+on:
+  push:
+    branches:
+      - ci-cd-workflows
+jobs:
+  build-dita-and-deploy-netlify:
+    name: Build DITA WebHelp Responsive and deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      
+      - name: Extract license from secrets
+        run: |
+          echo "$OPE_LICENSE" > licensekey.txt
+        env:
+          OPE_LICENSE: ${{ secrets.OPE_LICENSE }}
+        
+      - name: Put license into engine directory
+        run: |
+            sudo cp licensekey.txt oxygen-publishing-engine-3.x/licensekey.txt
+            
+      - name: Write Algolia credentials to config
+        run: |
+            echo -e "{\n\t\"appId\": \"40V95VH5YU\",\n\t\"searchOnlyKey\": \"8e4e1e3ae2fc1931b0a5f5d3c8f7544d\",\n\t\"indexName\": \"profiling-example\"\n}" > algolia-config.json
+            cat algolia-config.json
+            
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: "./templates/webhelp-documentation-template-react/src/react/package-lock.json"
+      - run: |
+          cd templates/webhelp-documentation-template-react/src/react
+          npm install
+          npm run build
+            
+      - name: Build WebHelp Responsive
+        run: |
+            cd oxygen-publishing-engine-3.x/bin
+            sudo chmod +x dita
+            sudo ./dita --input=../../doc/mobile-phone/mobilePhone.ditamap --format=webhelp-responsive -Dwebhelp.publishing.template=../../templates/webhelp-documentation-template-react --output=../../doc/mobile-phone/out
+            
+      - name: Deploy to Netlify
+        run: npx netlify-cli deploy --dir=doc/mobile-phone/out --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: c22502b3-0d05-43ec-b964-63e22ff40ea8
+          
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          
+      - name: Setup Algolia
+        run: |
+          echo -e "algolia.appId=$ALGOLIA_APP_ID\nalgolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
+          mvn compile exec:java
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_ADMIN_API: ${{ secrets.ALGOLIA_ADMIN_API }}
