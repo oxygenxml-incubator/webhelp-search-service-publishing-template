@@ -41,7 +41,6 @@ const App = ({ query, searchInstance }) => {
           page: page,
         });
 
-        console.log(response);
         setResult(response);
       } else {
         let response = await searchInstance.search(searchTerm, {
@@ -51,7 +50,6 @@ const App = ({ query, searchInstance }) => {
           facetFilters: facetFilters,
         });
 
-        console.log(response);
         setResult(response);
       }
     }
