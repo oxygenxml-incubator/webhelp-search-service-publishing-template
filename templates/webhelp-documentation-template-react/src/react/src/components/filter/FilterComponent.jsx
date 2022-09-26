@@ -11,7 +11,7 @@ import React from 'react';
  */
 const FilterComponent = ({ title, options, setData, isSetData, query }) => {
     return (
-        <>
+        <div className="filter-section">
             <h4 className="filter-title">{title}</h4>
             {options.map((option) => {
                 return (
@@ -21,7 +21,7 @@ const FilterComponent = ({ title, options, setData, isSetData, query }) => {
                     </React.Fragment>
                 )
             })}
-        </>
+        </div>
     );
 }
 

@@ -61,7 +61,8 @@ const FilterContainer = ({ sections, performSearch, query }) => {
         <form onChange={null}>
             <div className="filter-container">
                 <div className="filter-buttons">
-                    <button className="filter-button" onClick={e => clearAllFilters(e)}>Clear all filters</button>
+                    <span className="filter-text">Filters</span>
+                    <button className="filter-button" onClick={e => clearAllFilters(e)}>Clear all</button>
                 </div>
                 {sections.map((section) => { if (section !== null) { return (<FilterComponent key={section.title} title={section.title} options={section.options} setData={setData} isSetData={isSetData} query={query} />) } })}
             </div>

@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="create_an_algolia_index_by_crawling_a_webhelp_documentation">
+    <title>Create an Algolia index by crawling a WebHelp documentation </title>
+    <shortdesc>How to create a Crawler that will collect documenation's information and push it to
+        an Algolia index?</shortdesc>
+    <taskbody>
+        <context>
+            <p>In this task we''ll create a basic crawler that collects title, keywords, short
+                description and contents and pushes that information to an Algolia index.</p>
+        </context>
+        <steps>
+            <step>
+                <cmd>Prepare a Maven project.</cmd>
+            </step>
+            <step>
+                <cmd>Add dependenceis in pom.xml. We'll need JSoup, Algolia and Log system </cmd>
+                <info>
+                    <codeblock id="codeblock_qjh_stg_y5b">            &lt;dependency>
+			&lt;groupId>org.jsoup&lt;/groupId>
+			&lt;artifactId>jsoup&lt;/artifactId>
+			&lt;version>1.10.2&lt;/version>
+		&lt;/dependency>
+
+		&lt;dependency>
+			&lt;groupId>ch.qos.logback&lt;/groupId>
+			&lt;artifactId>logback-core&lt;/artifactId>
+			&lt;version>1.2.6&lt;/version>
+		&lt;/dependency>
+
+		&lt;dependency>
+			&lt;groupId>org.slf4j&lt;/groupId>
+			&lt;artifactId>slf4j-api&lt;/artifactId>
+			&lt;version>1.7.36&lt;/version>
+		&lt;/dependency>
+
+
+		&lt;dependency>
+			&lt;groupId>ch.qos.logback&lt;/groupId>
+			&lt;artifactId>logback-classic&lt;/artifactId>
+			&lt;version>1.2.6&lt;/version>
+		&lt;/dependency>
+
+		&lt;dependency>
+			&lt;groupId>com.algolia&lt;/groupId>
+			&lt;artifactId>algoliasearch-core&lt;/artifactId>
+			&lt;version>3.16.5&lt;/version>
+		&lt;/dependency>
+
+		&lt;dependency>
+			&lt;groupId>com.algolia&lt;/groupId>
+			&lt;artifactId>algoliasearch-java-net&lt;/artifactId>
+			&lt;version>3.16.5&lt;/version>
+		&lt;/dependency>
+
+		&lt;dependency>
+			&lt;groupId>org.json&lt;/groupId>
+			&lt;artifactId>json&lt;/artifactId>
+			&lt;version>20220320&lt;/version>
+		&lt;/dependency></codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create an basic example of Page that will be used by Algolia to create JSON
+                    records.</cmd>
+                <info>
+                    <codeblock id="codeblock_osb_25g_y5b">package ro.sync.search;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * The class that represents a page model. It contains all the data crawled from
+ * a certain URL.
+ * 
+ * @author Artiom Bozieac
+ *
+ */
+public class PageBase {
+	/**
+	 * URL from whom the data was collected.
+	 */
+	@JsonProperty("objectID")
+	protected String url;
+	/**
+	 * Page's title collected from metadata.
+	 */
+	protected String title;
+	/**
+	 * Page's short description
+	 */
+	protected String shortDescription;
+	/**
+	 * Page's collected keywords from metadata.
+	 */
+	@JsonProperty("_tags")
+	protected List&lt;String> keywords;
+	/**
+	 * Page's collected content from body section.
+	 */
+	protected String content;
+
+	/**
+	 * @param url is the URL from whom the data should be collected.
+	 * @return reference to the current instance.
+	 */
+	protected PageBase setUrl(final String url) {
+		this.url = url;
+		return this;
+	}
+
+	/**
+	 * @param title is the page's title.
+	 * @return reference to the current instance.
+	 */
+	protected PageBase setTitle(final String title) {
+		this.title = title;
+		return this;
+	}
+
+	/**
+	 * @param shortDescription is the page's short description.
+	 * @return reference to the current instance.
+	 */
+	protected PageBase setShortDescription(final String shortDescription) {
+		this.shortDescription = shortDescription;
+		return this;
+	}
+
+	/**
+	 * @param keywords is the page's collected keywords from metadata.
+	 * @return reference to the current instance.
+	 */
+	protected PageBase setKeywords(final List&lt;String> keywords) {
+		this.keywords = keywords;
+		return this;
+	}
+
+	/**
+	 * @param content is the page's content that represents the body.
+	 * @return reference to the current instance.
+	 */
+	protected PageBase setContent(final String content) {
+		this.content = content;
+		return this;
+	}
+
+	/**
+	 * @return URL from whom the data was collected.
+	 */
+	public String getUrl() {
+		return this.url;
+	}
+
+	/**
+	 * @return Page's collected title.
+	 */
+	public String getTitle() {
+		return this.title;
+	}
+
+	/**
+	 * @return Page's short description.
+	 */
+	public String getShortDescription() {
+		return this.shortDescription;
+	}
+
+	/**
+	 * @return Page's collected keywords.
+	 */
+	public List&lt;String> getKeywords() {
+		return this.keywords;
+	}
+
+	/**
+	 * @return Page's collected content from body section.
+	 */
+	public String getContent() {
+		return this.content;
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create an abstract crawler that will provide the necessary methods and fields
+                    for any use case.</cmd>
+                <info>
+                    <codeblock id="codeblock_p3g_wtg_y5b">package ro.sync.search;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Abstract class of Crawler that provides basic functional.
+ * 
+ * @author Bozieac Artiom
+ *
+ * @param &lt;T> is the version of page to be used. PageBase, PageFaceting or
+ *            PageMultipleDocumentations.
+ */
+public abstract class AbstractCrawler&lt;T extends PageBase> {
+	/**
+	 * Logger to inform user about certain actions like errors and others.
+	 */
+	protected static final Logger logger = LoggerFactory.getLogger(AbstractCrawler.class);
+	/**
+	 * The url to be crawled.
+	 */
+	protected String url;
+	/**
+	 * The base url of url to be crawled. It is used in order to not leave the
+	 * website and crawl data to infinite. For example if the base url is
+	 * "https://google.com/search/index.html" then it won't go to any other sites
+	 * that don't start with "https://google.com/search".
+	 */
+	protected String baseUrl;
+	/**
+	 * Represents the state of URL. If URL has "http:// or "https://" protocol then
+	 * it's a website, if "file://" then it's a file.
+	 */
+	protected boolean isFile;
+	/**
+	 * Class and attribute that represents short description in DOM.
+	 */
+	static final String SHORT_DESCRIPTION_SELECTOR = "p[class=\"- topic/shortdesc shortdesc\"]";
+	/**
+	 * File that represents class and attributes that should be ignored for
+	 * collection.
+	 */
+	static final String NODES_TO_IGNORE_PATH = "nodesToIgnore.csv";
+	/**
+	 * A list of strings that represents selectors of elements that should be ignore
+	 * during the crawling process.
+	 */
+	protected final List&lt;String> nodesToIgnore = new ArrayList&lt;>();
+
+	/**
+	 * List that stores all the visited urls in order to not crawl them more than
+	 * one time.
+	 */
+	protected List&lt;String> visitedUrls = new ArrayList&lt;>();
+
+	/**
+	 * List that serves as a queue that is used to perform BFS algorithm.
+	 */
+	protected List&lt;String> queue = new ArrayList&lt;>();
+	/**
+	 * List that stores all crawled pages
+	 */
+	protected List&lt;T> pages = new ArrayList&lt;>();
+
+	/**
+	 * Constructor with url and baseUrl parameters.
+	 * 
+	 * @param url     is the page that should be crawled for data.
+	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param isFile  is the flag that indicates if you passed and URL to the file
+	 *                or a website.
+	 * 
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
+	 */
+	protected AbstractCrawler(final String url, final String baseUrl, final boolean isFile) throws IOException {
+		this.url = url;
+		this.baseUrl = baseUrl;
+		this.isFile = isFile;
+
+		StringTokenizer tokenizer = new StringTokenizer(Files.readString(Path.of(NODES_TO_IGNORE_PATH)), ",");
+		while (tokenizer.hasMoreTokens()) {
+			nodesToIgnore.add(tokenizer.nextToken());
+		}
+	}
+
+	/**
+	 * @return list of crawled pages
+	 */
+	public List&lt;T> getCrawledPages() {
+		return this.pages;
+	}
+
+	/**
+	 * @return start url that should be crawled for data.
+	 */
+	public String getUrl() {
+		return this.url;
+	}
+
+	/**
+	 * @return base url that is used to not go out of parent's bounds.
+	 */
+	public String getBaseUrl() {
+		return this.baseUrl;
+	}
+
+	/**
+	 * @return list of visited urls after the crawl.
+	 */
+	public List&lt;String> getVisitedUrls() {
+		return this.visitedUrls;
+	}
+
+	/**
+	 * Using the given url in the constructor it visits every resource that haves
+	 * the same host and crawls its data.
+	 * 
+	 * @throws IOException if a problem with reading HTML File occured.
+	 * 
+	 */
+	public void crawl() throws IOException {
+		visitedUrls.clear();
+
+		// Add to the queue the starting url so it starts with it
+		queue.add(url);
+
+		while (!queue.isEmpty()) {
+			String currentUrl = queue.remove(0);
+			Document page = readHtml(currentUrl);
+			findUrls(page, currentUrl);
+
+			if (!(currentUrl.endsWith("index.html") || currentUrl.equals(this.url)))
+				collectData(page);
+		}
+
+		logger.info("The crawling went successfully! {} page(s) has/have been crawled!", getCrawledPages().size());
+	}
+
+	/**
+	 * Reads HTML code from an URL.
+	 * 
+	 * @param url is page's url whose HTML code should be extracted.
+	 * @return a HTML document.
+	 * @throws IOException when a problem with reading the HTML code occurred.
+	 */
+	protected Document readHtml(final String url) throws IOException {
+		return this.isFile ? Jsoup.parse(new File(url.substring(5)), "UTF-8") : Jsoup.connect(url).get();
+	}
+
+	/**
+	 * Finds appropriate urls among all the matches and adds them to queue.
+	 * 
+	 * @param page    is the Document whose hrefs should be collected.
+	 * @param pageUrl is the current page's url that is used to construct the next
+	 *                URLs.
+	 * @throws MalformedURLException when a problem with initialization of URL
+	 *                               occurred.
+	 */
+	protected void findUrls(final Document page, final String pageUrl) throws MalformedURLException {
+		// Select all "a" tags
+		Elements links = page.select("a");
+		// Search for ".html" hrefs
+		for (Element link : links) {
+			if (link.attr("href").endsWith(".html")) {
+
+				String currentUrl = new URL(new URL(pageUrl), link.attr("href")).toString();
+
+				if (!visitedUrls.contains(currentUrl) &amp;&amp; currentUrl.startsWith(this.baseUrl)
+						&amp;&amp; !(currentUrl.endsWith("index.html") || currentUrl.equals(this.url))) {
+					visitedUrls.add(currentUrl);
+					queue.add(currentUrl);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Collects all the data(titles, keywords and content) from visited urls and
+	 * creates a new Page object.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 */
+	protected abstract void collectData(final Document page);
+
+	/**
+	 * Collects the title of the page.
+	 * 
+	 * @param page is the desired document whose data should be collected. Page's
+	 *             collected title from metadata.
+	 * @return page's collected title.
+	 */
+	protected String collectTitle(final Document page) {
+		return page.title();
+	}
+
+	/**
+	 * Collects the short description of the page.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 * @return Short description of the page
+	 */
+	protected String collectShortDescription(final Document page) {
+		return page.select(SHORT_DESCRIPTION_SELECTOR).text();
+	}
+
+	/**
+	 * Collects the keywords of the page from metadata.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 * @return Page's collected keywords from metadata.
+	 */
+	protected List&lt;String> collectKeywords(final Document page) {
+		Element element = page.select("meta[name=keywords]").first();
+
+		if (element != null)
+			return Arrays.asList(element.attr("content").split(","));
+
+		return new ArrayList&lt;>();
+	}
+
+	/**
+	 * Collects the content of Page from body. The content are texts, titles,
+	 * paragraphs and others.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 * @return Page's collected content from body section.
+	 */
+	protected String collectContent(final Document page) {
+		// Delete from DOM every selector from file "nodesToIgnore.csv".
+		for (String selector : this.nodesToIgnore)
+			page.select(selector).remove();
+
+		// Return remaining text from body.
+		return page.body().text();
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a basic crawler that will be used to collect bare minimum, title,
+                    keywords, short descriptions and contents.</cmd>
+                <info>
+                    <codeblock id="codeblock_wyp_ytg_y5b">package ro.sync.search;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.jsoup.nodes.Document;
+
+/**
+ * Base class for Crawler that crawls an URL for its data.
+ * 
+ * @author Bozieac Artiom
+ *
+ */
+public class BasicCrawler extends AbstractCrawler&lt;PageBase> {
+	/**
+	 * Constructor with url and baseUrl parameters.
+	 * 
+	 * @param url     is the page that should be crawled for data.
+	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param isFile  is the flag that indicates if you passed and URL to the file
+	 *                or a website.
+	 * 
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
+	 */
+	protected BasicCrawler(String url, String baseUrl, boolean isFile) throws IOException {
+		super(url, baseUrl, isFile);
+	}
+
+	/**
+	 * @return list of crawled pages
+	 */
+	@Override
+	public List&lt;PageBase> getCrawledPages() {
+		return this.pages;
+	}
+
+	/**
+	 * Collects all the data(titles, keywords and content) from visited urls and
+	 * creates a new Page object.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 */
+	protected void collectData(final Document page) {
+		pages.add(new PageBase().setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
+				.setKeywords(collectKeywords(page)).setContent(collectContent(page)).setUrl(page.baseUri()));
+		
+		logger.info("Page {} was crawled!", page.title());
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a basic Algolia Client that will use basic crawler's collected data to
+                    push it to an Algolia index.</cmd>
+                <info>
+                    <codeblock id="codeblock_qgc_b5g_y5b">package ro.sync.search;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.algolia.search.DefaultSearchClient;
+import com.algolia.search.SearchClient;
+import com.algolia.search.SearchIndex;
+import com.algolia.search.models.settings.IndexSettings;
+
+/**
+ * Class that handles Algolia API calls for basic use case, when you need to
+ * collect only title, keywords, short description and content.
+ * 
+ * @author Artiom Bozieac
+ */
+public class BasicAlgolia {
+	/**
+	 * Logger to inform user about certain actions like errors and others.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(BasicAlgolia.class);
+	/**
+	 * Algolia application's id.
+	 */
+	protected String appId;
+	/**
+	 * Algolia admin's key to perform actions.
+	 */
+	protected String adminApiKey;
+	/**
+	 * Client that performs operations such as indices management.
+	 */
+	protected SearchClient client;
+	/**
+	 * Index that stores the current index performing actions on;
+	 */
+	protected SearchIndex&lt;PageBase> basicIndex;
+
+	/**
+	 * Constructor to set up all the necessary data like properties for Algolia
+	 * connection.
+	 * 
+	 * @throws IOException if a problem with loading config properties occured.
+	 * 
+	 */
+	public BasicAlgolia() throws IOException {
+		try (InputStream input = new FileInputStream("config.properties")) {
+			Properties properties = new Properties();
+
+			// Load a properties file.
+			properties.load(input);
+
+			appId = properties.getProperty("algolia.appId");
+			adminApiKey = properties.getProperty("algolia.adminApiKey");
+
+			client = DefaultSearchClient.create(appId, adminApiKey);
+		}
+	}
+
+	/**
+	 * Adds crawled pages from Crawler object to index.
+	 * 
+	 * @param url     is the URL whose pages should be added to index.
+	 * @param baseUrl is the base URL that is used to not go out of bounds.
+	 * 
+	 * @throws IOException if Crawler was failed to initiate or the HTML File
+	 *                     couldn't be read.
+	 */
+	protected void populateIndex(final String url, final String baseUrl) throws IOException {
+		BasicCrawler crawler = new BasicCrawler(url, baseUrl, false);
+		crawler.crawl();
+
+		basicIndex.saveObjects(crawler.getCrawledPages());
+		logger.info("{} Page object(s) successfully added to {} index!", crawler.getCrawledPages().size(),
+				basicIndex.getUrlEncodedIndexName());
+	}
+
+	/**
+	 * Use arguments to crawl the documentation and push it to Algolia index.
+	 * 
+	 * @param args is the array with indexName, url, baseUrl.
+	 * @throws IOException              if config.properties file is not set, path
+	 *                                  to the documents is wrong or profilingPath
+	 *                                  is invalid.
+	 * @throws IllegalArgumentException if passed arguments are invalid.
+	 */
+	public void useArguments(final String... args) throws IOException, IllegalArgumentException {
+		String url = "";
+		String baseUrl = "";
+		String indexName = "";
+
+		for (String arg : args) {
+			if (arg.startsWith("-url="))
+				url = arg.substring(5, arg.length());
+			else if (arg.startsWith("-baseUrl="))
+				baseUrl = arg.substring(9, arg.length());
+			else if (arg.startsWith("-indexName="))
+				indexName = arg.substring(11, arg.length());
+		}
+
+		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty())
+			throw new IllegalArgumentException();
+
+		basicIndex = client.initIndex(indexName, PageBase.class);
+		basicIndex.clearObjects();
+		populateIndex(url, baseUrl);
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>With this we created an Basic Crawler and Basic AlgoliaClient. Most of the time
+                    we'll be using BasicAlgolia that recieves -url, -baseUrl and -indexName
+                    arguments that are used to crawl a website and push its data to an index.</cmd>
+                <info>
+                    <codeblock id="codeblock_z1y_m5g_y5b">BasicAlgolia algolia = new BasicAlgolia();
+algolia.useArguments(args);
+// args = -url=URL -baseUrl=BASE_URL -indexName=INDEX_NAME</codeblock>
+                </info>
+            </step>
+        </steps>
+    </taskbody>
+</task>

@@ -28,8 +28,7 @@ body {
   height: auto;
 }
 .navbar {
-  border: none;
-  border-radius: 0;
+  border-bottom: 1px solid #B7B7B7;
   margin: 0;
   background: white;
 }

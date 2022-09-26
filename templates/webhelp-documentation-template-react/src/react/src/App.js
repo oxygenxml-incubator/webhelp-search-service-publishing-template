@@ -37,12 +37,14 @@ const App = ({ query, searchInstance }) => {
 
         let response = await searchInstance.search("", {
           facetFilters: [facetFilters],
+          hitsPerPage: 10,
+          page: page,
         });
 
         setResult(response);
       } else {
         let response = await searchInstance.search(searchTerm, {
-          hitsPerPage: 5,
+          hitsPerPage: 10,
           page: page,
           restrictSearchableAttributes: searchableAttributes,
           facetFilters: facetFilters,
@@ -53,6 +55,7 @@ const App = ({ query, searchInstance }) => {
     }
 
     setLoading(false);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="update_algolia_crawler_to_index_multiple_documentations">
+    <title>Update Algolia Crawler to index multiple documentations</title>
+    <shortdesc>How to create a Crawler that will crawl multiple documentations?</shortdesc>
+    <taskbody>
+        <context>
+            <p>We'll create a Crawler that crawls multtiple documentations and an AlgoliaClient that
+                pushes multiple documentations to one index.</p>
+        </context>
+        <steps>
+            <step>
+                <cmd>Create somewhere a config-crawler.json</cmd>
+                <info>
+                    <codeblock id="codeblock_wbc_rrm_y5b">{
+    "indexName": "Example multiple documentations",
+    "publications": [
+        {
+            "Publication URL": "https://garage-documentation.netlify.app/",
+            "Name": "Garage Documentation"
+        },
+        {
+            "Publication URL": "https://mobile-phone-documentation.netlify.app/",
+            "Name": "Syncro Phone User Guide"
+        },
+        {
+            "Publication URL": "https://flowers-documentation.netlify.app/",
+            "Name": "Growing Flowers"
+        }
+    ]
+}</codeblock>
+                    <note id="note_vhf_srm_y5b">Profiling Conditions and Mutiple Documentations and
+                        exclusive so you can't use both of them at a time</note>
+                </info>
+            </step>
+            <step>
+                <cmd>Create a MultipleDocumentationsPage.java</cmd>
+                <info>
+                    <codeblock id="codeblock_svb_5rm_y5b">package ro.sync.search;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Page class for CrawlerMultipleDocumentations.
+ * @author Bozieac Artiom
+ *
+ */
+public class MultipleDocumentationsPage extends BasicPage {
+	/**
+	 * The page's breadcrumb which is a list of entries that contains Title and
+	 * Relative path.
+	 */
+	private List&lt;Map.Entry&lt;String, String>> breadcrumb;
+	/**
+	 * Documentation to which the page belongs.
+	 */
+	private String documentation;
+
+	/**
+	 * 
+	 * @param breadcrumb is the page's breadcrumb which is a list of entries with
+	 *                   Title and Relative path.
+	 * @return reference to the current instance.
+	 */
+	public MultipleDocumentationsPage setBreadcrumb(final List&lt;Map.Entry&lt;String, String>> breadcrumb) {
+		this.breadcrumb = breadcrumb;
+		return this;
+	}
+
+	/**
+	 * @param documentation is the documentation to which the page belongs.
+	 * @return reference to the current instance.
+	 */
+	public MultipleDocumentationsPage setDocumentation(final String documentation) {
+		this.documentation = documentation;
+		return this;
+	}
+
+	/**
+	 * @return Page's collected breadcrumb.
+	 */
+	public List&lt;Map.Entry&lt;String, String>> getBreadcrumb() {
+		return this.breadcrumb;
+	}
+
+	/**
+	 * @return Page's collected documentation.
+	 */
+	public String getDocumentation() {
+		return this.documentation;
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create MultipleDocumentationsCrawler.java</cmd>
+                <info>
+                    <codeblock id="codeblock_t5f_vrm_y5b">package ro.sync.search;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+/**
+ * Crawler that crawls over multiple documentations.
+ * 
+ * @author Bozieac Artiom
+ *
+ */
+public class MultipleDocumentationsCrawler extends AbstractCrawler&lt;MultipleDocumentationsPage> {
+	/**
+	 * Documentation's name.
+	 */
+	private String documentationName = "";
+
+	/**
+	 * Constructor with url and baseUrl parameters.
+	 * 
+	 * @param url     is the page that should be crawled for data.
+	 * @param baseUrl is the parent that is used to not go out of bounds.
+	 * @param isFile  is the flag that indicates if you passed and URL to the file
+	 *                or a website.
+	 * 
+	 * @throws IOException if problems with initaliztion of URL or accessing the
+	 *                     nodesToIgnore.csv file occurred.
+	 */
+	protected MultipleDocumentationsCrawler(String url, String baseUrl, boolean isFile) throws IOException {
+		super(url, baseUrl, isFile);
+	}
+
+	/**
+	 * Collects all the data(titles, keywords and content) from visited urls and
+	 * creates a new Page object.
+	 * 
+	 * @param page is the desired document whose data should be collected.
+	 */
+	@Override
+	protected void collectData(final Document page) {
+		pages.add(((MultipleDocumentationsPage) ((MultipleDocumentationsPage) new MultipleDocumentationsPage()
+				.setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
+				.setKeywords(collectKeywords(page))).setBreadcrumb(collectBreadcrumb(page))
+				.setContent(collectContent(page)).setUrl(page.baseUri())).setDocumentation(this.documentationName));
+		
+		logger.info("Page {} was crawled!", page.title());
+	}
+
+	/**
+	 * Collects page's breadcrumb from the top of the page.
+	 * 
+	 * @param page is the page whose breadcrumb should be collected.
+	 * @return page's breadcrumb that is a list of entries with title and relative
+	 *         path.
+	 */
+	private List&lt;Map.Entry&lt;String, String>> collectBreadcrumb(final Document page) {
+		List&lt;Map.Entry&lt;String, String>> breadcrumb = new ArrayList&lt;>();
+
+		// Remove the short description in the breadcrumb that is not visible to the
+		// user.
+		page.select("div.wh-tooltip").remove();
+
+		// Extract every category of the breadcrumb.
+		for (Element el : page.select("div.wh_breadcrumb > ol > li")) {
+			if (el.text().equals("Home"))
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).absUrl("href")));
+			else
+				breadcrumb.add(Map.entry(el.text(), el.child(0).child(0).child(0).absUrl("href")));
+		}
+
+		return breadcrumb;
+	}
+
+	/**
+	 * @param documentationName is the name to be set for documentation's name.
+	 * @return current instance of Crawler.
+	 */
+	public MultipleDocumentationsCrawler setDocumentationName(final String documentationName) {
+		this.documentationName = documentationName;
+		return this;
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>Create MultipleDocumentationsAlgolia.java</cmd>
+                <info>
+                    <codeblock id="codeblock_nzk_wrm_y5b">package ro.sync.search;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.algolia.search.SearchIndex;
+import com.algolia.search.models.settings.IndexSettings;
+
+/**
+ * Class that uses multiple documentations given via a config and pushes crawled
+ * data to the Algolia index. It collects title, keywords, short description,
+ * content, breadcrumb and creates a new attribute to specify each topic's
+ * documentation. This class is used for Webhelp template with React results
+ * page.
+ * 
+ * @author Bozieac Artiom
+ *
+ */
+public class MultipleDocumentationsAlgolia extends BasicAlgolia {
+	/**
+	 * Logger to inform user about certain actions like errors and others.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(MultipleDocumentationsAlgolia.class);
+	/**
+	 * Index that stores the current index performing actions on;
+	 */
+	protected SearchIndex&lt;MultipleDocumentationsPage> multipleDocumentationsIndex;
+
+	/**
+	 * Constructor to set up necessary stuff like properties for Algolia connection.
+	 * 
+	 * @throws IOException if a problem with loading config properties occured.
+	 * 
+	 */
+	public MultipleDocumentationsAlgolia() throws IOException {
+		super();
+	}
+
+	/**
+	 * Sets settings for the index.
+	 */
+	private void prepareIndex() {
+		multipleDocumentationsIndex.setSettings(
+				new IndexSettings().setSearchableAttributes(Arrays.asList("title", "shortDescription", "content"))
+						.setCustomRanking(Arrays.asList("desc(title)", "desc(shortDescription)", "desc(content)"))
+						.setAttributesToHighlight(Arrays.asList("title", "shortDescription", "content"))
+						.setAttributesToSnippet(Arrays.asList("content:30"))
+						.setAttributesForFaceting(Arrays.asList("_tags", "documentation")));
+		multipleDocumentationsIndex.clearObjects();
+	}
+
+	@Override
+	public void useArguments(final String... args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Use config in order to crawl documentations and store them in Algolia index.
+	 * 
+	 * @param configPath is the path to the crawler-config.json
+	 * @throws JSONException if JSON couldn't be parsed.
+	 * @throws IOException   if config file is not found.
+	 */
+	public void useConfig(final String configPath) throws JSONException, IOException {
+		JSONObject jsonObject = new JSONObject(new String(Files.readAllBytes(Paths.get(configPath))));
+		// Map that stores documentation url and name.
+		Map&lt;String, String> documentations = new HashMap&lt;>();
+
+		// Extract array with documentations.
+		JSONArray documentationsJson = jsonObject.getJSONArray("publications");
+
+		// Put documentations into the map.
+		for (int i = 0; i &lt; documentationsJson.length(); i++)
+			documentations.put(documentationsJson.getJSONObject(i).getString("Name"),
+					documentationsJson.getJSONObject(i).getString("Publication URL"));
+
+		multipleDocumentationsIndex = client.initIndex(jsonObject.getString("indexName"),
+				MultipleDocumentationsPage.class);
+		prepareIndex();
+
+		// Crawl every single documentation and store it in Algolia index.
+		for (Entry&lt;String, String> documentation : documentations.entrySet()) {
+			MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(documentation.getValue(),
+					documentation.getValue(), false).setDocumentationName(documentation.getKey());
+			crawler.crawl();
+
+			multipleDocumentationsIndex.saveObjects(crawler.getCrawledPages());
+
+			logger.info("{} Page object(s) from documentation {} successfully added to {} index!",
+					crawler.getCrawledPages().size(), documentation.getKey(),
+					multipleDocumentationsIndex.getUrlEncodedIndexName());
+		}
+	}
+}
+</codeblock>
+                </info>
+            </step>
+            <step>
+                <cmd>To use newly created Crawler and AlgoliaClient use this:</cmd>
+                <info>
+                    <codeblock id="codeblock_s55_xrm_y5b">MultipleDocumentationsAlgolia algolia = new MultipleDocumentationsAlgolia();
+algolia.useConfig(args[0].substring(12));
+// args - -configPath=CONFIG_PATH</codeblock>
+                </info>
+            </step>
+        </steps>
+    </taskbody>
+</task>
