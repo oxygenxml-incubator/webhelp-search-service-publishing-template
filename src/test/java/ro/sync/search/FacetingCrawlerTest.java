@@ -230,7 +230,7 @@ class FacetingCrawlerTest {
 		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/profiling/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/profiling/").toUri().toURL().toString(), true,
-				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+				"src/test/resources/profiling/subject-scheme-values.json");
 
 		crawler.crawl();
 
@@ -249,7 +249,7 @@ class FacetingCrawlerTest {
 		FacetingCrawler crawler = new FacetingCrawler(
 				Path.of("src/test/resources/breadcrumb/index.html").toUri().toURL().toString(),
 				Path.of("src/test/resources/breadcrumb/").toUri().toURL().toString(), true,
-				"doc/mobile-phone/out/webhelp-responsive/subject-scheme-values.json");
+				"src/test/resources/profiling/subject-scheme-values.json");
 
 		crawler.crawl();
 
