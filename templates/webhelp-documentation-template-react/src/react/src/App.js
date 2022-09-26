@@ -55,6 +55,7 @@ const App = ({ query, searchInstance }) => {
     }
 
     setLoading(false);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {

@@ -92,6 +92,10 @@ body {
   color: #9893df;
 }
 
+.title:hover { 
+  color: #9893df;
+}
+
 .description {
   font-size: 12px;
   font-family: "Roboto", sans-serif;
