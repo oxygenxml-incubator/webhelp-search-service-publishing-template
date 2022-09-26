@@ -40,7 +40,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
             facets: ['documentation']
         });
 
-        if (response !== null && response !== undefined)
+        if (response.facets.documentation)
             setDocumentations(Object.keys(response.facets.documentation))
     }
 
