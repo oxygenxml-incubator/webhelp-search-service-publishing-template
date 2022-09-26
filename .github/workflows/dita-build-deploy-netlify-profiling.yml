@@ -54,7 +54,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-          
+      - name: Debug
+        run: |
+          cd doc
+          ls
+          cd mobile-phone
+          ls
+          cd out
+          ls
+          cd webhelp-responsive
+          ls
+      
       - name: Setup Algolia
         run: |
           echo -e "algolia.appId=$ALGOLIA_APP_ID\nalgolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
