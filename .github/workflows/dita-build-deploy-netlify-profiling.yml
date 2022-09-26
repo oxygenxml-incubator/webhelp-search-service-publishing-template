@@ -23,7 +23,7 @@ jobs:
             
       - name: Write Algolia credentials to config
         run: |
-            echo -e "{\n\t"appId": "40V95VH5YU",\n\t"searchOnlyKey": "8e4e1e3ae2fc1931b0a5f5d3c8f7544d",\n\t"indexName": "profiling-example"\n}" > algolia-config.json
+            echo -e "{\n\t\"appId\": \"40V95VH5YU\",\n\t\"searchOnlyKey\": \"8e4e1e3ae2fc1931b0a5f5d3c8f7544d\",\n\t\"indexName\": \"profiling-example\"\n}\" > algolia-config.json
             cat algolia-config.json
             
       - name: Setup node
