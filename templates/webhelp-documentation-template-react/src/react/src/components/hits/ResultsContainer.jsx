@@ -47,7 +47,7 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
         // Fetch documentations after mounting the component.
         await fetchDocumentations();
         // Load JS with profiling information after mounting the component.
-        loadJS('subject-scheme-values.json', () => { setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
+        loadJS('subject-scheme-values.json', () => { console.log(subjectSchemeValues), setProfilingInformation(subjectSchemeValues.subjectScheme.attrValues) });
     }, [])
 
     /** Check if the previous button should be disabled or not. */
