@@ -5,7 +5,7 @@
 	<version>1.0</version>
 
 	<properties>
-		<exec.mainClass>ro.sync.search.BasicAlgolia</exec.mainClass>
+		<exec.mainClass>ro.sync.search.Starter</exec.mainClass>
 		<exec.args>-indexName=webhelp-search-service-publishing-template -baseUrl=https://webhelp-search-service-template.netlify.app -url=https://webhelp-search-service-template.netlify.app</exec.args>
 		<sonar.organization>radu-pisoi-github</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
