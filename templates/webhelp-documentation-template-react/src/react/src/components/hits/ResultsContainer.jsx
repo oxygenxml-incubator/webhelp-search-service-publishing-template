@@ -25,7 +25,7 @@ function loadJS(url, implementationCode) {
  * Class that renders a container with search results.
  * @param {*} result is the response from Algolia.
  * @param {*} navigateToPage is the function to perform a search in Algolia index.
- * @param {*} searchInstancelt is an initialized index of Algolia.
+ * @param {*} searchInstance is an initialized index of Algolia.
  * @returns a container with all the results from Algolia.
  */
 const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
