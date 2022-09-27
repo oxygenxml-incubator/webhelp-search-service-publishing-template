@@ -1,11 +1,11 @@
-name: Build project documentation and publish to Netlify
+name: Build project documentation and publish to Netlify with profiling conditions
 on:
   push:
     branches:
-      - ci-cd-workflows
+      - development
 jobs:
-  build-dita-and-deploy-netlify:
-    name: Build DITA WebHelp Responsive and deploy to Netlify
+  build-dita-and-deploy-netlify-profiling:
+    name: Build DITA WebHelp Responsive and deploy to Netlify with profiling conditions
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
