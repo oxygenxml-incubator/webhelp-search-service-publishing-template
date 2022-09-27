@@ -46,7 +46,7 @@ jobs:
             
       - name: Create main index.html
         run: |
-            echo -e "<html> <head> <title>Main Page of Multiple Documentations</title> </head> <body> <a href="flowers/index.html"><button>Click to visit Flowers documentation</button></a><br> <a href="garage/index.html"><button>Click to visit Garage documentation</button></a><br> <a href="mobile-phone/index.html"><button>Click to visit Syncro Mobile Phone documentation</button></a> </body></html>" > doc/multiple/index.html
+            echo "<html> <head> <title>Main Page of Multiple Documentations</title> </head> <body> <a href="flowers/index.html"><button>Click to visit Flowers documentation</button></a><br> <a href="garage/index.html"><button>Click to visit Garage documentation</button></a><br> <a href="mobile-phone/index.html"><button>Click to visit Syncro Mobile Phone documentation</button></a> </body></html>" | sudo tee doc/multiple/index.html
             
       - name: Deploy to Netlify
         run: npx netlify-cli deploy --dir=doc/multiple --prod
