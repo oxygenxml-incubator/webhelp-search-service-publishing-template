@@ -83,6 +83,19 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                                 }
                             })
                         } : null,
+                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
+                        return {
+                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
+                            options: profilingValue.values.map((option) => {
+                                return {
+                                    id: `attribute-${option.key}`,
+                                    description: option.navTitle,
+                                    isFilter: true,
+                                    algoliaId: `${profilingValue.name}:${option.key}`,
+                                }
+                            })
+                        }
+                    }) : []),
                     {
                         title: "Search in",
                         options: [
@@ -100,19 +113,6 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                             }
                         ]
                     },
-                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
-                        return {
-                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
-                            options: profilingValue.values.map((option) => {
-                                return {
-                                    id: `attribute-${option.key}`,
-                                    description: option.navTitle,
-                                    isFilter: true,
-                                    algoliaId: `${profilingValue.name}:${option.key}`,
-                                }
-                            })
-                        }
-                    }) : [])
                 ]
             } />
             <HitsList hits={result.hits} />
