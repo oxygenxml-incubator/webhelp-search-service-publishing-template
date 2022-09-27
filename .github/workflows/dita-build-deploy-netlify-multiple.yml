@@ -2,7 +2,7 @@ name: Build project documentation and publish to Netlify multiple documentations
 on:
   push:
     branches:
-      - ci-cd-workflows
+      - development
 jobs:
   build-dita-and-deploy-netlify-multiple:
     name: Build DITA WebHelp Responsive and deploy to Netlify multiple documentations
