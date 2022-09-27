@@ -1,16 +1,16 @@
 {
-    "indexName": "Example multiple documentations",
+    "indexName": "multiple-example",
     "publications": [
         {
-            "Publication URL": "https://garage-documentation.netlify.app/",
+            "Publication URL": "https://multiple-docs.netlify.app/garage",
             "Name": "Garage Documentation"
         },
         {
-            "Publication URL": "https://mobile-phone-documentation.netlify.app/",
+            "Publication URL": "https://multiple-docs.netlify.app/mobile-phone",
             "Name": "Syncro Phone User Guide"
         },
         {
-            "Publication URL": "https://flowers-documentation.netlify.app/",
+            "Publication URL": "https://multiple-docs.netlify.app/flowers",
             "Name": "Growing Flowers"
         }
     ]
