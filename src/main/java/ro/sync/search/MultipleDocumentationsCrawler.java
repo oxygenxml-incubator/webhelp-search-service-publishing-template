@@ -33,6 +33,10 @@ public class MultipleDocumentationsCrawler extends AbstractCrawler<MultipleDocum
 	 */
 	protected MultipleDocumentationsCrawler(String url, String baseUrl, boolean isFile) throws IOException {
 		super(url, baseUrl, isFile);
+
+		if (baseUrl.endsWith("index.html")) {
+			this.baseUrl = baseUrl.substring(0, baseUrl.indexOf("index.html"));
+		}
 	}
 
 	/**
@@ -47,7 +51,7 @@ public class MultipleDocumentationsCrawler extends AbstractCrawler<MultipleDocum
 				.setTitle(collectTitle(page)).setShortDescription(collectShortDescription(page))
 				.setKeywords(collectKeywords(page))).setBreadcrumb(collectBreadcrumb(page))
 				.setContent(collectContent(page)).setUrl(page.baseUri())).setDocumentation(this.documentationName));
-		
+
 		logger.info("Page {} was crawled!", page.title());
 	}
 
