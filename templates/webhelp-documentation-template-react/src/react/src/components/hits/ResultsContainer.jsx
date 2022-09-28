@@ -25,7 +25,7 @@ function loadJS(url, implementationCode) {
  * Class that renders a container with search results.
  * @param {*} result is the response from Algolia.
  * @param {*} navigateToPage is the function to perform a search in Algolia index.
- * @param {*} searchInstancelt is an initialized index of Algolia.
+ * @param {*} searchInstance is an initialized index of Algolia.
  * @returns a container with all the results from Algolia.
  */
 const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
@@ -40,7 +40,8 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
             facets: ['documentation']
         });
 
-        setDocumentations(Object.keys(response.facets.documentation))
+        if (response.facets.documentation)
+            setDocumentations(Object.keys(response.facets.documentation))
     }
 
     useEffect(async () => {
@@ -82,6 +83,19 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                                 }
                             })
                         } : null,
+                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
+                        return {
+                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
+                            options: profilingValue.values.map((option) => {
+                                return {
+                                    id: `attribute-${option.key}`,
+                                    description: option.navTitle,
+                                    isFilter: true,
+                                    algoliaId: `${profilingValue.name}:${option.key}`,
+                                }
+                            })
+                        }
+                    }) : []),
                     {
                         title: "Search in",
                         options: [
@@ -99,19 +113,6 @@ const ResultsContainer = ({ result, navigateToPage, searchInstance }) => {
                             }
                         ]
                     },
-                    ...(documentations.length === 0 ? profilingInformation.map((profilingValue) => {
-                        return {
-                            title: profilingValue.name.charAt(0).toUpperCase() + profilingValue.name.slice(1),
-                            options: profilingValue.values.map((option) => {
-                                return {
-                                    id: `attribute-${option.key}`,
-                                    description: option.navTitle,
-                                    isFilter: true,
-                                    algoliaId: `${profilingValue.name}:${option.key}`,
-                                }
-                            })
-                        }
-                    }) : [])
                 ]
             } />
             <HitsList hits={result.hits} />

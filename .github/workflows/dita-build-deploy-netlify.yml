@@ -55,7 +55,7 @@ jobs:
       - name: Setup Algolia
         run: |
           echo -e "algolia.appId=$ALGOLIA_APP_ID\nalgolia.adminApiKey=$ALGOLIA_ADMIN_API" > config.properties
-          mvn compile exec:java
+          mvn -q clean compile exec:java -Dexec.args="-indexName=webhelp-search-service-publishing-template -baseUrl=https://webhelp-search-service-template.netlify.app -url=https://webhelp-search-service-template.netlify.app"
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_ADMIN_API: ${{ secrets.ALGOLIA_ADMIN_API }}

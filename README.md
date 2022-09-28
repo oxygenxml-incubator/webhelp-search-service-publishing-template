@@ -4,7 +4,9 @@
 
 We'll create a publishing template to demonstrates how to integrate a search service with WebHelp transformation. 
 
-The project documentation is available *[here.](https://webhelp-search-service-template.netlify.app/)*
+The project documentation is available *[here.](https://webhelp-search-service-template.netlify.app/)*<br>
+Example with profiling values from DITA is available *[here.](https://syncro-phone.netlify.app/)*<br>
+Example with multiple documentations is available *[here.](https://multiple-docs.netlify.app/)*
 
 Copyright and License
 ---------------------
