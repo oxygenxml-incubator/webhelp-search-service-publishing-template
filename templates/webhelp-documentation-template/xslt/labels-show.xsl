@@ -15,7 +15,7 @@
     <!-- Match a label keyword and display it as a span -->
     <xsl:template match="keyword[@outputclass = 'label']">
         <a
-            href="{concat('../search.html?searchQuery=label:', normalize-space(translate(text(), ' ', ' ')))}">
+            href="{concat('../../search.html?searchQuery=label:', normalize-space(translate(text(), ' ', ' ')))}">
             <span style="background-color:deepskyblue;color:white;border-radius: 6px;margin:0.2em;padding:0.2em;"
                 ><xsl:value-of select="text()"/></span>
         </a>
