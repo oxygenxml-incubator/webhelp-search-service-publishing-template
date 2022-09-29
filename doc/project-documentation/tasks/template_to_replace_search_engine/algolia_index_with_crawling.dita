@@ -7,8 +7,8 @@
 	<prolog>
 		<metadata>
 			<keywords>
-				<keyword>Algolia</keyword>
-				<keyword>WebHelp</keyword>
+				<keyword outputclass="label">Algolia</keyword>
+				<keyword outputclass="label">WebHelp</keyword>
 			</keywords>
 		</metadata>
 	</prolog>

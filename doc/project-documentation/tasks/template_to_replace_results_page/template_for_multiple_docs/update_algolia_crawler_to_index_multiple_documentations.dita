@@ -6,8 +6,8 @@
 	<prolog>
 		<metadata>
 			<keywords>
-				<keyword>Java</keyword>
-				<keyword>Crawler</keyword>
+				<keyword outputclass="label">Java</keyword>
+				<keyword outputclass="label">Crawler</keyword>
 			</keywords>
 		</metadata>
 	</prolog>

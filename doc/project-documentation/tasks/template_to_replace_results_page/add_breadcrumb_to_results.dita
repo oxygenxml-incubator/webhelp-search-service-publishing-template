@@ -6,8 +6,8 @@
     <prolog>
         <metadata>
             <keywords>
-                <keyword>React</keyword>
-                <keyword>Breadcrumb</keyword>
+                <keyword outputclass="label">React</keyword>
+                <keyword outputclass="label">Breadcrumb</keyword>
             </keywords>
         </metadata>
     </prolog>
