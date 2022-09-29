@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
 <topic id="publishing_template_to_replace_search_result_presentation_allowing_us_to_add_filter_capabilities">
-    <title>Publishing template to replace search result presentation allowing us to add filter capabilities</title>
+    <title>How to replace search result presentation to add filter capabilities?</title>
     <body>
-        <p></p>
+        <p>How to create a template that replaces the results section of the search page by creating
+            a results page in React?</p>
+        <p>In this template we covered 2 use cases: Search using profiling conditions from DITA and
+            search over multiple documentations.</p>
     </body>
 </topic>

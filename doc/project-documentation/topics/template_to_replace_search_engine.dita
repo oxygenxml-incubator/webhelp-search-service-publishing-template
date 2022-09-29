@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
 <topic id="publishing_template_to_replace_internal_search_engine_with_algolia">
-    <title>Publishing template to replace internal search engine with Algolia</title>
+    <title>How to replace internal WebHelp search engine with Algolia?</title>
     <body>
-        <p></p>
+        <p>How to replace the internal WebHelp search engine with Algolia search engine?</p>
+        <p>This template covers one use case and that is to replace the internal search engine of
+            WebHelp with the Algolia search engine by keeping the same results page.</p>
     </body>
 </topic>
