@@ -4,6 +4,14 @@
     <title>Update Algolia Crawler to index profiling conditions</title>
     <shortdesc>How to implement profiling conditions in an Algolia index and how to use them as
         filters?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>Java</keyword>
+                <keyword>Crawler</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>How to modify a template to make it extracting profiling conditions from DITA to meta

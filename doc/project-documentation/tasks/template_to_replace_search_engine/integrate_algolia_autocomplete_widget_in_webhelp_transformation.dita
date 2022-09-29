@@ -4,6 +4,14 @@
     <title>Integrate Algolia Autocomplete widget in WebHelp transformation</title>
     <shortdesc>How to add Algolia autocomplete to the template and put it into Webhelp
         output?</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>WebHelp</keyword>
+        <keyword>Algolia</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
     <taskbody>
         <context>
             <p>We'll replace the search form from WebHelp and put an autocomplete from Algolia.</p>

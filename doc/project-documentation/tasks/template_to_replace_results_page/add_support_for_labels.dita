@@ -3,6 +3,14 @@
 <task id="add_support_for_labels_tags_in_webhelp_pages">
     <title>Add support for labels/tags in WebHelp pages</title>
     <shortdesc>How to add labels to topics in your documentation?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>WebHelp</keyword>
+                <keyword>Labels</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>We'll add tags to each topic and display them in the output. Also we'll be able to

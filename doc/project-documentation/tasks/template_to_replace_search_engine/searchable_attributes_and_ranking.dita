@@ -3,6 +3,14 @@
 <task id="setup_searchable_attributes_and_ranking_criteria">
     <title>Setup searchable attributes and ranking criteria</title>
     <shortdesc>How to set searchable attributes and ranking criteria?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>Java</keyword>
+                <keyword>Algolia</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>Right now our index with records is pretty much usesless because we haven't set any

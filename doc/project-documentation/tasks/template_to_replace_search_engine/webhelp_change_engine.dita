@@ -3,6 +3,14 @@
 <task id="webhelp_change_engine">
     <title>Change search engine in Webhelp template</title>
     <shortdesc>How to replace Webhelp search engine with Algolia?</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>WebHelp</keyword>
+        <keyword>Algolia</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
     <taskbody>
         <context>
             <p>We will replace the default Webhelp search engine with the one that Algolia provides

@@ -4,6 +4,14 @@
     <title>Replace short description with a snippet of matching words enhancement</title>
     <shortdesc>How to replace the short descriptions of the search results with a snippet of matching
         words from its content?</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>Java</keyword>
+        <keyword>Algolia</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
     <taskbody>
         <context>
             <p>We will change the short descriptions of the search results by a snippet of matching

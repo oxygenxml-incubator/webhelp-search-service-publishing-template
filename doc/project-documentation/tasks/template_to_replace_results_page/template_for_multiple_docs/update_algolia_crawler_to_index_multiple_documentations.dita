@@ -3,6 +3,14 @@
 <task id="update_algolia_crawler_to_index_multiple_documentations">
     <title>Update Algolia Crawler to index multiple documentations</title>
     <shortdesc>How to create a Crawler that will crawl multiple documentations?</shortdesc>
+	<prolog>
+		<metadata>
+			<keywords>
+				<keyword>Java</keyword>
+				<keyword>Crawler</keyword>
+			</keywords>
+		</metadata>
+	</prolog>
     <taskbody>
         <context>
             <p>We'll create a Crawler that crawls multtiple documentations and an AlgoliaClient that

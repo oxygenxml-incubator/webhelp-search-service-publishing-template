@@ -4,6 +4,14 @@
     <title>Add filter component in search page</title>
     <shortdesc>How to create a filter component that will modify your search results? We'll be using
         Filter components we created earlier.</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>React</keyword>
+                <keyword>Filter</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>We'll create a FilterComponent that will allow you to filter your search results.</p>

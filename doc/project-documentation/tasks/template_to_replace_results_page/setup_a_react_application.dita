@@ -3,6 +3,14 @@
 <task id="setup_a_react_application_to_implement_results_presentation">
     <title>Setup a React application to implement results presentation</title>
     <shortdesc>How to create a React Results page for Webhelp template?</shortdesc>
+  <prolog>
+    <metadata>
+      <keywords>
+        <keyword>React</keyword>
+        <keyword>WebHelp</keyword>
+      </keywords>
+    </metadata>
+  </prolog>
     <taskbody>
         <context>
             <p>

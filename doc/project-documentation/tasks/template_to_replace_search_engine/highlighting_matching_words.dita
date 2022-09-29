@@ -3,6 +3,14 @@
 <task id="highlight_matching_words_enhancement">
     <title>Highlight matching words enhancement</title>
     <shortdesc>How to make words that are met in query be highlighted?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>Algolia</keyword>
+                <keyword>Java</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>Right now we don't highlight any words, even if they are met in the query, let's fix

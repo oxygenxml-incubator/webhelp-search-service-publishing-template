@@ -3,6 +3,14 @@
 <task id="add_breadcrumb_to_results">
     <title>Add breadcrumb to results </title>
     <shortdesc>How to display breadcrumb?</shortdesc>
+    <prolog>
+        <metadata>
+            <keywords>
+                <keyword>React</keyword>
+                <keyword>Breadcrumb</keyword>
+            </keywords>
+        </metadata>
+    </prolog>
     <taskbody>
         <context>
             <p>We already have everying to display the breadcrumb because our FacetingCrawler and

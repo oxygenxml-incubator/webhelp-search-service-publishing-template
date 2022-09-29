@@ -4,6 +4,14 @@
     <title>Create an Algolia index by crawling a WebHelp documentation </title>
     <shortdesc>How to create a Crawler that will collect documenation's information and push it to
         an Algolia index?</shortdesc>
+	<prolog>
+		<metadata>
+			<keywords>
+				<keyword>Algolia</keyword>
+				<keyword>WebHelp</keyword>
+			</keywords>
+		</metadata>
+	</prolog>
     <taskbody>
         <context>
             <p>In this task we''ll create a basic crawler that collects title, keywords, short
