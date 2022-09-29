@@ -2,6 +2,7 @@ package ro.sync.search;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,8 +92,12 @@ public class MultipleDocumentationsAlgolia extends BasicAlgolia {
 
 		// Crawl every single documentation and store it in Algolia index.
 		for (Entry<String, String> documentation : documentations.entrySet()) {
-			MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(documentation.getValue(),
-					documentation.getValue(), false).setDocumentationName(documentation.getKey());
+			final boolean isFile = jsonObject.getBoolean("isFile");
+
+			MultipleDocumentationsCrawler crawler = new MultipleDocumentationsCrawler(
+					isFile ? Path.of(documentation.getValue()).toUri().toURL().toString() : documentation.getValue(),
+					isFile ? Path.of(documentation.getValue()).toUri().toURL().toString() : documentation.getValue(),
+					isFile).setDocumentationName(documentation.getKey());
 			crawler.crawl();
 
 			multipleDocumentationsIndex.saveObjects(crawler.getCrawledPages());

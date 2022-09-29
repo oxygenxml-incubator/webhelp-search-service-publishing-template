@@ -1,6 +1,7 @@
 package ro.sync.search;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 import org.slf4j.Logger;
@@ -51,9 +52,9 @@ public class FacetingAlgolia extends BasicAlgolia {
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
-	protected void populateIndex(final String url, final String baseUrl, final String profilingConditionsPath)
-			throws IOException {
-		FacetingCrawler crawler = new FacetingCrawler(url, baseUrl, false, profilingConditionsPath);
+	protected void populateIndex(final String url, final String baseUrl, final boolean isFile,
+			final String profilingConditionsPath) throws IOException {
+		FacetingCrawler crawler = new FacetingCrawler(url, baseUrl, isFile, profilingConditionsPath);
 		crawler.crawl();
 
 		facetsIndex.setSettings(new IndexSettings()
@@ -83,6 +84,7 @@ public class FacetingAlgolia extends BasicAlgolia {
 		String url = "";
 		String baseUrl = "";
 		String indexName = "";
+		String isFile = "";
 		String profilingConditionsPath = "";
 
 		for (String arg : args) {
@@ -92,15 +94,22 @@ public class FacetingAlgolia extends BasicAlgolia {
 				baseUrl = arg.substring(9, arg.length());
 			else if (arg.startsWith("-indexName="))
 				indexName = arg.substring(11, arg.length());
+			else if (arg.startsWith("-isFile="))
+				isFile = arg.substring(8, arg.length());
 			else if (arg.startsWith("-profilingConditionsPath="))
 				profilingConditionsPath = arg.substring(25, arg.length());
 		}
 
-		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty() || profilingConditionsPath.isEmpty())
+		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty() || profilingConditionsPath.isEmpty()
+				|| isFile.isEmpty())
 			throw new IllegalArgumentException();
+
+		final boolean isFileFlag = isFile.equals("true");
 
 		facetsIndex = client.initIndex(indexName, FacetingPage.class);
 		facetsIndex.clearObjects();
-		populateIndex(url, baseUrl, profilingConditionsPath);
+		populateIndex(isFileFlag ? Path.of(url).toUri().toURL().toString() : url,
+				isFileFlag ? Path.of(baseUrl).toUri().toURL().toString() : baseUrl, isFileFlag,
+				profilingConditionsPath);
 	}
 }

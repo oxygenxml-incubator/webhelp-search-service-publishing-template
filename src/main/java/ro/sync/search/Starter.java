@@ -31,9 +31,7 @@ public class Starter {
 		} catch (IllegalArgumentException e) {
 			logger.error("Invalid arguments passed!");
 		} catch (IOException e) {
-			logger.error(
-					"An error occurred when reading Algolia credentials from config.properties or your subject-scheme-values.json path!",
-					e);
+			logger.error("An error occurred when reading Algolia credentials from config.properties!", e);
 		}
 	}
 
@@ -49,7 +47,9 @@ public class Starter {
 		} catch (IllegalArgumentException e) {
 			logger.error("Invalid arguments passed!");
 		} catch (IOException e) {
-			logger.error("An error occurred when reading Algolia credentials from config.properties!", e);
+			logger.error(
+					"An error occurred when reading Algolia credentials from config.properties or your subject-scheme-values.json path!",
+					e);
 		}
 	}
 
@@ -82,15 +82,15 @@ public class Starter {
 	public static void main(String[] args) {
 		if (args.length == 1) {
 			useMultipleDocumentationsCrawler(args);
-		} else if (args.length == 4) {
+		} else if (args.length == 5) {
 			useFacetingCrawler(args);
-		} else if (args.length == 3) {
+		} else if (args.length == 4) {
 			useBasicCrawler(args);
 		} else {
 			logger.info("Invalid Arguments!");
-			logger.info("To use base crawler pass -url=PATH -baseURL=PATH -indexName=INDEXNAME");
+			logger.info("To use base crawler pass -url=PATH -baseUrl=PATH -indexName=INDEXNAME -isFile=ISFILE");
 			logger.info(
-					"To use faceting crawler pass -url=PATH -baseURL=PATH -indexName=INDEXNAME -profilingConditionsPath=PATH");
+					"To use faceting crawler pass -url=PATH -baseUrl=PATH -indexName=INDEXNAME -profilingConditionsPath=PATH -isFile=ISFILE");
 			logger.info("To use multiple documentations crawler pass -configPath=PATH");
 		}
 	}

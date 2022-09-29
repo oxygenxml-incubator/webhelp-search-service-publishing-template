@@ -3,6 +3,7 @@ package ro.sync.search;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -72,8 +73,8 @@ public class BasicAlgolia {
 	 * @throws IOException if Crawler was failed to initiate or the HTML File
 	 *                     couldn't be read.
 	 */
-	protected void populateIndex(final String url, final String baseUrl) throws IOException {
-		BasicCrawler crawler = new BasicCrawler(url, baseUrl, false);
+	protected void populateIndex(final String url, final String baseUrl, final boolean isFile) throws IOException {
+		BasicCrawler crawler = new BasicCrawler(url, baseUrl, isFile);
 		crawler.crawl();
 
 		basicIndex.setSettings(new IndexSettings()
@@ -100,6 +101,7 @@ public class BasicAlgolia {
 		String url = "";
 		String baseUrl = "";
 		String indexName = "";
+		String isFile = "";
 
 		for (String arg : args) {
 			if (arg.startsWith("-url="))
@@ -108,13 +110,18 @@ public class BasicAlgolia {
 				baseUrl = arg.substring(9, arg.length());
 			else if (arg.startsWith("-indexName="))
 				indexName = arg.substring(11, arg.length());
+			else if (arg.startsWith("-isFile="))
+				isFile = arg.substring(8, arg.length());
 		}
 
-		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty())
+		if (url.isEmpty() || baseUrl.isEmpty() || indexName.isEmpty() || isFile.isEmpty())
 			throw new IllegalArgumentException();
+
+		final boolean isFileFlag = isFile.equals("true");
 
 		basicIndex = client.initIndex(indexName, BasicPage.class);
 		basicIndex.clearObjects();
-		populateIndex(url, baseUrl);
+		populateIndex(isFileFlag ? Path.of(url).toUri().toURL().toString() : url,
+				isFileFlag ? Path.of(baseUrl).toUri().toURL().toString() : baseUrl, isFileFlag);
 	}
 }

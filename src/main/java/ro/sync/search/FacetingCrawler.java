@@ -62,7 +62,7 @@ public class FacetingCrawler extends AbstractCrawler<FacetingPage> {
 				.setAudience(collectProfilingCondition(page, "audience")).setRev(collectProfilingCondition(page, "rev"))
 				.setProps(collectProfilingCondition(page, "props"))
 				.setOtherprops(collectProfilingCondition(page, "otherprops")));
-		
+
 		logger.info("Page {} was crawled!", page.title());
 	}
 

@@ -1,5 +1,6 @@
 {
     "indexName": "multiple-example",
+    "isFile": true,
     "publications": [
         {
             "Publication URL": "https://multiple-docs.netlify.app/garage/index.html",

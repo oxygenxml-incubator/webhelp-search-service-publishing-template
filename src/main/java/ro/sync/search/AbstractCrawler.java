@@ -143,6 +143,7 @@ public abstract class AbstractCrawler<T extends BasicPage> {
 		while (!queue.isEmpty()) {
 			String currentUrl = queue.remove(0);
 			Document page = readHtml(currentUrl);
+			
 			findUrls(page, currentUrl);
 
 			if (!(currentUrl.endsWith("index.html") || currentUrl.equals(this.url)))
