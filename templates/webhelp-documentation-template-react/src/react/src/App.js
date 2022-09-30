@@ -47,7 +47,7 @@ const App = ({ query, searchInstance }) => {
           hitsPerPage: 10,
           page: page,
           restrictSearchableAttributes: searchableAttributes,
-          facetFilters: facetFilters,
+          facetFilters: [facetFilters],
         });
 
         setResult(response);
