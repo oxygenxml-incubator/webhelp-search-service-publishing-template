@@ -6,24 +6,26 @@ We'll create a publishing template to demonstrates how to integrate a search ser
 
 The project documentation is available *[here.](https://webhelp-search-service-template.netlify.app/)*<br>
 
-How to replace internal WebHelp search engine with Algolia?
-	- Create an Algolia index by crawling a WebHelp documentation
-	- Item
-	- Setup searchable attributes and ranking criteria
-	- Highlight matching words enhancement
-	- Change search engine in Webhelp template
-	- Replace short description with a snippet of matching words enhancement
-	- Integrate Algolia Autocomplete widget in WebHelp transformation
+## Project Outline: <br/>	
 
-How to replace search result presentation to add filter capabilities?
-	- Update Algolia Crawler to index profiling conditions
-	- Setup a React application to implement results presentation
-	- Add filter component in search page
-	- Publishing template to search over multiple documentation
-	- Add support for labels/tags in WebHelp pages
-	- Add breadcrumb to results
+1. [How to replace internal WebHelp search engine with Algolia?](https://webhelp-search-service-template.netlify.app/topics/template_to_replace_search_engine.html)<br/>
+	- Create an Algolia index by crawling a WebHelp documentation<br/>	
+	- Setup searchable attributes and ranking criteria<br/>	
+	- Highlight matching words enhancement<br/>	
+	- Change search engine in Webhelp template<br/>	
+	- Replace short description with a snippet of matching words enhancement<br/>	
+	- Integrate Algolia Autocomplete widget in WebHelp transformation<br/>	
+
+2. [How to replace search result presentation to add filter capabilities?](https://webhelp-search-service-template.netlify.app/topics/template_to_replace_results_page.html)<br/>	
+	- Update Algolia Crawler to index profiling conditions<br/>	
+	- Setup a React application to implement results presentation<br/>	
+	- Add filter component in search page<br/>	
+	- Publishing template to search over multiple documentation<br/>	
+	- Add support for labels/tags in WebHelp pages<br/>	
+	- Add breadcrumb to results<br/>	
 	
-[Continous publishing with GitHub Actions and Netlify](https://webhelp-search-service-template.netlify.app/topics/cd_with_github_actions.html)
+3. [Continous publishing with GitHub Actions and Netlify](https://webhelp-search-service-template.netlify.app/topics/cd_with_github_actions.html)
+
 
 Example with profiling values from DITA is available *[here.](https://syncro-phone.netlify.app/)*<br>
 Example with multiple documentations is available *[here.](https://multiple-docs.netlify.app/)*
