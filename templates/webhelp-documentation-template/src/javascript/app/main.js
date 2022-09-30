@@ -211,10 +211,7 @@ if (document.getElementById("autocomplete")) {
                       })}
                     </div>
                     <div class="aa-ItemContentDescription">
-                      ${components.Snippet({
-                        hit: item,
-                        attribute: "content",
-                      })}
+                      ${item.shortDescription}
                     </div>
                   </div>
                 </div>
